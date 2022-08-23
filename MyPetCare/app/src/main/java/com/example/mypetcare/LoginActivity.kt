@@ -2,20 +2,28 @@ package com.example.mypetcare
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.mypetcare.databinding.ActivityMainBinding
+import android.view.View
+import com.example.mypetcare.databinding.ActivityLoginBinding
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
-    private var mBinding : ActivityMainBinding? = null
+    private var mBinding : ActivityLoginBinding? = null
     private val binding get() = mBinding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
-        mBinding = ActivityMainBinding.inflate(layoutInflater)
+        mBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        
+        binding.loginLogin.setOnClickListener(this)
+    }
+
+
+    override fun onClick(view: View?) {
+        when(view?.id) {
+
+        }
     }
 
     override fun onDestroy() {
@@ -23,4 +31,5 @@ class MainActivity : AppCompatActivity() {
 
         mBinding = null
     }
+
 }
