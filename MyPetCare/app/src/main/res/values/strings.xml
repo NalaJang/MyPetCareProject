@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">MyPetCare</string>
 
+    <string name="close">닫기</string>
+
     <!-- 로그인 -->
     <string name="id">아이디</string>
     <string name="password">비밀번호</string>
@@ -13,4 +15,17 @@
     <string name="home">홈</string>
     <string name="chat">채팅</string>
     <string name="setting">더보기</string>
+
+    <!-- home menu -->
+    <string name="showCalendarDialog">일정</string>
+    <string name="editProfile">프로필 편집</string>
+    <string name="myPetName">이름</string>
+    <string name="myPetAge">나이</string>
+    <string name="myPetSpecies">종</string>
+    <string name="myPetWeight">몸무게</string>
+    <string name="myPetCharacter">성격</string>
+
+    <!-- calendar menu -->
+    <string name="apply">신청하기</string>
+    <string name="edit">수정하기</string>
 </resources>

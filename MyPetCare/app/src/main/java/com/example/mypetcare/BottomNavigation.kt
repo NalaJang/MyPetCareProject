@@ -25,6 +25,9 @@ class BottomNavigation : AppCompatActivity() {
         mBinding = ActivityBottomNavigationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 처음에 보여줄 fragment
+        supportFragmentManager.beginTransaction().replace(R.id.bottom_container, HomeFragment()).commit()
+
         // bottomNavigationView 세팅
        initNavigationView()
 
@@ -43,8 +46,6 @@ class BottomNavigation : AppCompatActivity() {
 
             true
         }
-        // 처음에 보여줄 fragment
-        binding.bottomNavigationView.selectedItemId = R.id.homeFragment
     }
 
     private fun replaceFragment(fragment: Fragment) {
