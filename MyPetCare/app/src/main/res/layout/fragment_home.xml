@@ -4,21 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ProfileFragment">
+    tools:context=".fragment.HomeFragment">
 
-    <TextView
-        android:id="@+id/profile_userProfilePhoto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="user profile" />
+<!--    <TextView-->
+<!--        android:id="@+id/profile_userProfilePhoto"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:text="user profile" />-->
 
     <LinearLayout
         android:id="@+id/profile_userProfileInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="profile_userProfilePhoto"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" >
 
         <TextView
             android:layout_width="match_parent"

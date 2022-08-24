@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.mypetcare.R
-import com.example.mypetcare.databinding.FragmentProfileBinding
 import com.example.mypetcare.databinding.FragmentSettingBinding
 
 class SettingFragment : Fragment() {
