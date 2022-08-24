@@ -4,46 +4,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
     tools:context=".fragment.HomeFragment">
 
-<!--    <TextView-->
-<!--        android:id="@+id/profile_userProfilePhoto"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        android:text="user profile" />-->
+    <Button
+        android:id="@+id/home_showCalendarDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/showCalendarDialog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/home_profilePhoto" />
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/home_profilePhoto"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/profile_photo"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_showCalendarDialog" />
+
+    <Button
+        android:id="@+id/home_editProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/editProfile"
+        android:background="@drawable/border_button"
+        app:layout_constraintTop_toBottomOf="@+id/home_profilePhoto"
+        app:layout_constraintBottom_toTopOf="@+id/home_profileInfo"
+        app:layout_constraintEnd_toEndOf="parent" />
+    
     <LinearLayout
-        android:id="@+id/profile_userProfileInfo"
+        android:id="@+id/home_profileInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/border_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_editProfile">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="이름" />
+            android:orientation="horizontal"
+            android:padding="10dp" >
 
-        <TextView
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/myPetName" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/myPetAge" />
+        </LinearLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="이름" />
+            android:orientation="horizontal"
+            android:padding="10dp" >
 
-        <TextView
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/myPetSpecies" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/myPetWeight" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="이름" />
+            android:orientation="horizontal"
+            android:padding="10dp" >
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/myPetCharacter" />
+
+        </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="달력(신청 또는 수정은 날짜를 클릭해서, 비트윈 달력 참고)"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_userProfileInfo" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
