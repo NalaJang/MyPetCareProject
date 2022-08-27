@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.FragmentSettingBinding
+import com.example.mypetcare.dialog.MyProfile
 
-class SettingFragment : Fragment() {
+class SettingFragment : Fragment(), View.OnClickListener {
 
     private var mBinding : FragmentSettingBinding? = null
     private val binding get() = mBinding!!
@@ -19,7 +20,20 @@ class SettingFragment : Fragment() {
     ): View? {
         mBinding = FragmentSettingBinding.inflate(inflater, container, false)
 
+        binding.settingMyProfile.setOnClickListener(this)
+
         return binding.root
+    }
+
+    override fun onClick(view: View?) {
+        when(view?.id) {
+
+            // 프로필 편집
+            R.id.setting_myProfile -> {
+                val myProfileDialog = MyProfile(requireContext())
+                myProfileDialog.show()
+            }
+        }
     }
 
 }

@@ -52,7 +52,7 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
 
 
 
-        binding.dialogClose.setOnClickListener(this)
+        binding.calendarClose.setOnClickListener(this)
         binding.calendarDialogApplyButton.setOnClickListener(this)
     }
 
@@ -60,7 +60,7 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
     override fun onClick(view: View?) {
         when(view?.id) {
             // 닫기
-            R.id.dialog_close -> dismiss()
+            R.id.calendar_close -> dismiss()
 
             // 신청하기
             R.id.calendarDialog_applyButton -> {

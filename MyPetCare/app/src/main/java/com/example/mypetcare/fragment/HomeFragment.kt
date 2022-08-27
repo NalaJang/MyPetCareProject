@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.mypetcare.dialog.CalendarDialog
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.FragmentHomeBinding
+import com.example.mypetcare.dialog.MyProfile
 
 class HomeFragment : Fragment(), View.OnClickListener {
 
@@ -28,9 +29,17 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when(view?.id) {
+
+            // 일정 확인
             R.id.home_showCalendarDialog -> {
                 val calendarDialog = CalendarDialog(requireContext())
                 calendarDialog.show()
+            }
+
+            // 프로필 편집
+            R.id.home_editProfile -> {
+                val myProfileDialog = MyProfile(requireContext())
+                myProfileDialog.show()
             }
         }
     }
