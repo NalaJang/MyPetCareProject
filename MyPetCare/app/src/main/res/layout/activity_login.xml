@@ -26,7 +26,7 @@
         android:layout_marginEnd="10dp"
         android:padding="10dp"
         android:background="@drawable/border_text"
-        android:hint="@string/id"
+        android:hint="@string/email"
         app:layout_goneMarginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/login_warningId"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:text="@string/warningId"
+        android:text="@string/warningEmail"
         android:textColor="@android:color/holo_red_dark"
         app:layout_constraintBottom_toTopOf="@+id/login_password" />
 
@@ -106,14 +106,26 @@
 
     <!-- 회원가입 -->
     <TextView
+        android:id="@+id/login_text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="5dp"
+        android:text="@string/NotMember"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_kakaoLogin" />
+
+    <TextView
         android:id="@+id/login_signIn"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:padding="5dp"
         android:text="@string/signIn"
+        app:layout_constraintStart_toEndOf="@+id/login_text1"
         app:layout_constraintTop_toBottomOf="@+id/login_kakaoLogin" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,17 +9,22 @@ import android.view.View
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.ActivityLoginBinding
 import com.example.mypetcare.dialog.SignInDialog
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
 
     private var mBinding : ActivityLoginBinding? = null
     private val binding get() = mBinding!!
+    private var auth: FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        auth = Firebase.auth
 
         binding.loginId.addTextChangedListener(this)
         binding.loginPassword.addTextChangedListener(this)
@@ -81,6 +86,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
 
     override fun afterTextChanged(p0: Editable?) {
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

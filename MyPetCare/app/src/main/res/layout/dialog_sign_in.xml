@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:gravity="center"
-            android:text="@string/signInTile"
+            android:text="@string/signIn"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/signIn_line1" />
 
@@ -49,12 +49,12 @@
 
         <!-- 아이디 -->
         <EditText
-            android:id="@+id/signIn_myId"
+            android:id="@+id/signIn_myEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:padding="10dp"
-            android:hint="@string/signInMyId"
+            android:hint="@string/signInMyEmail"
             android:background="@drawable/border_text"
             app:layout_constraintTop_toBottomOf="@+id/signIn_essential"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,12 +62,12 @@
 
         <TextView
             android:visibility="invisible"
-            android:id="@+id/signIn_warningMyId"
+            android:id="@+id/signIn_warningMyEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/warningId"
+            android:text="@string/warningEmail"
             android:textColor="@android:color/holo_red_dark"
-            app:layout_constraintTop_toBottomOf="@id/signIn_myId" />
+            app:layout_constraintTop_toBottomOf="@id/signIn_myEmail" />
 
         <!-- 비밀번호 -->
         <EditText
@@ -78,7 +78,7 @@
             android:padding="10dp"
             android:hint="@string/signInMyPassword"
             android:background="@drawable/border_text"
-            app:layout_constraintTop_toBottomOf="@+id/signIn_warningMyId"
+            app:layout_constraintTop_toBottomOf="@+id/signIn_warningMyEmail"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -238,7 +238,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
-            android:text="@string/signInTile"
+            android:text="@string/signIn"
             android:background="@drawable/border_button"
             app:layout_constraintTop_toBottomOf="@+id/signIn_warningMyPetCharacter"
             app:layout_constraintBottom_toBottomOf="parent" />
