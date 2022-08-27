@@ -12,14 +12,14 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/app_name"
-        app:layout_constraintBottom_toTopOf="@+id/login_id"
+        app:layout_constraintBottom_toTopOf="@+id/login_email"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/login_id"
+        android:id="@+id/login_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -28,18 +28,17 @@
         android:background="@drawable/border_text"
         android:hint="@string/email"
         app:layout_goneMarginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/login_warningId"
+        app:layout_constraintBottom_toTopOf="@+id/login_warningEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:visibility="gone"
-        android:id="@+id/login_warningId"
+        android:visibility="invisible"
+        android:id="@+id/login_warningEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
         android:text="@string/warningEmail"
         android:textColor="@android:color/holo_red_dark"
         app:layout_constraintBottom_toTopOf="@+id/login_password" />
@@ -50,16 +49,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="30dp"
         android:padding="10dp"
         android:background="@drawable/border_text"
         android:hint="@string/password"
-        app:layout_goneMarginBottom="30dp"
         app:layout_constraintBottom_toTopOf="@+id/login_warningPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:visibility="gone"
+        android:visibility="invisible"
         android:id="@+id/login_warningPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

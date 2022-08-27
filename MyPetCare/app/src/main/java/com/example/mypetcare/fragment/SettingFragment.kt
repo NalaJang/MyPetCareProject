@@ -1,13 +1,17 @@
 package com.example.mypetcare.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.mypetcare.R
+import com.example.mypetcare.activity.LoginActivity
 import com.example.mypetcare.databinding.FragmentSettingBinding
 import com.example.mypetcare.dialog.MyProfile
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class SettingFragment : Fragment(), View.OnClickListener {
 
@@ -32,6 +36,13 @@ class SettingFragment : Fragment(), View.OnClickListener {
             R.id.setting_myProfile -> {
                 val myProfileDialog = MyProfile(requireContext())
                 myProfileDialog.show()
+            }
+
+            // 로그아웃
+            R.id.setting_logout -> {
+                Firebase.auth.signOut()
+                val intent = Intent(requireContext(), LoginActivity::class.java)
+                startActivity(intent)
             }
         }
     }

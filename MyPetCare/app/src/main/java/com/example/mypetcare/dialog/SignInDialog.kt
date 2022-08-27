@@ -11,9 +11,10 @@ import android.widget.Toast
 import androidx.core.view.isInvisible
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogSignInBinding
-import com.google.android.gms.tasks.OnCompleteListener
+import com.example.userpetcare.dto.UserInfoDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 @SuppressLint("ResourceType")
@@ -23,6 +24,7 @@ class SignInDialog constructor(context: Context): Dialog(context, R.drawable.dia
     private var mBinding: DialogSignInBinding? = null
     private val binding get() = mBinding!!
     private var auth: FirebaseAuth? = null
+    private var db: FirebaseFirestore? = null
 
     var myEmail: String? = null
     var myPassword: String? = null
@@ -34,6 +36,7 @@ class SignInDialog constructor(context: Context): Dialog(context, R.drawable.dia
         setContentView(binding.root)
 
         auth = Firebase.auth
+        db = FirebaseFirestore.getInstance()
 
         binding.signInClose.setOnClickListener(this)
         binding.signInSignIn.setOnClickListener(this)
@@ -53,12 +56,14 @@ class SignInDialog constructor(context: Context): Dialog(context, R.drawable.dia
 
             // 가입
             R.id.signIn_signIn -> {
-
+                myEmail = binding.signInMyEmail.text.toString()
+                myPassword = binding.signInMyPassword.text.toString()
                 if( wrongAccess() ) {
                     createAccount(myEmail!!, myPassword!!)
                 } else {
                     toastMessage("정보를 모두 입력해 주세요.")
                 }
+//                dismiss()
             }
         }
 
@@ -121,14 +126,18 @@ class SignInDialog constructor(context: Context): Dialog(context, R.drawable.dia
     override fun afterTextChanged(p0: Editable?) {
     }
 
+    var myPhoneNum: String? = null
+    var myPetAge: String? = null
+    var myPetSpecies: String? = null
+    var myPetCharacter: String? = null
 
     private fun wrongAccess(): Boolean {
         myEmail = binding.signInMyEmail.text.toString()
         myPassword = binding.signInMyPassword.text.toString()
-        val myPhoneNum = binding.signInMyPhoneNum.text.toString()
-        val myPetAge = binding.signInMyPetAge.text.toString()
-        val myPetSpecies = binding.signInMyPetSpecies.text.toString()
-        val myPetCharacter = binding.signInMyPetCharacter.text.toString()
+        myPhoneNum = binding.signInMyPhoneNum.text.toString()
+        myPetAge = binding.signInMyPetAge.text.toString()
+        myPetSpecies = binding.signInMyPetSpecies.text.toString()
+        myPetCharacter = binding.signInMyPetCharacter.text.toString()
 
 
         if( myEmail!!.isEmpty() ) // = myEmail.length < 1
@@ -137,16 +146,16 @@ class SignInDialog constructor(context: Context): Dialog(context, R.drawable.dia
         if( myPassword!!.isEmpty() )
             binding.signInWarningMyPassword.visibility = View.VISIBLE
 
-        if( myPhoneNum.isEmpty() )
+        if( myPhoneNum!!.isEmpty() )
             binding.signInWarningMyPhoneNum.visibility = View.VISIBLE
 
-        if( myPetAge.isEmpty() )
+        if( myPetAge!!.isEmpty() )
             binding.signInWarningMyPetAge.visibility = View.VISIBLE
 
-        if( myPetSpecies.isEmpty() )
+        if( myPetSpecies!!.isEmpty() )
             binding.signInWarningMyPetSpecies.visibility = View.VISIBLE
 
-        if( myPetCharacter.isEmpty() )
+        if( myPetCharacter!!.isEmpty() )
             binding.signInWarningMyPetCharacter.visibility = View.VISIBLE
 
         if( binding.signInWarningMyEmail.isInvisible && binding.signInWarningMyPassword.isInvisible
@@ -164,13 +173,57 @@ class SignInDialog constructor(context: Context): Dialog(context, R.drawable.dia
             auth?.createUserWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener {
                     if( it.isSuccessful ) {
+                        saveInfoToDB()
                         toastMessage("가입되었습니다.")
                         dismiss()
+
                     } else {
                         toastMessage("다시 시도해 주세요.")
                     }
                 }
         }
+    }
+
+    private fun saveInfoToDB() {
+        val myName: String = binding.signInMyName.text.toString()
+        val myPetName: String = binding.signInMyPetName.text.toString()
+        val myPetWeight: String = binding.signInMyPetWeight.text.toString()
+
+        val userInfoDTO = UserInfoDTO()
+        userInfoDTO.uid = auth?.uid
+        userInfoDTO.userEmail = auth?.currentUser?.email
+        userInfoDTO.userPassword = myPassword
+        userInfoDTO.userName = myName
+        userInfoDTO.userPhoneNum = myPhoneNum
+        userInfoDTO.userPetName = myPetName
+        userInfoDTO.userPetAge = myPetAge
+        userInfoDTO.userPetSpecies = myPetSpecies
+        userInfoDTO.userPetWeight = myPetWeight
+        userInfoDTO.userPetCharacter= myPetCharacter
+
+        // 또는 map 방식으로 데이터 저장 가능
+        val userInfo = hashMapOf(
+            "uid" to auth?.currentUser?.uid,
+            "userEmail" to myEmail,
+            "userPassword" to myPassword,
+            "userName" to myName,
+            "userPhoneNum" to myPhoneNum,
+            "petName" to myPetName,
+            "petAge" to myPetAge,
+            "petSpecies" to myPetSpecies,
+            "petWeight" to myPetWeight,
+            "petCharacter" to myPetCharacter
+        )
+
+        db  ?.collection("userInfo")
+            ?.document(auth!!.currentUser!!.uid)
+            ?.set(userInfoDTO)
+            ?.addOnSuccessListener {
+                println("성공")
+            }
+            ?.addOnFailureListener { e ->
+                println("실패 >> ${e.message}")
+            }
     }
 
     private fun toastMessage(message: String) {
