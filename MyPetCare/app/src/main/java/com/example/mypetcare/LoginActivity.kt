@@ -36,17 +36,20 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
             R.id.login_login -> {
 
                 // 입력된 정보가 없이 로그인을 눌렀을 경우
-                if( binding.loginId.length() < 1 && binding.loginPassword.length() < 1 ) {
-                    binding.loginWarningId.visibility = View.VISIBLE
-                    binding.loginWarningPassword.visibility = View.VISIBLE
-
-                }
-                // 정보를 모두 입력했을 경우
-                else if( binding.loginWarningId.isGone && binding.loginWarningPassword.isGone ) {
-                    val intent = Intent(this, BottomNavigation::class.java)
-                    startActivity(intent)
-                    finish()
-                }
+//                if( binding.loginId.length() < 1 && binding.loginPassword.length() < 1 ) {
+//                    binding.loginWarningId.visibility = View.VISIBLE
+//                    binding.loginWarningPassword.visibility = View.VISIBLE
+//
+//                }
+//                // 정보를 모두 입력했을 경우
+//                else if( binding.loginWarningId.isGone && binding.loginWarningPassword.isGone ) {
+//                    val intent = Intent(this, BottomNavigation::class.java)
+//                    startActivity(intent)
+//                    finish()
+//                }
+                val intent = Intent(this, BottomNavigation::class.java)
+                startActivity(intent)
+                finish()
             }
         }
     }

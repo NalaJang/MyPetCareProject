@@ -2,8 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="5dp"
-    android:layout_marginEnd="5dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Button
@@ -58,26 +59,29 @@
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/calendar_startTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="오전 10:00 부터" />
+                tools:text="오전 10:00 부터" />
 
             <TextView
+                android:id="@+id/calendar_endTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="오전 10:00 까지" />
+                tools:text="오전 10:00 까지" />
         </LinearLayout>
 
         <TextView
+            android:id="@+id/calendar_selectedCategory"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.7"
             android:gravity="center"
-            android:text="방문, 산" />
+            tools:text="방문, 산책" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/calendarDialog_button"
+        android:id="@+id/calendarDialog_applyButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"

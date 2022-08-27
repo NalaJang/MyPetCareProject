@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" >
+
+        <!-- 닫기 -->
+        <Button
+            android:id="@+id/apply_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="@string/apply"
+            android:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="@+id/apply_category"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/apply_line1"/>
+
+        <!-- 완료 -->
+        <Button
+            android:id="@+id/apply_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/complete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/apply_line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/darkGray"
+            app:layout_constraintTop_toBottomOf="@+id/apply_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- 유형 -->
+        <TextView
+            android:id="@+id/apply_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/category"
+            app:layout_constraintTop_toBottomOf="@+id/apply_line1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <CheckBox
+            android:id="@+id/apply_walk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/walk"
+            app:layout_constraintTop_toBottomOf="@+id/apply_category" />
+
+        <CheckBox
+            android:id="@+id/apply_bath"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bath"
+            app:layout_constraintTop_toBottomOf="@+id/apply_walk" />
+
+        <CheckBox
+            android:id="@+id/apply_visit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/visit"
+            app:layout_constraintTop_toBottomOf="@+id/apply_bath" />
+
+        <View
+            android:id="@+id/apply_line2"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/darkGray"
+            app:layout_constraintTop_toBottomOf="@+id/apply_visit"/>
+
+        <!-- 위치 -->
+        <TextView
+            android:id="@+id/apply_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/location"
+            app:layout_constraintTop_toBottomOf="@+id/apply_line2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/apply_searchLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/location"
+            app:layout_constraintTop_toBottomOf="@+id/apply_location"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <View
+            android:id="@+id/apply_line3"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/darkGray"
+            app:layout_constraintTop_toBottomOf="@+id/apply_searchLocation" />
+
+        <!-- 시간 -->
+        <TextView
+            android:id="@+id/apply_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/time"
+            app:layout_constraintTop_toBottomOf="@+id/apply_line3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:text="@string/startTime"
+            app:layout_constraintTop_toBottomOf="@+id/apply_time"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- 시작 날짜 -->
+        <TextView
+            android:id="@+id/apply_startDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/apply_time"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <!-- 시작 시간 -->
+        <TextView
+            android:id="@+id/apply_startTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defaultStartTime"
+            app:layout_constraintTop_toBottomOf="@+id/apply_startDate"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/endTime"
+            app:layout_constraintTop_toBottomOf="@+id/apply_startTime"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- 종료 날짜 -->
+        <TextView
+            android:id="@+id/apply_endDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/apply_startTime"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- 종료 시간 -->
+        <TextView
+            android:id="@+id/apply_endTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/defaultEndTime"
+            app:layout_constraintTop_toBottomOf="@+id/apply_endDate"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <View
+            android:id="@+id/apply_line4"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/darkGray"
+            app:layout_constraintTop_toBottomOf="@+id/apply_endTime" />
+
+        <!-- 메모 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/apply_line4"
+            app:layout_constraintStart_toStartOf="parent" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/memo"
+                android:layout_marginTop="10dp"
+                android:paddingStart="10dp" />
+
+            <EditText
+                android:id="@+id/apply_memo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
