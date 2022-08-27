@@ -1,4 +1,4 @@
-package com.example.mypetcare
+package com.example.mypetcare.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,10 +6,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Toast
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
+import com.example.mypetcare.R
 import com.example.mypetcare.databinding.ActivityLoginBinding
+import com.example.mypetcare.dialog.SignInDialog
 
 class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
 
@@ -18,7 +17,6 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
         mBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -26,6 +24,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
         binding.loginId.addTextChangedListener(this)
         binding.loginPassword.addTextChangedListener(this)
         binding.loginLogin.setOnClickListener(this)
+        binding.loginSignIn.setOnClickListener(this)
     }
 
 
@@ -50,6 +49,12 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
                 val intent = Intent(this, BottomNavigation::class.java)
                 startActivity(intent)
                 finish()
+            }
+
+            // 회원가입
+            R.id.login_signIn -> {
+                val signInDialog = SignInDialog(this)
+                signInDialog.show()
             }
         }
     }

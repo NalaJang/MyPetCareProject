@@ -29,7 +29,7 @@
         tools:layout="@layout/fragment_setting" />
     <activity
         android:id="@+id/bottomNavigation"
-        android:name="com.example.mypetcare.BottomNavigation"
+        android:name="com.example.mypetcare.activity.BottomNavigation"
         android:label="activity_bottom_navigation"
         tools:layout="@layout/activity_bottom_navigation" />
 </navigation>
