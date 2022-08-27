@@ -1,18 +1,13 @@
-package com.example.mypetcare
+package com.example.mypetcare.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
+import com.example.mypetcare.R
 import com.example.mypetcare.databinding.ActivityBottomNavigationBinding
 import com.example.mypetcare.fragment.ChatFragment
 import com.example.mypetcare.fragment.HomeFragment
 import com.example.mypetcare.fragment.SettingFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.lang.IllegalArgumentException
 
 class BottomNavigation : AppCompatActivity() {

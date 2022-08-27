@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".activity.LoginActivity" >
 
     <TextView
         android:id="@+id/login_title"
@@ -22,12 +22,12 @@
         android:id="@+id/login_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        app:layout_goneMarginBottom="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="10dp"
         android:background="@drawable/border_text"
         android:hint="@string/id"
-        android:padding="10dp"
+        app:layout_goneMarginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@+id/login_warningId"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -37,8 +37,8 @@
         android:id="@+id/login_warningId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/warningId"
         android:textColor="@android:color/holo_red_dark"
@@ -48,12 +48,12 @@
         android:id="@+id/login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:padding="10dp"
-        app:layout_goneMarginBottom="30dp"
         android:background="@drawable/border_text"
         android:hint="@string/password"
+        app:layout_goneMarginBottom="30dp"
         app:layout_constraintBottom_toTopOf="@+id/login_warningPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -63,8 +63,8 @@
         android:id="@+id/login_warningPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="@string/warningPassword"
         android:textColor="@android:color/holo_red_dark"
@@ -75,31 +75,45 @@
 <!--        android:layout_height="wrap_content"-->
 <!--        android:text="@string/autoLogin" />-->
 
+    <!-- 로그인 -->
     <Button
         android:id="@+id/login_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/border_button"
         android:padding="10dp"
         android:text="@string/login"
+        android:background="@drawable/border_button"
         app:layout_constraintBottom_toTopOf="@+id/login_kakaoLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- 카카오 로그인 -->
     <Button
         android:id="@+id/login_kakaoLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="212dp"
-        android:background="@drawable/border_button"
         android:text="카카오톡으로 시작하기"
+        android:background="@drawable/border_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- 회원가입 -->
+    <TextView
+        android:id="@+id/login_signIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:padding="5dp"
+        android:text="@string/signIn"
+        app:layout_constraintTop_toBottomOf="@+id/login_kakaoLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
