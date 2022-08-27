@@ -5,16 +5,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".dialog.CalendarDialog" >
 
+    <!-- 닫기 -->
     <Button
-        android:id="@+id/dialog_close"
+        android:id="@+id/calendar_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/close"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="@string/schedule"
+        android:gravity="center"
+        android:autoSizeTextType="uniform"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/calendar_close"
+        app:layout_constraintBottom_toTopOf="@+id/calendarDialog_calendarView" />
+
+    <!-- 신청 -->
+    <Button
+        android:id="@+id/calendarDialog_applyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/apply"
+        android:background="@drawable/border_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 달력 -->
     <CalendarView
         android:id="@+id/calendarDialog_calendarView"
         android:layout_width="match_parent"
@@ -22,7 +45,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_close" />
+        app:layout_constraintTop_toBottomOf="@+id/calendar_close" />
 
     <View
         android:layout_width="match_parent"
@@ -79,14 +102,5 @@
             android:gravity="center"
             tools:text="방문, 산책" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/calendarDialog_applyButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/apply"
-        android:background="@drawable/border_button"
-        app:layout_constraintTop_toBottomOf="@+id/calendarDialog_schedule" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

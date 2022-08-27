@@ -3,35 +3,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
     tools:context=".fragment.SettingFragment">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/setting_titleLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:fillViewport="true" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/border_bottom_stroke"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:autoSizeTextType="uniform"
+            android:text="@string/setting" />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="프로필 보기" />
+    </LinearLayout>
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="내가 남긴 후기" />
+    <!-- 프로필 -->
+    <Button
+        android:id="@+id/setting_myProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/profile"
+        app:layout_constraintTop_toBottomOf="@+id/setting_titleLayout" />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="로그아웃" />
+    <!-- 작성한 후기 -->
+    <Button
+        android:id="@+id/setting_myReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/review"
+        app:layout_constraintTop_toBottomOf="@+id/setting_myProfile" />
 
-        </LinearLayout>
-    </ScrollView>
+    <!-- 로그아웃 -->
+    <Button
+        android:id="@+id/setting_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        app:layout_constraintTop_toBottomOf="@+id/setting_myReview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
