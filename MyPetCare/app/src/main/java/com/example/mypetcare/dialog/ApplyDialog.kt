@@ -19,6 +19,13 @@ import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogApplyBinding
 import com.example.mypetcare.listener.OnApplyTimeListener
 import com.example.mypetcare.listener.OnCheckedBox
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @SuppressLint("ResourceType")
@@ -28,6 +35,9 @@ class ApplyDialog constructor(context: Context, applyDate: String): Dialog(conte
     private val TAG: String = "ApplyDialog"
     private var mBinding: DialogApplyBinding? = null
     private val binding get() = mBinding!!
+    private var auth: FirebaseAuth? = null
+    private var db: FirebaseFirestore? = null
+
     private var checkBoxListener : OnCheckedBox? = null
     private var applyTimeListener: OnApplyTimeListener? = null
 
@@ -42,6 +52,9 @@ class ApplyDialog constructor(context: Context, applyDate: String): Dialog(conte
         mBinding = DialogApplyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        auth = Firebase.auth
+        db = FirebaseFirestore.getInstance()
+
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         binding.applyStartDate.text = startDate
@@ -54,6 +67,7 @@ class ApplyDialog constructor(context: Context, applyDate: String): Dialog(conte
 
 
         binding.applyClose.setOnClickListener(this)
+        binding.applyComplete.setOnClickListener(this)
         binding.applyWalk.setOnCheckedChangeListener(this)
         binding.applyBath.setOnCheckedChangeListener(this)
         binding.applyVisit.setOnCheckedChangeListener(this)
@@ -83,12 +97,12 @@ class ApplyDialog constructor(context: Context, applyDate: String): Dialog(conte
             R.id.apply_endTime -> geApplyTime(R.id.apply_endTime)
 
             // 완료
-            R.id.apply_complete -> dismiss()
+            R.id.apply_complete -> applyForSchedule()
 
         }
     }
 
-
+    // 신청 유형
     override fun onCheckedChanged(button: CompoundButton?, isChecked: Boolean) {
         if( isChecked ) {
             when(button?.id) {
@@ -103,7 +117,6 @@ class ApplyDialog constructor(context: Context, applyDate: String): Dialog(conte
     // 신청 날짜
     private fun getApplyDate(id: Int) {
         val calendar = Calendar.getInstance()
-
 
         val dateSetListener = DatePickerDialog.OnDateSetListener {
                 _, year, month, dayOfMonth ->
@@ -168,6 +181,60 @@ class ApplyDialog constructor(context: Context, applyDate: String): Dialog(conte
         applyTimeListener = listener
     }
 
+    fun applyForSchedule() {
+        var selectedCategory = ""
+        if( binding.applyWalk.isChecked )
+            selectedCategory += binding.applyWalk.text.toString() + ","
+        if( binding.applyBath.isChecked )
+            selectedCategory += binding.applyBath.text.toString() + ","
+        if( binding.applyVisit.isChecked )
+            selectedCategory += binding.applyVisit.text.toString() + ","
+
+        if( selectedCategory.length > 0 )
+            selectedCategory = selectedCategory.substring(0, selectedCategory.length -1)
+
+        println("selectedCategory >> ${selectedCategory}")
+
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val now : Long = System.currentTimeMillis()
+        val dateFormat = SimpleDateFormat("HH:mm:ss", Locale.KOREA)
+        val registrationTime = dateFormat.format(now)
+
+        val selectedLocation = ""
+        val startDate = binding.applyStartDate.text.toString()
+        val endDate = binding.applyEndDate.text.toString()
+        val startTime = binding.applyStartTime.text.toString()
+        val endTime = binding.applyEndTime.text.toString()
+        val memo = binding.applyMemo.text.toString()
+
+        val userSchedule = hashMapOf(
+            "uid" to auth?.currentUser?.uid,
+            "selectedCategory" to selectedCategory,
+            "selectedLocation" to selectedLocation,
+            "startDate" to startDate,
+            "endDate" to endDate,
+            "startTime" to startTime,
+            "endTime" to endTime,
+            "memo" to memo,
+            "registrationTime" to registrationTime
+        )
+
+        db  ?.collection("userSchedule")
+            ?.document(auth!!.currentUser!!.uid)
+            ?.collection(year.toString())
+            ?.document(month.toString())
+            ?.set(userSchedule)
+            ?.addOnSuccessListener {
+                println("성공")
+                dismiss()
+            }
+            ?.addOnFailureListener { e ->
+                println("실패 >> ${e.message}")
+            }
+
+    }
 
     // 화면 바깥 터치 시 키보드 내리기
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {

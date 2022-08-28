@@ -10,6 +10,10 @@ import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogCalendarBinding
 import com.example.mypetcare.listener.OnApplyTimeListener
 import com.example.mypetcare.listener.OnCheckedBox
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 @SuppressLint("ResourceType")
@@ -19,6 +23,8 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
     private val TAG: String = "CalendarDialog"
     private var mBinding: DialogCalendarBinding? = null
     private val binding get() = mBinding!!
+    private var auth: FirebaseAuth? = null
+    private var db: FirebaseFirestore? = null
 
 
     init {
@@ -29,6 +35,9 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
         super.onCreate(savedInstanceState)
         mBinding = DialogCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        auth = Firebase.auth
+        db = FirebaseFirestore.getInstance()
 
 
         binding.calendarDialogSelectedDate.text = "오늘"
@@ -56,7 +65,7 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
         binding.calendarDialogApplyButton.setOnClickListener(this)
     }
 
-    var applyDialog: ApplyDialog? = null
+
     override fun onClick(view: View?) {
         when(view?.id) {
             // 닫기
@@ -97,4 +106,12 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
     }
 
 
+    fun applyForSchedule() {
+        val date = binding.calendarStartTime
+
+        val mySchedule = hashMapOf(
+            "uid" to auth?.currentUser?.uid,
+//            "userEmail" to myEmail,
+        )
+    }
 }
