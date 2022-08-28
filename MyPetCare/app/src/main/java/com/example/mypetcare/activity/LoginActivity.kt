@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.core.view.isGone
+import androidx.core.view.isInvisible
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.ActivityLoginBinding
 import com.example.mypetcare.dialog.SignInDialog
@@ -58,21 +60,20 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
             R.id.login_login -> {
 
                 // 입력된 정보가 없이 로그인을 눌렀을 경우
-//                if( binding.loginEmail.length() < 1 && binding.loginPassword.length() < 1 ) {
-//                    binding.loginEmail.visibility = View.VISIBLE
-//                    binding.loginWarningPassword.visibility = View.VISIBLE
-//
-//                }
+                if( binding.loginEmail.length() < 1 && binding.loginPassword.length() < 1 ) {
+                    binding.loginWarningEmail.visibility = View.VISIBLE
+                    binding.loginWarningPassword.visibility = View.VISIBLE
+
+                }
 //                // 정보를 모두 입력했을 경우
-//                else if( binding.loginWarningEmail.isGone && binding.loginWarningPassword.isGone ) {
-                    val myEmail = binding.loginEmail.text.toString()
-                    val myPassword = binding.loginPassword.text.toString()
+                else if( binding.loginWarningEmail.isInvisible && binding.loginWarningPassword.isInvisible ) {
+//                    val myEmail = binding.loginEmail.text.toString()
+//                    val myPassword = binding.loginPassword.text.toString()
+                    val myEmail = "test1@email.com"
+                    val myPassword = "123456"
                     userLogin(myEmail, myPassword)
 
-//                    val intent = Intent(this, BottomNavigation::class.java)
-//                    startActivity(intent)
-//                    finish()
-//                }
+                }
             }
 
             // 회원가입
@@ -109,7 +110,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
 
     // 로그인
     private fun userLogin(email: String, password: String) {
-        println("loginUser, ${email}, ${password}")
+
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if( task.isSuccessful ) {
