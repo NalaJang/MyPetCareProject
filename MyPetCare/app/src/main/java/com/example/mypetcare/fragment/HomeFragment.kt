@@ -83,6 +83,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     for( i in task.result!! ) {
                         if( i.id == uid.toString() ) {
 
+                            // 필드 데이터
                             val myName = i.data["userName"]
                             val myPhoneNum = i.data["userPhoneNum"]
                             val myPetName = i.data["userPetName"]
