@@ -6,15 +6,22 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ListView
+import androidx.core.view.size
 import com.example.mypetcare.R
+import com.example.mypetcare.adapter.ScheduleListAdapter
 import com.example.mypetcare.databinding.DialogCalendarBinding
+import com.example.mypetcare.dto.UserScheduleDTO
 import com.example.mypetcare.listener.OnApplyTimeListener
 import com.example.mypetcare.listener.OnCheckedBox
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.ktx.Firebase
 import java.util.*
+import kotlin.collections.ArrayList
 
 @SuppressLint("ResourceType")
 class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.dialog_full_screen)
@@ -25,6 +32,11 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
     private val binding get() = mBinding!!
     private var auth: FirebaseAuth? = null
     private var db: FirebaseFirestore? = null
+    private var uid: String? = null
+
+    var selectedYear: String? = null
+    var selectedMonth: String? = null
+    var selectedDate: String? = null
 
 
     init {
@@ -38,7 +50,9 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
 
         auth = Firebase.auth
         db = FirebaseFirestore.getInstance()
+        uid = FirebaseAuth.getInstance().currentUser?.uid
 
+        println("${TAG}, uid >> ${uid}")
 
         binding.calendarDialogSelectedDate.text = "오늘"
 
@@ -51,20 +65,24 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
                 binding.calendarDialogSelectedDate.text = "오늘"
             else
                 binding.calendarDialogSelectedDate.text = "${year}년 ${month+1}월 ${dayOfMonth}일"
+
+            selectedYear = year.toString()
+            selectedMonth = (month + 1).toString()
+            selectedDate = dayOfMonth.toString()
         }
 
-//        val applyDate: String = binding.calendarDialogSelectedDate.text.toString()
-//        applyDialog = ApplyDialog(context, applyDate)
-//        applyDialog!!.setOnCheck { checkListener ->
-//            binding.calendarSelectedCategory.text = checkListener
-//        }
-
+        val scheduleDTO: ArrayList<UserScheduleDTO> = arrayListOf()
+        var scheduleList: ListView = binding.calendarListView
+        var scheduleAdapter = ScheduleListAdapter(context, scheduleDTO)
+        scheduleList.adapter = scheduleAdapter
+        println("scheduleList.size >> ${scheduleList.size}")
+        getScheduleList()
 
 
         binding.calendarClose.setOnClickListener(this)
         binding.calendarDialogApplyButton.setOnClickListener(this)
-    }
 
+    }   // end onCreate
 
     override fun onClick(view: View?) {
         when(view?.id) {
@@ -79,24 +97,24 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
                 // 선택한 유형
                 applyDialog.setOnCheck(object : OnCheckedBox {
                     override fun setCheckedCategory(category: String) {
-                        binding.calendarSelectedCategory.text = category
+//                        binding.calendarSelectedCategory.text = category
                     }
                 })
 
                 applyDialog.setOnApplyTime(object : OnApplyTimeListener {
                     override fun setOnStartTime(selectedHour: Int, selectedMinute: Int) {
-                        if( selectedMinute == 0 )
-                            binding.calendarStartTime.text = "${selectedHour}시부터"
-                        else
-                            binding.calendarStartTime.text = "${selectedHour}시 ${selectedMinute}분부터"
+//                        if( selectedMinute == 0 )
+//                            binding.calendarStartTime.text = "${selectedHour}시부터"
+//                        else
+//                            binding.calendarStartTime.text = "${selectedHour}시 ${selectedMinute}분부터"
 
                     }
 
                     override fun setOnEndTime(selectedHour: Int, selectedMinute: Int) {
-                        if( selectedMinute == 0 )
-                            binding.calendarEndTime.text = "${selectedHour}시까지"
-                        else
-                            binding.calendarEndTime.text = "${selectedHour}시 ${selectedMinute}분까지"
+//                        if( selectedMinute == 0 )
+//                            binding.calendarEndTime.text = "${selectedHour}시까지"
+//                        else
+//                            binding.calendarEndTime.text = "${selectedHour}시 ${selectedMinute}분까지"
                     }
                 })
 
@@ -106,12 +124,28 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
     }
 
 
-    fun applyForSchedule() {
-        val date = binding.calendarStartTime
 
-        val mySchedule = hashMapOf(
-            "uid" to auth?.currentUser?.uid,
-//            "userEmail" to myEmail,
-        )
+    fun getScheduleList() {
+        println("getScheduleList")
+        db?.collection("userSchedule")
+            ?.document(uid.toString())
+            ?.get()
+            ?.addOnCompleteListener { task ->
+                if( task.isSuccessful ) {
+
+//                    for( i in task.result!! ) {
+//                        if( i.id == uid.toString() ) {
+//
+//                            println("getScheduleList, ${i.data["selectedCategory"]}")
+//                            break
+//                        }
+//                    }
+                } else {
+                    println("실패")
+                }
+            }
+
     }
+
+
 }
