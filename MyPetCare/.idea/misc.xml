@@ -17,11 +17,15 @@
         <entry key="app/src/main/res/layout/dialog_calendar.xml" value="0.165" />
         <entry key="app/src/main/res/layout/dialog_my_profile.xml" value="0.231722958529286" />
         <entry key="app/src/main/res/layout/dialog_sign_in.xml" value="0.22878851836217814" />
+        <entry key="app/src/main/res/layout/fragment_c.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.2682291666666667" />
+        <entry key="app/src/main/res/layout/fragment_chat2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.28229166666666666" />
+        <entry key="app/src/main/res/layout/item_chatting.xml" value="0.13636363636363635" />
         <entry key="app/src/main/res/layout/item_schedule_list.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/my_message_box.xml" value="0.165" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.1" />
       </map>
     </option>

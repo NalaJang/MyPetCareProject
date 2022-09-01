@@ -56,7 +56,6 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
 
         binding.calendarDialogSelectedDate.text = "오늘"
 
-
         // 달력에서 선택한 날짜
         val calendar = Calendar.getInstance()
         val today: Int = calendar.get(Calendar.DAY_OF_MONTH)
