@@ -10,17 +10,8 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/chatFragment"
-        android:name="com.example.mypetcare.fragment.ChatFragment"
-        android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" >
-        <action
-            android:id="@+id/action_chatFragment_to_settingFragment"
-            app:destination="@id/settingFragment" />
+            android:id="@+id/action_homeFragment_to_roomListFragment"
+            app:destination="@id/roomListFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
@@ -32,4 +23,13 @@
         android:name="com.example.mypetcare.activity.BottomNavigation"
         android:label="activity_bottom_navigation"
         tools:layout="@layout/activity_bottom_navigation" />
+    <fragment
+        android:id="@+id/roomListFragment"
+        android:name="com.example.mypetcare.fragment.RoomListFragment"
+        android:label="fragment_room_list"
+        tools:layout="@layout/fragment_room_list" >
+        <action
+            android:id="@+id/action_roomListFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
 </navigation>

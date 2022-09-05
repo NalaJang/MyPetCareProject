@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.mypetcare.dialog.CalendarDialog
 import com.example.mypetcare.R
+import com.example.mypetcare.database.PreferenceManager
 import com.example.mypetcare.databinding.FragmentHomeBinding
 import com.example.mypetcare.dialog.MyProfile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
@@ -21,7 +23,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private val binding get() = mBinding!!
     private lateinit var auth: FirebaseAuth
     private var db: FirebaseFirestore? = null
+    private var database = FirebaseDatabase.getInstance()
+    private var databaseReference = database.getReference("chat")
     private var uid: String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +34,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     ): View? {
 
         mBinding = FragmentHomeBinding.inflate(inflater, container, false)
+
         auth = Firebase.auth
         db = FirebaseFirestore.getInstance()
         uid = FirebaseAuth.getInstance().currentUser?.uid
@@ -99,6 +105,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
                             binding.homeMyPetWeight.text = getString(R.string.weightUnit, myPetWeight.toString())
                             binding.homeMyPetSpecies.text = myPetSpecies.toString()
                             binding.homeMyPetCharacter.text = myPetCharacter.toString()
+
+                            PreferenceManager.setString(context, "userName", myName.toString())
 
                             break
                         }
