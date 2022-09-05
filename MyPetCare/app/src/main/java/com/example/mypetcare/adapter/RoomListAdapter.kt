@@ -27,9 +27,7 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
     private var chatData: ChatData? = null
 
     init {
-        getMessageList()
-
-
+        getRoomList()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,11 +37,17 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chatData: ChatData = dataList.get(position)
-        println("onBindViewHolder,  ${chatData.message}")
-        holder.name.text = chatData.message
-        holder.time.text = chatData.time
+        
+        holder.roomName.text = chatData.userName
+        holder.lastMessage.text = chatData.message
+        holder.latTime.text = chatData.time
 
-
+        // 채팅방으로 이동
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, ChatActivity::class.java)
+            ContextCompat.startActivity(holder.itemView.context, intent, null)
+            println("${position}번 이동!")
+        }
     }
 
     override fun getItemCount(): Int {
@@ -60,30 +64,25 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
     }
 
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
-        val name = itemView.findViewById<TextView>(R.id.roomListAdapter_text)
-        val time = itemView.findViewById<TextView>(R.id.roomListAdapter_time)
+        val roomName = itemView.findViewById<TextView>(R.id.roomListAdapter_roomName)
+        val lastMessage = itemView.findViewById<TextView>(R.id.roomListAdapter_lastMessage)
+        val latTime = itemView.findViewById<TextView>(R.id.roomListAdapter_lastMsgTime)
     }
 
-    private fun getMessageList() {
-        databaseReference
-            .addValueEventListener(object : ValueEventListener {
+    private fun getRoomList() {
+        databaseReference.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     dataList.clear()
 
                     for( data in snapshot.children ) {
                         val item = data.getValue<ChatData>()
                         dataList.add(item!!)
-                        println("getMessageList >> ${dataList}")
-                        println("getMessageList, uid >> ${item.uid}")
-                        println("getMessageList >> ${dataList}")
-
                     }
                     notifyDataSetChanged()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                 }
-
             })
     }
 }
