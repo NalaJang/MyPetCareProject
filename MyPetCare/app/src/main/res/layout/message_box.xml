@@ -30,8 +30,7 @@
             android:padding="10dp"
             tools:text="message"
             android:textColor="@android:color/black"
-            android:background="@drawable/border_text_yellow"
-            android:backgroundTint="@color/yellow"/>
+            android:background="@drawable/border_text_yellow" />
 
 
         <TextView

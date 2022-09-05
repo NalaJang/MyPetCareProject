@@ -69,7 +69,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
                 else if( binding.loginWarningEmail.isInvisible && binding.loginWarningPassword.isInvisible ) {
 //                    val myEmail = binding.loginEmail.text.toString()
 //                    val myPassword = binding.loginPassword.text.toString()
-                    val myEmail = "test1@email.com"
+                    val myEmail = "test2@email.com"
                     val myPassword = "123456"
                     userLogin(myEmail, myPassword)
 
@@ -125,6 +125,9 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
             }
             .addOnFailureListener { e ->
                 println("실패 >> ${e.message}")
+                when {
+
+                }
             }
     }
 

@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.ActivityBottomNavigationBinding
-import com.example.mypetcare.fragment.ChatFragment
 import com.example.mypetcare.fragment.HomeFragment
+import com.example.mypetcare.fragment.RoomListFragment
 import com.example.mypetcare.fragment.SettingFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -45,7 +45,7 @@ class BottomNavigation : AppCompatActivity() {
             replaceFragment(
                 when(it.itemId) {
                     R.id.menu_home -> HomeFragment()
-                    R.id.menu_chat -> ChatFragment()
+                    R.id.menu_chat -> RoomListFragment()
                     R.id.menu_setting -> SettingFragment()
                     else -> throw IllegalArgumentException("not found menu item id.")
                 }

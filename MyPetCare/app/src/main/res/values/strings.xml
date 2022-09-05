@@ -82,5 +82,7 @@
     <!-- 더보기 -->
     <string name="review">내가 남긴 후기</string>
     <string name="logout">로그아웃</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
