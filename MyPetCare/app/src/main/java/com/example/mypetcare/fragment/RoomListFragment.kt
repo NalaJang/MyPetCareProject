@@ -32,6 +32,7 @@ class RoomListFragment : Fragment(), View.OnClickListener{
     private var roomUid: String? = null
 
     private val test1_uid = "eX5wB65N4SNlEFbKbhnfgSVcuYA2"
+    private val test3_uid = "3uHDMtqIEMW01Qi8u7a3dAgvEXp2"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,8 +46,6 @@ class RoomListFragment : Fragment(), View.OnClickListener{
 
 
         binding.roomListButton.setOnClickListener(this)
-        binding.roomListRecyclerView.setOnClickListener(this)
-
 
 
         return binding.root
@@ -56,8 +55,6 @@ class RoomListFragment : Fragment(), View.OnClickListener{
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.roomList_button -> createRoom()
-
-//            R.id.roomList_recyclerView -> enterTheRoom()
         }
     }
 
@@ -75,7 +72,7 @@ class RoomListFragment : Fragment(), View.OnClickListener{
         val chatData = ChatData()
         chatData.uid = uid.toString()
         chatData.member.put(uid.toString(), true)
-        chatData.member.put(test1_uid, true)
+        chatData.member.put(test3_uid, true)
         chatData.userName = userName
         chatData.message = "마지막 메시지"
         chatData.time = "마지막 시간"
@@ -88,7 +85,7 @@ class RoomListFragment : Fragment(), View.OnClickListener{
                         for( item in snapshot.children ) {
 
                             val result = item.getValue(ChatData::class.java)
-                            if( result?.member!!.containsKey(test1_uid) ) {
+                            if( result?.member!!.containsKey(test3_uid) ) {
                                 roomUid = item.key
                             }
                         }
@@ -97,9 +94,12 @@ class RoomListFragment : Fragment(), View.OnClickListener{
                     override fun onCancelled(error: DatabaseError) {
                     }
                 })
-
+            chatData.roomUid = roomUid
             databaseReference.push().setValue(chatData)
         }
+
+        println("chatData.time >> ${chatData.time}")
+        println("roomUid >> ${roomUid}")
     }
 
     override fun onResume() {

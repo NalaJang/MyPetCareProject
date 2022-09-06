@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mypetcare.MessageBoxViewType
 import com.example.mypetcare.R
-import com.example.mypetcare.dto.ChatMessageData
 import com.example.mypetcare.dto.ChatModel
 import com.example.mypetcare.dto.ChatUserDTO
 import com.google.firebase.auth.FirebaseAuth
@@ -18,35 +17,41 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
 
-class ChatAdapter(val roomUid: String): RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
+class ChatAdapter2(val chatRoomUid: String): RecyclerView.Adapter<ChatAdapter2.ViewHolder>() {
 
     private var database = FirebaseDatabase.getInstance()
-    private var databaseReference = database.getReference("chatRoom")
+    private var databaseReference = database.getReference("chat")
     private var uid = FirebaseAuth.getInstance().currentUser?.uid
-    private val messageList = ArrayList<ChatMessageData>()
-    private var chatUser: ChatMessageData? = null
 
-    // member 에서
+    private val comments = ArrayList<ChatModel.Comment>()
+    private var chatUser: ChatUserDTO? = null
+
     init {
-        databaseReference.orderByChild("member/$uid").equalTo(true)
+        databaseReference.child("users")
+                            .child("otherUserUid")
                             .addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
-
-                                    chatUser = snapshot.getValue<ChatMessageData>()
-                                    println("ChatAdapter, userName >> ${chatUser?.uid}")
+                                    chatUser = snapshot.getValue<ChatUserDTO>()
+                                    println("ChatAdapter, userName >> ${chatUser?.userName}")
 
                                     getMessageList()
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
                                 }
+
                             })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         println("onCreateViewHolder, viewType >> ${viewType}")
-
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.message_box, parent, false)
+        val view: View?
+        if( viewType == MessageBoxViewType.LEFT_BUBBLE ) {
+            view = LayoutInflater.from(parent.context).inflate(R.layout.my_message_box, parent, false)
+        } else if( viewType == MessageBoxViewType.RIGHT_BUBBLE )
+            view = LayoutInflater.from(parent.context).inflate(R.layout.message_box, parent, false)
+        else
+            view = LayoutInflater.from(parent.context).inflate(R.layout.message_box, parent, false)
 
         return ViewHolder(view!!)
     }
@@ -56,13 +61,13 @@ class ChatAdapter(val roomUid: String): RecyclerView.Adapter<ChatAdapter.ViewHol
 //            holder.chattingMessage.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow))
 //        }
 
-        holder.yourName.text = messageList[position].name
-        holder.yourMessage.text = messageList[position].message
-        holder.yourTime.text = messageList[position].time
+        holder.yourName.text = comments[position].name
+        holder.yourMessage.text = comments[position].message
+        holder.yourTime.text = comments[position].time
     }
 
     override fun getItemCount(): Int {
-        return messageList.size
+        return comments.size
     }
 
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
@@ -78,18 +83,16 @@ class ChatAdapter(val roomUid: String): RecyclerView.Adapter<ChatAdapter.ViewHol
 
 
     private fun getMessageList() {
-        databaseReference.child(roomUid).child("comments")
+        databaseReference.child(uid.toString()).child("comments")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    messageList.clear()
+                    comments.clear()
 
                     for( data in snapshot.children ) {
-                        val item = data.getValue<ChatMessageData>()
-                        messageList.add(item!!)
-                        println("roomUid >> ${roomUid}")
-                        println("data.key >> ${data.key}")
-                        println("item.uid >> ${item.uid}")
-                        println("getMessageList >> ${messageList}")
+                        val item = data.getValue<ChatModel.Comment>()
+                        comments.add(item!!)
+                        println("getMessageList >> ${comments}")
+
 
                     }
                     notifyDataSetChanged()
@@ -97,6 +100,7 @@ class ChatAdapter(val roomUid: String): RecyclerView.Adapter<ChatAdapter.ViewHol
 
                 override fun onCancelled(error: DatabaseError) {
                 }
+
             })
     }
 
