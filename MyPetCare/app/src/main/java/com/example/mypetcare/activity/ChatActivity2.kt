@@ -8,9 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mypetcare.R
 import com.example.mypetcare.adapter.ChatAdapter
 import com.example.mypetcare.database.PreferenceManager
+import com.example.mypetcare.databinding.ActivityChat2Binding
 import com.example.mypetcare.databinding.ActivityChatBinding
-import com.example.mypetcare.dto.ChatData
-import com.example.mypetcare.dto.ChatMessageData
 import com.example.mypetcare.dto.ChatModel
 import com.example.mypetcare.dto.ChatUserDTO
 import com.google.firebase.auth.FirebaseAuth
@@ -21,31 +20,27 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ChatActivity : AppCompatActivity(), View.OnClickListener {
+class ChatActivity2 : AppCompatActivity(), View.OnClickListener {
 
-    private var mBinding : ActivityChatBinding? = null
+    private var mBinding : ActivityChat2Binding? = null
     private val binding get() = mBinding!!
     private var db = FirebaseFirestore.getInstance()
     private var database = FirebaseDatabase.getInstance()
-    private var databaseReference = database.getReference("chatRoom")
+    private var databaseReference = database.getReference("chat")
     private var uid = FirebaseAuth.getInstance().currentUser?.uid
 
     private lateinit var userName: String
     private lateinit var chatAdapter: ChatAdapter
     private var chatRoomUid: String? = null
+    private val chatList: ArrayList<ChatUserDTO> = arrayListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = ActivityChatBinding.inflate(layoutInflater)
+        mBinding = ActivityChat2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
         userName = PreferenceManager.getString(this, "userName")
-
-        if( intent.hasExtra("roomUid") ) {
-            chatRoomUid = intent.getStringExtra("roomUid")
-        }
-
 
         // 리사이클러뷰 설정
         binding.chatRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -74,10 +69,37 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    private val test1_uid = "eX5wB65N4SNlEFbKbhnfgSVcuYA2"
-    private val test3_uid = "3uHDMtqIEMW01Qi8u7a3dAgvEXp2"
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        chatList.add(ChatUserDTO(uid, "${userName}님", "time"))
+//
+//        databaseReference.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val value = snapshot.value
+//                println("snapshot value >> ${value}")
+//
+//                val now : Long = System.currentTimeMillis()
+//                val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.KOREA)
+//                val time = dateFormat.format(now)
+//
+//                val item = ChatUserDTO(uid, userName, time)
+//                chatList.add(item)
+//                chatAdapter.notifyDataSetChanged()
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                println("Failed to read value")
+//            }
+//        })
+//    }
+
 
     private fun sendMessage() {
+
+        val chatModel = ChatModel()
+        chatModel.users.put(uid.toString(), true)
+        chatModel.users.put("otherUserUid", true)
 
         val message = binding.chatMessage.text.toString()
 
@@ -85,13 +107,24 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
         val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.KOREA)
         val currentTime = dateFormat.format(now)
 
-        val chatMessage = ChatMessageData(uid.toString(), userName, message, currentTime)
+        val comment = ChatModel.Comment(uid.toString(), userName, message, currentTime)
+
+        // 채팅방 존재 확인
+        if( chatRoomUid == null ) {
+            databaseReference.child(uid.toString())
+                                .push()
+                                .setValue(chatModel)
+                                .addOnSuccessListener {
+                                // 채팅방 생성
+                                createChatRoom()
+                            }
+        }
 
         // 메시지 보내기
-        databaseReference.child(chatRoomUid!!).child("comments").push().setValue(chatMessage)
+        databaseReference.child(uid.toString()).child("comments").push().setValue(comment)
         binding.chatMessage.setText("")
 
-        // 메시지를 보내면 스크롤을 맨 아래로 내림
+        // 메시지를 보내면 화면을 맨 아래로 내림
         binding.chatRecyclerView.scrollToPosition(chatAdapter.itemCount - 1)
     }
 

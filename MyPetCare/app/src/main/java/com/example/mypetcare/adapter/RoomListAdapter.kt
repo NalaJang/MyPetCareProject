@@ -23,8 +23,7 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
 
     private var databaseReference = FirebaseDatabase.getInstance().getReference("chatRoom")
     private val dataList: ArrayList<ChatData> = arrayListOf()
-    private var uid = FirebaseAuth.getInstance().currentUser?.uid
-    private var chatData: ChatData? = null
+    private val roomUidList: ArrayList<String> = arrayListOf()
 
     init {
         getRoomList()
@@ -42,11 +41,13 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
         holder.lastMessage.text = chatData.message
         holder.latTime.text = chatData.time
 
-        // 채팅방으로 이동
+
+        // 클릭한 채팅방으로 이동
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, ChatActivity::class.java)
+            intent.putExtra("roomUid", roomUidList[position])
             ContextCompat.startActivity(holder.itemView.context, intent, null)
-            println("${position}번 이동!")
+            println("이동!")
         }
     }
 
@@ -54,14 +55,6 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
         return dataList.size
     }
 
-    fun getChatData(position: Int): ChatData {
-        return dataList.get(position)
-    }
-
-    fun addChatData(chat: ChatData) {
-        dataList.add(chat)
-        notifyItemInserted(dataList.size -1)
-    }
 
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
         val roomName = itemView.findViewById<TextView>(R.id.roomListAdapter_roomName)
@@ -69,7 +62,10 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
         val latTime = itemView.findViewById<TextView>(R.id.roomListAdapter_lastMsgTime)
     }
 
+    // firebase 에서 채팅방 목록 가져오기
     private fun getRoomList() {
+        var roomUid: String
+
         databaseReference.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     dataList.clear()
@@ -77,7 +73,10 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
                     for( data in snapshot.children ) {
                         val item = data.getValue<ChatData>()
                         dataList.add(item!!)
+                        roomUid = data.key!!
+                        roomUidList.add(roomUid)
                     }
+
                     notifyDataSetChanged()
                 }
 
