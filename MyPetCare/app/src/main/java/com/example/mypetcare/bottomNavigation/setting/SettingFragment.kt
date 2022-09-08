@@ -1,4 +1,4 @@
-package com.example.mypetcare.fragment
+package com.example.mypetcare.bottomNavigation.setting
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.mypetcare.R
-import com.example.mypetcare.activity.BottomNavigation
-import com.example.mypetcare.activity.LoginActivity
+import com.example.mypetcare.bottomNavigation.BottomNavigation
+import com.example.mypetcare.login.LoginActivity
 import com.example.mypetcare.databinding.FragmentSettingBinding
-import com.example.mypetcare.dialog.MyProfile
+import com.example.mypetcare.bottomNavigation.MyProfile
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 

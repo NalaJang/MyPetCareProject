@@ -1,4 +1,4 @@
-package com.example.mypetcare.dto
+package com.example.mypetcare.database.dto
 
 data class ChatUserDTO(
     var uid: String? = null,

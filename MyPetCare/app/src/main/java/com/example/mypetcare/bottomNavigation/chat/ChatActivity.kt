@@ -1,14 +1,13 @@
-package com.example.mypetcare.activity
+package com.example.mypetcare.bottomNavigation.chat
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.mypetcare.R
-import com.example.mypetcare.adapter.ChatAdapter
 import com.example.mypetcare.database.PreferenceManager
 import com.example.mypetcare.databinding.ActivityChatBinding
-import com.example.mypetcare.dto.ChatMessageData
+import com.example.mypetcare.database.dto.ChatMessageData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.text.SimpleDateFormat

@@ -1,24 +1,21 @@
-package com.example.mypetcare.dialog
+package com.example.mypetcare.bottomNavigation.home.schedule
 
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ListView
 import androidx.core.view.size
 import com.example.mypetcare.R
-import com.example.mypetcare.adapter.ScheduleListAdapter
+import com.example.mypetcare.bottomNavigation.home.ScheduleListAdapter
 import com.example.mypetcare.databinding.DialogCalendarBinding
-import com.example.mypetcare.dto.UserScheduleDTO
+import com.example.mypetcare.database.dto.UserScheduleDTO
 import com.example.mypetcare.listener.OnApplyTimeListener
 import com.example.mypetcare.listener.OnCheckedBox
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.collections.ArrayList

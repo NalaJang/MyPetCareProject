@@ -1,4 +1,4 @@
-package com.example.mypetcare.dialog
+package com.example.mypetcare.bottomNavigation
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.Toast
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogMyProfileBinding
-import com.example.userpetcare.dto.UserInfoDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore

@@ -1,4 +1,4 @@
-package com.example.mypetcare.dialog
+package com.example.mypetcare.bottomNavigation.home.schedule
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -14,7 +14,7 @@ import android.widget.CompoundButton
 import android.widget.TimePicker
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogApplyBinding
-import com.example.mypetcare.dto.UserScheduleDTO
+import com.example.mypetcare.database.dto.UserScheduleDTO
 import com.example.mypetcare.listener.OnApplyTimeListener
 import com.example.mypetcare.listener.OnCheckedBox
 import com.google.firebase.auth.FirebaseAuth

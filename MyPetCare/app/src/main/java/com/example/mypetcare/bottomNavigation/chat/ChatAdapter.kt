@@ -1,4 +1,4 @@
-package com.example.mypetcare.adapter
+package com.example.mypetcare.bottomNavigation.chat
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.mypetcare.R
-import com.example.mypetcare.dto.ChatMessageData
+import com.example.mypetcare.database.dto.ChatMessageData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue

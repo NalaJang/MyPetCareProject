@@ -1,4 +1,4 @@
-package com.example.mypetcare.dialog
+package com.example.mypetcare.signUp
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -10,7 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.view.isInvisible
 import com.example.mypetcare.R
-import com.example.mypetcare.databinding.DialogSignInBinding
+import com.example.mypetcare.databinding.DialogSignUpBinding
 import com.example.userpetcare.dto.UserInfoDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -18,10 +18,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 @SuppressLint("ResourceType")
-class SignInDialog constructor(context: Context): Dialog(context, R.drawable.dialog_full_screen)
+class SignUpDialog constructor(context: Context): Dialog(context, R.drawable.dialog_full_screen)
     , View.OnClickListener, TextWatcher {
 
-    private var mBinding: DialogSignInBinding? = null
+    private var mBinding: DialogSignUpBinding? = null
     private val binding get() = mBinding!!
     private var auth: FirebaseAuth? = null
     private var db: FirebaseFirestore? = null
@@ -32,7 +32,7 @@ class SignInDialog constructor(context: Context): Dialog(context, R.drawable.dia
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DialogSignInBinding.inflate(layoutInflater)
+        mBinding = DialogSignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         auth = Firebase.auth

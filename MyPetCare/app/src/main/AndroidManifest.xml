@@ -15,13 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyPetCare" >
         <activity
-            android:name=".activity.ChatActivity"
+            android:name=".bottomNavigation.chat.ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.BottomNavigation"
+            android:name=".bottomNavigation.BottomNavigation"
             android:exported="false" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

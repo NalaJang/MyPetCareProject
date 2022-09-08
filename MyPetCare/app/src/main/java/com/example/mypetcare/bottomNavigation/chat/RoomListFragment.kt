@@ -1,4 +1,4 @@
-package com.example.mypetcare.fragment
+package com.example.mypetcare.bottomNavigation.chat
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,10 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mypetcare.R
-import com.example.mypetcare.adapter.RoomListAdapter
 import com.example.mypetcare.database.PreferenceManager
 import com.example.mypetcare.databinding.FragmentRoomListBinding
-import com.example.mypetcare.dto.ChatData
+import com.example.mypetcare.database.dto.ChatData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 

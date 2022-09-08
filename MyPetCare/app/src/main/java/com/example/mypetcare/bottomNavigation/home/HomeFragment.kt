@@ -1,15 +1,15 @@
-package com.example.mypetcare.fragment
+package com.example.mypetcare.bottomNavigation.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.mypetcare.dialog.CalendarDialog
+import com.example.mypetcare.bottomNavigation.home.schedule.CalendarDialog
 import com.example.mypetcare.R
 import com.example.mypetcare.database.PreferenceManager
 import com.example.mypetcare.databinding.FragmentHomeBinding
-import com.example.mypetcare.dialog.MyProfile
+import com.example.mypetcare.bottomNavigation.MyProfile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase

@@ -1,13 +1,13 @@
-package com.example.mypetcare.activity
+package com.example.mypetcare.bottomNavigation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.ActivityBottomNavigationBinding
-import com.example.mypetcare.fragment.HomeFragment
-import com.example.mypetcare.fragment.RoomListFragment
-import com.example.mypetcare.fragment.SettingFragment
+import com.example.mypetcare.bottomNavigation.home.HomeFragment
+import com.example.mypetcare.bottomNavigation.chat.RoomListFragment
+import com.example.mypetcare.bottomNavigation.setting.SettingFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore

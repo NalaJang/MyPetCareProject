@@ -6,7 +6,7 @@
     app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.mypetcare.fragment.HomeFragment"
+        android:name="com.example.mypetcare.bottomNavigation.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -15,17 +15,17 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.mypetcare.fragment.SettingFragment"
+        android:name="com.example.mypetcare.bottomNavigation.setting.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
     <activity
         android:id="@+id/bottomNavigation"
-        android:name="com.example.mypetcare.activity.BottomNavigation"
+        android:name="com.example.mypetcare.bottomNavigation.BottomNavigation"
         android:label="activity_bottom_navigation"
         tools:layout="@layout/activity_bottom_navigation" />
     <fragment
         android:id="@+id/roomListFragment"
-        android:name="com.example.mypetcare.fragment.RoomListFragment"
+        android:name="com.example.mypetcare.bottomNavigation.chat.RoomListFragment"
         android:label="fragment_room_list"
         tools:layout="@layout/fragment_room_list" >
         <action

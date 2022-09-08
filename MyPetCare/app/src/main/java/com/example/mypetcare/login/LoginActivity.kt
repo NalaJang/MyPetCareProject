@@ -1,4 +1,4 @@
-package com.example.mypetcare.activity
+package com.example.mypetcare.login
 
 import android.content.Intent
 import android.graphics.Paint
@@ -7,11 +7,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import com.example.mypetcare.R
+import com.example.mypetcare.bottomNavigation.BottomNavigation
 import com.example.mypetcare.databinding.ActivityLoginBinding
-import com.example.mypetcare.dialog.SignInDialog
+import com.example.mypetcare.signUp.SignUpDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
 
             // 회원가입
             R.id.login_signIn -> {
-                val signInDialog = SignInDialog(this)
+                val signInDialog = SignUpDialog(this)
                 signInDialog.show()
             }
         }
