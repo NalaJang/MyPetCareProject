@@ -8,11 +8,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mypetcare.R
-import com.example.mypetcare.dto.ChatModel
-import com.example.mypetcare.dto.ChatUserDTO
 import com.example.mypetcare.activity.ChatActivity
 import com.example.mypetcare.dto.ChatData
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -35,7 +32,7 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val chatData: ChatData = dataList.get(position)
+        val chatData: ChatData = dataList[position]
         
         holder.roomName.text = chatData.userName
         holder.lastMessage.text = chatData.message
@@ -75,6 +72,7 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
                         dataList.add(item!!)
                         roomUid = data.key!!
                         roomUidList.add(roomUid)
+
                     }
 
                     notifyDataSetChanged()

@@ -13,6 +13,7 @@
         <entry key="app/src/main/res/drawable/dialog_apply.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/dialog_full_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_bottom_navigation.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.19184430027803523" />
         <entry key="app/src/main/res/layout/activity_chat2.xml" value="0.231722958529286" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
@@ -30,6 +31,7 @@
         <entry key="app/src/main/res/layout/item_chatting.xml" value="0.13636363636363635" />
         <entry key="app/src/main/res/layout/item_room_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_schedule_list.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/message_box.xml" value="0.25" />
         <entry key="app/src/main/res/layout/my_message_box.xml" value="0.165" />
         <entry key="app/src/main/res/layout/your_message_box.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.1" />

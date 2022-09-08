@@ -7,11 +7,11 @@
     android:layout_margin="5dp">
 
     <LinearLayout
-        android:id="@+id/chatting_rightLayout"
+        android:id="@+id/chatting_leftLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,10 +22,11 @@
                 android:id="@+id/chatting_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="name" />
 
             <TextView
                 android:id="@+id/chatting_message"
@@ -33,10 +34,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/border_text_chat"
-                android:backgroundTint="@color/representativeColor"
                 android:padding="10dp"
                 android:textColor="@android:color/black"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chatting_name"
                 tools:text="message" />
 
@@ -45,9 +45,9 @@
                 android:id="@+id/chatting_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
                 app:layout_constraintBottom_toBottomOf="@+id/chatting_message"
-                app:layout_constraintEnd_toStartOf="@+id/chatting_message"
+                app:layout_constraintStart_toEndOf="@+id/chatting_message"
                 tools:text="time" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

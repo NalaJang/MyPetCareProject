@@ -1,28 +1,18 @@
 package com.example.mypetcare.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mypetcare.R
-import com.example.mypetcare.activity.ChatActivity
 import com.example.mypetcare.adapter.RoomListAdapter
 import com.example.mypetcare.database.PreferenceManager
 import com.example.mypetcare.databinding.FragmentRoomListBinding
 import com.example.mypetcare.dto.ChatData
-import com.example.mypetcare.dto.ChatModel
-import com.example.mypetcare.dto.ChatUserDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 
 class RoomListFragment : Fragment(), View.OnClickListener{
 
@@ -40,10 +30,7 @@ class RoomListFragment : Fragment(), View.OnClickListener{
     ): View? {
         mBinding = FragmentRoomListBinding.inflate(inflater, container, false)
 
-
-
         initAdapter()
-
 
         binding.roomListButton.setOnClickListener(this)
 
@@ -77,6 +64,7 @@ class RoomListFragment : Fragment(), View.OnClickListener{
         chatData.message = "마지막 메시지"
         chatData.time = "마지막 시간"
 
+        // 선택한 사용자와의 채팅방이 없다면 roomUid 를 새로 생성
         if( roomUid == null ) {
             // 데이터를 선택적으로 검색하기 전에 먼저 정렬 함수(orderByChild)로 정렬 방법을 지정한다.
             databaseReference.orderByChild("member/$uid").equalTo(true)
@@ -98,8 +86,6 @@ class RoomListFragment : Fragment(), View.OnClickListener{
             databaseReference.push().setValue(chatData)
         }
 
-        println("chatData.time >> ${chatData.time}")
-        println("roomUid >> ${roomUid}")
     }
 
     override fun onResume() {

@@ -6,14 +6,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.ChatActivity" >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_recyclerView"
+    <!-- 메시지 목록 -->
+    <ListView
+        android:id="@+id/chat_listView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:divider="@color/transparent"
+        android:listSelector="@color/transparent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/chat_constrainLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chat_constrainLayout"
@@ -24,6 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_weight="1" >
 
+        <!-- 내용 입력 칸 -->
         <EditText
             android:id="@+id/chat_message"
             android:layout_width="0dp"
@@ -39,6 +44,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/chat_send"/>
 
+        <!-- 메시지 입력 버튼 -->
         <Button
             android:id="@+id/chat_send"
             android:layout_width="wrap_content"

@@ -67,10 +67,10 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
                 }
 //                // 정보를 모두 입력했을 경우
                 else if( binding.loginWarningEmail.isInvisible && binding.loginWarningPassword.isInvisible ) {
-//                    val myEmail = binding.loginEmail.text.toString()
-//                    val myPassword = binding.loginPassword.text.toString()
-                    val myEmail = "test2@email.com"
-                    val myPassword = "123456"
+                    val myEmail = binding.loginEmail.text.toString()
+                    val myPassword = binding.loginPassword.text.toString()
+//                    val myEmail = "test2@email.com"
+//                    val myPassword = "123456"
                     userLogin(myEmail, myPassword)
 
                 }
