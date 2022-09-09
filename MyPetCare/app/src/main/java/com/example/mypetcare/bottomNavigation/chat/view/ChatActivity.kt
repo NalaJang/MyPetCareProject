@@ -1,10 +1,12 @@
-package com.example.mypetcare.bottomNavigation.chat
+package com.example.mypetcare.bottomNavigation.chat.view
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import com.example.mypetcare.Constants
 import com.example.mypetcare.R
+import com.example.mypetcare.bottomNavigation.chat.adapter.ChatAdapter
 import com.example.mypetcare.database.PreferenceManager
 import com.example.mypetcare.databinding.ActivityChatBinding
 import com.example.mypetcare.database.dto.ChatMessageData
@@ -79,7 +81,7 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
         val chatMessage = ChatMessageData(uid.toString(), userName, message, currentTime)
 
         // 메시지 보내기
-        databaseReference.child(roomUid!!).child("comments").push().setValue(chatMessage)
+        databaseReference.child(roomUid!!).child(Constants.CHAT_COMMENTS).push().setValue(chatMessage)
         binding.chatMessage.setText("")
 
         // 메시지를 보내면 스크롤을 맨 아래로 내림

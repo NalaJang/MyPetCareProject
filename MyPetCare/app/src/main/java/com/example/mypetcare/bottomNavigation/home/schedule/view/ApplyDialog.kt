@@ -1,4 +1,4 @@
-package com.example.mypetcare.bottomNavigation.home.schedule
+package com.example.mypetcare.bottomNavigation.home.schedule.view
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -12,6 +12,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CompoundButton
 import android.widget.TimePicker
+import com.example.mypetcare.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogApplyBinding
 import com.example.mypetcare.database.dto.UserScheduleDTO
@@ -50,32 +51,8 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
         auth = Firebase.auth
         db = FirebaseFirestore.getInstance()
 
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-
-        binding.applyDate.text = applyDate
-
-        if( applyDate == "오늘" ) {
-            applyDate = "${year}년 ${month+1}월 ${dayOfMonth}일"
-        }
-
-        val applyDateSplit = applyDate.split("년", "월")
-        val dateSplit = applyDateSplit[2].substring(0, applyDateSplit[2].length -1)
-
-        selectedYear = applyDateSplit[0]
-        selectedMonth = applyDateSplit[1]
-        selectedDate = dateSplit
-
-
-        binding.applyStartTime.text = "${hour}시부터"
-        binding.applyEndTime.text = "${hour+1}시까지"
-
-        applyTimeListener?.setOnStartTime(hour, 0)
-        applyTimeListener?.setOnEndTime(hour+1, 0)
-
+        // view 초기화
+        initView()
 
 
         binding.applyClose.setOnClickListener(this)
@@ -106,7 +83,37 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
         }
     }
 
-    // 신청 유형
+    // view 초기화
+    private fun initView() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+
+        binding.applyDate.text = applyDate
+
+        if( applyDate == "오늘" ) {
+            applyDate = "${year}년 ${month+1}월 ${dayOfMonth}일"
+        }
+
+        val applyDateSplit = applyDate.split("년", "월")
+        val dateSplit = applyDateSplit[2].substring(0, applyDateSplit[2].length -1)
+
+        selectedYear = applyDateSplit[0].trim()
+        selectedMonth = applyDateSplit[1].trim()
+        selectedDate = dateSplit.trim()
+
+
+        binding.applyStartTime.text = "${hour}시부터"
+        binding.applyEndTime.text = "${hour+1}시까지"
+
+        applyTimeListener?.setOnStartTime(hour, 0)
+        applyTimeListener?.setOnEndTime(hour+1, 0)
+    }
+
+
+    // 선택한 신청 유형
     override fun onCheckedChanged(button: CompoundButton?, isChecked: Boolean) {
         if( isChecked ) {
             when(button?.id) {
@@ -151,6 +158,7 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
         applyTimeListener = listener
     }
 
+    // 일정 신청
     private fun applyForSchedule() {
         var selectedCategory = ""
         if( binding.applyWalk.isChecked )
@@ -160,7 +168,7 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
         if( binding.applyVisit.isChecked )
             selectedCategory += binding.applyVisit.text.toString() + ","
 
-        if( selectedCategory.length > 0 )
+        if( selectedCategory.isNotEmpty() ) // selectedCategory.length > 0
             selectedCategory = selectedCategory.substring(0, selectedCategory.length -1)
 
         val selectedLocation = ""
@@ -183,34 +191,20 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
         userScheduleDTO.registrationTime = registrationTime
 
 
-        db  ?.collection("userSchedule")
+        db  ?.collection(Constants.USER_SCHEDULE)
             ?.document(auth!!.currentUser!!.uid)
             ?.collection(selectedYear.toString())
             ?.document(selectedMonth.toString())
             ?.collection(selectedDate.toString())
-            ?.document("schedule")
+            ?.document()
             ?.set(userScheduleDTO)
             ?.addOnSuccessListener {
 
-                println("성공")
-
-                val scheduleList = arrayListOf<UserScheduleDTO>()
-                scheduleList.add(
-                    UserScheduleDTO(
-                        auth?.currentUser?.uid,
-                        selectedCategory,
-                        selectedLocation,
-                        startTime,
-                        endTime,
-                        memo,
-                        registrationTime
-                    )
-                )
-                println("getSize >> ${scheduleList.size}")
+                println("일정 등록 성공")
                 dismiss()
             }
             ?.addOnFailureListener { e ->
-                println("실패 >> ${e.message}")
+                println("일정 등록 실패 >> ${e.message}")
             }
 
     }
@@ -233,6 +227,7 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
 
         return super.dispatchTouchEvent(ev)
     }
+
 
     //    fun setOnCheck(checkListener: (String) -> Unit) {
 //        listener = object : OnCheckedBox {

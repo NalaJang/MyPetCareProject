@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".bottomNavigation.chat.RoomListFragment">
+    tools:context=".bottomNavigation.chat.view.RoomListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/roomList_recyclerView"

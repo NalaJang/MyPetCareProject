@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
-    tools:context=".bottomNavigation.home.HomeFragment" >
+    tools:context=".bottomNavigation.home.view.HomeFragment" >
 
     <!-- 일정 확인 -->
     <Button
@@ -30,18 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_showCalendarDialog" />
 
-    <!-- 프로필 편집 -->
-    <Button
-        android:id="@+id/home_editProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/editProfile"
-        android:background="@drawable/border_button"
-        app:layout_constraintTop_toBottomOf="@+id/home_profilePhoto"
-        app:layout_constraintBottom_toTopOf="@+id/home_profileInfo"
-        app:layout_constraintEnd_toEndOf="parent" />
-    
+
     <LinearLayout
         android:id="@+id/home_profileInfo"
         android:layout_width="match_parent"
@@ -53,7 +42,7 @@
         android:background="@drawable/border_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_editProfile"
+        app:layout_constraintTop_toBottomOf="@+id/home_profilePhoto"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- 이름 -->

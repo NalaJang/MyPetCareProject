@@ -1,4 +1,4 @@
-package com.example.mypetcare.bottomNavigation.chat
+package com.example.mypetcare.bottomNavigation.chat.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mypetcare.R
+import com.example.mypetcare.bottomNavigation.chat.view.ChatActivity
 import com.example.mypetcare.database.dto.ChatData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

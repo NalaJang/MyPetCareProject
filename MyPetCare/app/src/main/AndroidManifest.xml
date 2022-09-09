@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyPetCare" >
         <activity
-            android:name=".bottomNavigation.chat.ChatActivity"
+            android:name=".bottomNavigation.chat.view.ChatActivity"
             android:exported="false" />
         <activity
             android:name=".bottomNavigation.BottomNavigation"

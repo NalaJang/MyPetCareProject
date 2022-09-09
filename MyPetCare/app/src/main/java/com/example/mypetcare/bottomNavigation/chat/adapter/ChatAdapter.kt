@@ -1,4 +1,4 @@
-package com.example.mypetcare.bottomNavigation.chat
+package com.example.mypetcare.bottomNavigation.chat.adapter
 
 import android.view.LayoutInflater
 import android.view.View

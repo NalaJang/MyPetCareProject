@@ -1,30 +1,25 @@
-package com.example.mypetcare.bottomNavigation.home
+package com.example.mypetcare.bottomNavigation.home.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.mypetcare.bottomNavigation.home.schedule.CalendarDialog
+import com.example.mypetcare.bottomNavigation.home.schedule.view.CalendarDialog
 import com.example.mypetcare.R
 import com.example.mypetcare.database.PreferenceManager
 import com.example.mypetcare.databinding.FragmentHomeBinding
-import com.example.mypetcare.bottomNavigation.MyProfile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment(), View.OnClickListener {
 
-    private var TAG = "HomeFragment"
     private var mBinding : FragmentHomeBinding? = null
     private val binding get() = mBinding!!
     private lateinit var auth: FirebaseAuth
     private var db: FirebaseFirestore? = null
-    private var database = FirebaseDatabase.getInstance()
-    private var databaseReference = database.getReference("chat")
     private var uid: String? = null
 
 
@@ -43,7 +38,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         getUserInfo()
 
         binding.homeShowCalendarDialog.setOnClickListener(this)
-        binding.homeEditProfile.setOnClickListener(this)
 
         return binding.root
     }
@@ -57,31 +51,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 calendarDialog.show()
             }
 
-            // 프로필 편집
-            R.id.home_editProfile -> {
-                println("myProfileDialog 클릭")
-                val myProfileDialog = MyProfile(requireContext())
-                myProfileDialog.show()
-            }
         }
     }
 
     private fun getUserInfo() {
 
-//        val docRef = db?.collection("userInfo")?.document(uid!!)
-//        docRef?.get()
-//            ?.addOnSuccessListener { document ->
-//                if( document != null ) {
-//                    println("${TAG} DocumentSnapshot data: ${document.data}")
-//                } else {
-//                    println("${TAG} No such document")
-//                }
-//            }
-//            ?.addOnFailureListener { e ->
-//                println("${TAG} 실패 >> ${e.message}")
-//            }
-
-        db?.collection("userInfo")
+        db  ?.collection("userInfo")
             ?.get()
             ?.addOnCompleteListener { task ->
                 if( task.isSuccessful ) {
@@ -89,7 +64,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     for( i in task.result!! ) {
                         if( i.id == uid.toString() ) {
 
-                            // 필드 데이터
+                            // db 필드 데이터
                             val myName = i.data["userName"]
                             val myPhoneNum = i.data["userPhoneNum"]
                             val myPetName = i.data["userPetName"]
@@ -112,7 +87,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                         }
                     }
                 } else
-                    println("${TAG} No such document")
+                    println("No such document")
             }
             ?.addOnFailureListener { e ->
                 println("실패 >> ${e.message}")
