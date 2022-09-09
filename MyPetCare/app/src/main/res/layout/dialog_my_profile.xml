@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:fillViewport="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".bottomNavigation.MyProfile">
+    tools:context=".bottomNavigation.setting.view.MyProfile">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -7,7 +7,7 @@ import com.example.mypetcare.R
 import com.example.mypetcare.databinding.ActivityBottomNavigationBinding
 import com.example.mypetcare.bottomNavigation.home.view.HomeFragment
 import com.example.mypetcare.bottomNavigation.chat.view.RoomListFragment
-import com.example.mypetcare.bottomNavigation.setting.SettingFragment
+import com.example.mypetcare.bottomNavigation.setting.view.SettingFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore

@@ -5,12 +5,9 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import com.example.mypetcare.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.database.dto.UserScheduleDTO
 import com.example.mypetcare.databinding.DialogScheduleCheckBinding
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 @SuppressLint("ResourceType")
 class ScheduleCheckDialog constructor(context: Context, getData: ArrayList<UserScheduleDTO>,

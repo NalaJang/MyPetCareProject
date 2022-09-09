@@ -49,6 +49,7 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
             binding.chatSend.isEnabled = text.toString() != ""
         }
 
+        binding.chatBack.setOnClickListener(this)
         binding.chatSend.setOnClickListener(this)
     }
 
@@ -56,10 +57,12 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         when(view?.id) {
 
+            // 뒤로
+            R.id.chat_back -> finish()
+
             // 메시지 전송
-            R.id.chat_send -> {
-                sendMessage()
-            }
+            R.id.chat_send -> sendMessage()
+
         }
     }
 

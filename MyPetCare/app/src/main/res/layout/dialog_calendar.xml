@@ -24,7 +24,8 @@
         android:text="@string/schedule"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/calendarDialog_calendarView" />
+        app:layout_constraintBottom_toTopOf="@+id/calendarDialog_calendarView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/calendar_close" />
 
     <!-- 신청 -->
     <Button

@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.example.mypetcare.bottomNavigation.setting.SettingFragment"
+        android:name="com.example.mypetcare.bottomNavigation.setting.view.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
     <activity

@@ -3,17 +3,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".bottomNavigation.chat.view.ChatActivity" >
+
+    <!-- 뒤로 -->
+    <Button
+        android:id="@+id/chat_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/chat"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/chat_listView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/chat_back" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/darkGray"
+        app:layout_constraintTop_toBottomOf="@+id/chat_back" />
 
     <!-- 메시지 목록 -->
     <ListView
         android:id="@+id/chat_listView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:scrollbars="none"
         android:divider="@color/transparent"
         android:listSelector="@color/transparent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chat_back"
         app:layout_constraintBottom_toTopOf="@+id/chat_constrainLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

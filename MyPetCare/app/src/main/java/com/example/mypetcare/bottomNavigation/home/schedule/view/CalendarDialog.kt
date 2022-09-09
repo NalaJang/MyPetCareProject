@@ -139,7 +139,6 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
             getScheduleList(selectedYear!!, selectedMonth!!, selectedDate!!, position)
     }
 
-    val list: ArrayList<String> = arrayListOf()
     // 일정 가져오기
     private fun getScheduleList(year: String, month: String, date: String, position: Int) {
 
@@ -149,21 +148,6 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
             .document(month)
             .collection(date)
             .get()
-//            .addOnCompleteListener { task ->
-//                if( task.isSuccessful ) {
-//                    for( i in task.result!! ) {
-//
-////                        val name = i.data["endTime"]
-////                        println("name >> ${name}")
-//                        println("i.id >> ${i.id}")
-//                        list.add(i.id)
-//                    }
-//                    val scheduleCheckDialog = ScheduleCheckDialog(context, year, month, date, list.get(position))
-//                    scheduleCheckDialog.show()
-//
-//                } else
-//                    println("fail")
-//            }
             .addOnSuccessListener { result ->
                 val data = result.toObjects<UserScheduleDTO>()
                 val category = data[position].selectedCategory
@@ -174,14 +158,14 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
 
                 val setData = ArrayList<UserScheduleDTO>()
                 setData.add(UserScheduleDTO(
-                    uid,
-                    category,
-                    location,
-                    startTime,
-                    endTime,
-                    memo,
-                    ""
-                ))
+                                            uid,
+                                            category,
+                                            location,
+                                            startTime,
+                                            endTime,
+                                            memo,
+                                            ""
+                                        ))
                 println("성공 >> ${data.get(position).startTime}")
 
                 val scheduleCheckDialog = ScheduleCheckDialog(context, setData, year, month, date)

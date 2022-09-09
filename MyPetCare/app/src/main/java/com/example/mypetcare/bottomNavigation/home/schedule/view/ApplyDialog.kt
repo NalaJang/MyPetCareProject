@@ -105,8 +105,8 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
         selectedDate = dateSplit.trim()
 
 
-        binding.applyStartTime.text = "${hour}시부터"
-        binding.applyEndTime.text = "${hour+1}시까지"
+        binding.applyStartTime.text = context.getString(R.string.startTime, hour)
+        binding.applyEndTime.text = context.getString(R.string.endTime, hour+1)
 
         applyTimeListener?.setOnStartTime(hour, 0)
         applyTimeListener?.setOnEndTime(hour+1, 0)

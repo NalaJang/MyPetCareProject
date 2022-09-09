@@ -1,4 +1,4 @@
-package com.example.mypetcare.bottomNavigation.setting
+package com.example.mypetcare.bottomNavigation.setting.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,6 @@ import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.BottomNavigation
 import com.example.mypetcare.login.LoginActivity
 import com.example.mypetcare.databinding.FragmentSettingBinding
-import com.example.mypetcare.bottomNavigation.MyProfile
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -27,6 +26,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
         mBinding = FragmentSettingBinding.inflate(inflater, container, false)
 
         binding.settingMyProfile.setOnClickListener(this)
+        binding.settingMyReview.setOnClickListener(this)
         binding.settingLogout.setOnClickListener(this)
 
         return binding.root
@@ -39,6 +39,12 @@ class SettingFragment : Fragment(), View.OnClickListener {
             R.id.setting_myProfile -> {
                 val myProfileDialog = MyProfile(requireContext())
                 myProfileDialog.show()
+            }
+
+            // 내가 남긴 후기
+            R.id.setting_myReview -> {
+                val myReviewDialog = MyReview(requireContext())
+                myReviewDialog.show()
             }
 
             // 로그아웃

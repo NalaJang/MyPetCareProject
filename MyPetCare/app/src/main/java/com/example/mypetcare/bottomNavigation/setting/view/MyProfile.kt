@@ -1,4 +1,4 @@
-package com.example.mypetcare.bottomNavigation
+package com.example.mypetcare.bottomNavigation.setting.view
 
 import android.annotation.SuppressLint
 import android.app.Dialog
