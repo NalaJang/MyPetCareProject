@@ -40,6 +40,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.7"
             android:gravity="center"
-            tools:text="방문, 산책" />
+            tools:text="방문, 산책"
+            android:textStyle="bold" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

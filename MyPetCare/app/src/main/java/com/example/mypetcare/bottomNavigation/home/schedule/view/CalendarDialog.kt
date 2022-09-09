@@ -5,16 +5,20 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import android.widget.CalendarView
 import com.example.mypetcare.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.home.schedule.adapter.ScheduleListAdapter
+import com.example.mypetcare.database.dto.UserScheduleDTO
 import com.example.mypetcare.databinding.DialogCalendarBinding
 import com.example.mypetcare.listener.OnApplyTimeListener
 import com.example.mypetcare.listener.OnCheckedBox
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObjects
 import java.util.*
+import kotlin.collections.ArrayList
 
 @SuppressLint("ResourceType")
 class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.dialog_full_screen)
@@ -24,7 +28,11 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
     private val binding get() = mBinding!!
     private var db = FirebaseFirestore.getInstance()
     private var uid = FirebaseAuth.getInstance().currentUser?.uid
+
     private var scheduleAdapter: ScheduleListAdapter? = null
+    private var selectedYear: String? = null
+    private var selectedMonth: String? = null
+    private var selectedDate: String? = null
 
     init {
         setCanceledOnTouchOutside(true)
@@ -41,12 +49,21 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
         // listAdapter 설정
         initAdapter()
 
-        // 달력에서 선택한 날짜
+
         binding.calendarDialogCalendarView.setOnDateChangeListener(this)
         binding.calendarClose.setOnClickListener(this)
         binding.calendarDialogApplyButton.setOnClickListener(this)
+        binding.calendarListView.onItemClickListener = itemClickListener
 
     }
+
+    // listAdapter 설정
+    private fun initAdapter() {
+        scheduleAdapter = ScheduleListAdapter()
+        binding.calendarListView.adapter = scheduleAdapter
+    }
+
+
 
     override fun onClick(view: View?) {
         when(view?.id) {
@@ -84,6 +101,7 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
 
                 applyDialog.show()
             }
+
         }
     }
 
@@ -98,48 +116,76 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
         else
             binding.calendarDialogSelectedDate.text = selectedDay
 
-        val selectedYear = year.toString()
-        val selectedMonth = (month + 1).toString()
-        val selectedDate = dayOfMonth.toString()
+        selectedYear = year.toString()
+        selectedMonth = (month + 1).toString()
+        selectedDate = dayOfMonth.toString()
 
         println("달력 날짜 클릭")
         // 일정 가져오기
-        scheduleAdapter?.getScheduleList(selectedYear, selectedMonth, selectedDate)
+        scheduleAdapter?.getScheduleList(selectedYear!!, selectedMonth!!, selectedDate!!)
     }
 
-    // listAdapter 설정
-    private fun initAdapter() {
-        scheduleAdapter = ScheduleListAdapter()
-        binding.calendarListView.adapter = scheduleAdapter
+    // 일정 항목 클릭
+    private val itemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val date = calendar.get(Calendar.DAY_OF_MONTH)
+
+        if( selectedYear == null )
+            getScheduleList(year.toString(), month.toString(), date.toString(), position)
+        else
+            getScheduleList(selectedYear!!, selectedMonth!!, selectedDate!!, position)
     }
 
+    val list: ArrayList<String> = arrayListOf()
     // 일정 가져오기
-    private fun getScheduleList(year: String, month: String, day: String) {
+    private fun getScheduleList(year: String, month: String, date: String, position: Int) {
+
         db.collection(Constants.USER_SCHEDULE)
             .document(uid.toString())
             .collection(year)
             .document(month)
-            .collection(day)
-//            .document("schedule")
+            .collection(date)
             .get()
-            .addOnCompleteListener { task ->
-                if( task.isSuccessful ) {
+//            .addOnCompleteListener { task ->
+//                if( task.isSuccessful ) {
+//                    for( i in task.result!! ) {
+//
+////                        val name = i.data["endTime"]
+////                        println("name >> ${name}")
+//                        println("i.id >> ${i.id}")
+//                        list.add(i.id)
+//                    }
+//                    val scheduleCheckDialog = ScheduleCheckDialog(context, year, month, date, list.get(position))
+//                    scheduleCheckDialog.show()
+//
+//                } else
+//                    println("fail")
+//            }
+            .addOnSuccessListener { result ->
+                val data = result.toObjects<UserScheduleDTO>()
+                val category = data[position].selectedCategory
+                val location = data[position].selectedLocation
+                val startTime = data[position].startTime
+                val endTime = data[position].endTime
+                val memo = data[position].memo
 
-                    for( i in task.result!! ) {
+                val setData = ArrayList<UserScheduleDTO>()
+                setData.add(UserScheduleDTO(
+                    uid,
+                    category,
+                    location,
+                    startTime,
+                    endTime,
+                    memo,
+                    ""
+                ))
+                println("성공 >> ${data.get(position).startTime}")
 
-                        val name = i.data["endTime"]
-                        println("name >> ${name}")
-//                        println("month >> ${month}")
-//                        if( i.id == month ) {
-//                            println("i.id 들어옴")
-//                        } else
-//                            println("안 들어옴")
-
-                        println("i.id >> ${i.id}")
-                    }
-                } else {
-                    println("fail")
-                }
+                val scheduleCheckDialog = ScheduleCheckDialog(context, setData, year, month, date)
+                scheduleCheckDialog.show()
             }
     }
 

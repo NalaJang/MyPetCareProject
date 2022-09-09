@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mypetcare.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.chat.adapter.RoomListAdapter
 import com.example.mypetcare.database.PreferenceManager
@@ -30,10 +31,10 @@ class RoomListFragment : Fragment(), View.OnClickListener{
     ): View? {
         mBinding = FragmentRoomListBinding.inflate(inflater, container, false)
 
+        // adapter 설정
         initAdapter()
 
         binding.roomListButton.setOnClickListener(this)
-
 
         return binding.root
     }
@@ -45,6 +46,7 @@ class RoomListFragment : Fragment(), View.OnClickListener{
         }
     }
 
+    // adapter 설정
     private fun initAdapter() {
         binding.roomListRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         roomListAdapter = RoomListAdapter()
@@ -52,7 +54,7 @@ class RoomListFragment : Fragment(), View.OnClickListener{
     }
 
     private fun createRoom() {
-        val databaseReference = FirebaseDatabase.getInstance().getReference("chatRoom")
+        val databaseReference = FirebaseDatabase.getInstance().getReference(Constants.REFERENCE)
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         val userName = PreferenceManager.getString(context, "userName")
 

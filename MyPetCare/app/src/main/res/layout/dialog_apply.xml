@@ -26,7 +26,6 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center"
-            android:text="@string/apply"
             android:maxLines="1"
             android:autoSizeTextType="uniform"
             app:layout_constraintStart_toEndOf="@+id/apply_close"
