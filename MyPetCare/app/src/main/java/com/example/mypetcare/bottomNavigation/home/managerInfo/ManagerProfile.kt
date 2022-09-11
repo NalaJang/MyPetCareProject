@@ -48,7 +48,6 @@ class ManagerProfile constructor(context: Context, managerUid: String): Dialog(c
 
                     for( i in task.result!! ) {
                         if( i.id == manager ) {
-                            println("getManagerProfile")
 
                             val name = i.data["managerName"].toString()
                             val possibleWork = i.data["possibleWork"].toString()

@@ -2,11 +2,13 @@ package com.example.mypetcare.login
 
 import android.content.Intent
 import android.graphics.Paint
+import android.nfc.FormatException
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isInvisible
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.BottomNavigation
@@ -14,6 +16,7 @@ import com.example.mypetcare.databinding.ActivityLoginBinding
 import com.example.mypetcare.signUp.SignUpDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.core.Platform
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
@@ -67,10 +70,10 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
                 }
 //                // 정보를 모두 입력했을 경우
                 else if( binding.loginWarningEmail.isInvisible && binding.loginWarningPassword.isInvisible ) {
-//                    val myEmail = binding.loginEmail.text.toString()
-//                    val myPassword = binding.loginPassword.text.toString()
-                    val myEmail = "test1@email.com"
-                    val myPassword = "123456"
+                    val myEmail = binding.loginEmail.text.toString()
+                    val myPassword = binding.loginPassword.text.toString()
+//                    val myEmail = "test1@email.com"
+//                    val myPassword = "123456"
                     userLogin(myEmail, myPassword)
 
                 }
@@ -125,12 +128,16 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
             }
             .addOnFailureListener { e ->
                 println("실패 >> ${e.message}")
-                when {
 
+                when(e.message) {
+                    "The email address is badly formatted." -> toastMessage("올바르지 않은 이메일 형식입니다.")
                 }
             }
     }
 
+    private fun toastMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
 
     override fun onDestroy() {
         super.onDestroy()

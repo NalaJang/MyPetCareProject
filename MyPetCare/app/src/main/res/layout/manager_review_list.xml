@@ -8,12 +8,23 @@
     <!-- 후기 작성자 -->
     <TextView
         android:id="@+id/managerReview_userName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textColor="@color/black"
+        app:layout_constraintBaseline_toBaselineOf="@+id/managerReview_delete"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- 삭제 -->
+    <Button
+        android:visibility="invisible"
+        android:id="@+id/managerReview_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- 후기 -->
     <TextView

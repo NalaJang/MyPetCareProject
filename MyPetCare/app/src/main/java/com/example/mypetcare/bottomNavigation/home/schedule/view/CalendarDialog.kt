@@ -165,7 +165,6 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
                                     "",
                                 ""
                                         ))
-                println("성공 >> ${data.get(position).startTime}")
 
                 val scheduleCheckDialog = ScheduleCheckDialog(context, setData, year, month, date)
                 scheduleCheckDialog.show()
