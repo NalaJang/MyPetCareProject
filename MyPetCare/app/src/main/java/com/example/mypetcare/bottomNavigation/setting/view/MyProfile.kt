@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.example.mypetcare.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogMyProfileBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -101,7 +102,7 @@ class MyProfile constructor(context: Context): Dialog(context, R.drawable.dialog
         map["userPetWeight"] = binding.profileMyPetWeight.text.toString()
         map["userPetCharacter"] = binding.profileMyPetCharacter.text.toString()
 
-        db?.collection("userInfo")
+        db  ?.collection(Constants.USER_INFO)
             ?.document(uid!!)
             ?.update(map)
             ?.addOnCompleteListener { task ->

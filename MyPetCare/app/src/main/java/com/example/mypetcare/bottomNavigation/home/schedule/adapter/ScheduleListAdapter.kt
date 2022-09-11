@@ -80,7 +80,6 @@ class ScheduleListAdapter: BaseAdapter() {
                         println("i.id >> ${i.id}")
 
                         val category = i.data["selectedCategory"].toString()
-                        val location = i.data["selectedLocation"].toString()
                         val startTime = i.data["startTime"].toString()
                         val endTime = i.data["endTime"].toString()
                         val memo = i.data["memo"].toString()
@@ -89,7 +88,6 @@ class ScheduleListAdapter: BaseAdapter() {
                         scheduleList.add(UserScheduleDTO(
                                             uid,
                                             category,
-                                            location,
                                             startTime,
                                             endTime,
                                             memo,
@@ -122,7 +120,6 @@ class ScheduleListAdapter: BaseAdapter() {
                     for( document in snapshot ) {
                         println("registrationTime >> ${document.getString("registrationTime")}")
                         val category = document.getString("selectedCategory").toString()
-                        val location = document.getString("selectedLocation").toString()
                         val startTime = document.getString("startTime").toString()
                         val endTime = document.getString("endTime").toString()
                         val memo = document.getString("memo").toString()
@@ -131,7 +128,6 @@ class ScheduleListAdapter: BaseAdapter() {
                         scheduleList.add(UserScheduleDTO(
                                                         uid,
                                                         category,
-                                                        location,
                                                         startTime,
                                                         endTime,
                                                         memo,

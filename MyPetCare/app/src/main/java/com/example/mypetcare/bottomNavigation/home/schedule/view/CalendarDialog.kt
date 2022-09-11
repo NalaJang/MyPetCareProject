@@ -151,7 +151,6 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
             .addOnSuccessListener { result ->
                 val data = result.toObjects<UserScheduleDTO>()
                 val category = data[position].selectedCategory
-                val location = data[position].selectedLocation
                 val startTime = data[position].startTime
                 val endTime = data[position].endTime
                 val memo = data[position].memo
@@ -160,11 +159,11 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
                 setData.add(UserScheduleDTO(
                                             uid,
                                             category,
-                                            location,
                                             startTime,
                                             endTime,
                                             memo,
-                                            ""
+                                    "",
+                                ""
                                         ))
                 println("성공 >> ${data.get(position).startTime}")
 

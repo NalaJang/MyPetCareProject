@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.example.mypetcare.R
+import com.example.mypetcare.bottomNavigation.home.managerInfo.ManagerProfile
 import com.example.mypetcare.database.dto.UserScheduleDTO
 import com.example.mypetcare.databinding.DialogScheduleCheckBinding
 
@@ -28,13 +29,22 @@ class ScheduleCheckDialog constructor(context: Context, getData: ArrayList<UserS
 
         // 일정 정보
         getScheduleInfo()
-        binding.scheduleCheckClose.setOnClickListener(clickListener)
 
+        binding.scheduleCheckClose.setOnClickListener(clickListener)
+        binding.scheduleCheckManagerInfo.setOnClickListener(clickListener)
     }
 
     private val clickListener = View.OnClickListener {
         when(it?.id) {
+            // 닫기
             R.id.scheduleCheck_close -> dismiss()
+
+            // 매니저 프로필
+            R.id.scheduleCheck_managerInfo -> {
+                val managerUid = "r6RWzihGNWUIgbpOes2SQp8ZLds1"
+                val managerProfile = ManagerProfile(context, managerUid)
+                managerProfile.show()
+            }
         }
     }
 
@@ -46,7 +56,6 @@ class ScheduleCheckDialog constructor(context: Context, getData: ArrayList<UserS
         binding.scheduleCheckDate.text = applicationDate
         binding.scheduleCheckStartTime.text = itemList[0].startTime
         binding.scheduleCheckEndTime.text = itemList[0].endTime
-        binding.scheduleCheckLocation.text = itemList[0].selectedLocation
         binding.scheduleCheckMemo.text = itemList[0].memo
 
     }

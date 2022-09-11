@@ -7,9 +7,13 @@ import android.widget.BaseAdapter
 import com.example.mypetcare.R
 import com.example.mypetcare.database.dto.ReviewData
 
-class ReviewListAdapter: BaseAdapter() {
+class MyReviewListAdapter: BaseAdapter() {
 
     private val itemList = ArrayList<ReviewData>()
+
+    init {
+
+    }
 
     override fun getCount(): Int {
         return itemList.size
@@ -27,5 +31,9 @@ class ReviewListAdapter: BaseAdapter() {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_my_review_list, parent, false)
 
         return view
+    }
+
+    private fun getReviewList() {
+
     }
 }

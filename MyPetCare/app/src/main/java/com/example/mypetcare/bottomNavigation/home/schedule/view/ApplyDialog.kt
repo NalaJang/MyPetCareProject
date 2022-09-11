@@ -171,7 +171,6 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
         if( selectedCategory.isNotEmpty() ) // selectedCategory.length > 0
             selectedCategory = selectedCategory.substring(0, selectedCategory.length -1)
 
-        val selectedLocation = ""
         val startTime = binding.applyStartTime.text.toString()
         val endTime = binding.applyEndTime.text.toString()
         val memo = binding.applyMemo.text.toString()
@@ -184,7 +183,6 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
         val userScheduleDTO = UserScheduleDTO()
         userScheduleDTO.uid = auth?.uid
         userScheduleDTO.selectedCategory = selectedCategory
-        userScheduleDTO.selectedLocation = selectedLocation
         userScheduleDTO.startTime = startTime
         userScheduleDTO.endTime = endTime
         userScheduleDTO.memo = memo
