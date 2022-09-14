@@ -68,7 +68,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
                     binding.loginWarningPassword.visibility = View.VISIBLE
 
                 }
-//                // 정보를 모두 입력했을 경우
+                // 정보를 모두 입력했을 경우
                 else if( binding.loginWarningEmail.isInvisible && binding.loginWarningPassword.isInvisible ) {
                     val myEmail = binding.loginEmail.text.toString()
                     val myPassword = binding.loginPassword.text.toString()
@@ -131,6 +131,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
 
                 when(e.message) {
                     "The email address is badly formatted." -> toastMessage("올바르지 않은 이메일 형식입니다.")
+                    "The password is invalid or the user does not have a password." -> toastMessage("아이디 또는 비밀번호가 맞지 않습니다.")
                 }
             }
     }

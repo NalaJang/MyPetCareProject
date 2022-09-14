@@ -21,7 +21,7 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
     private var mBinding : ActivityChatBinding? = null
     private val binding get() = mBinding!!
     private var database = FirebaseDatabase.getInstance()
-    private var databaseReference = database.getReference("chatRoom")
+    private var databaseReference = database.getReference(Constants.CHAT_ROOM)
     private var uid = FirebaseAuth.getInstance().currentUser?.uid
 
     private lateinit var userName: String

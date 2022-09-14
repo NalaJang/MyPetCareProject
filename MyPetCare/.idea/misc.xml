@@ -35,6 +35,7 @@
         <entry key="app/src/main/res/layout/fragment_room_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/item_chatting.xml" value="0.13636363636363635" />
+        <entry key="app/src/main/res/layout/item_manager_review_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_my_review_list.xml" value="0.20111214087117701" />
         <entry key="app/src/main/res/layout/item_room_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_schedule_list.xml" value="0.25" />

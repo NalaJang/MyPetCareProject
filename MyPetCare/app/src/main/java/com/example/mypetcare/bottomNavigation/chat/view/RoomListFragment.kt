@@ -54,7 +54,7 @@ class RoomListFragment : Fragment(), View.OnClickListener{
     }
 
     private fun createRoom() {
-        val databaseReference = FirebaseDatabase.getInstance().getReference(Constants.REALTIME_REFERENCE)
+        val databaseReference = FirebaseDatabase.getInstance().getReference(Constants.CHAT_ROOM)
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         val userName = PreferenceManager.getString(context, "userName")
 

@@ -77,7 +77,6 @@ class ScheduleListAdapter: BaseAdapter() {
                     scheduleList.clear()
 
                     for( i in task.result!! ) {
-                        println("i.id >> ${i.id}")
 
                         val category = i.data["selectedCategory"].toString()
                         val startTime = i.data["startTime"].toString()

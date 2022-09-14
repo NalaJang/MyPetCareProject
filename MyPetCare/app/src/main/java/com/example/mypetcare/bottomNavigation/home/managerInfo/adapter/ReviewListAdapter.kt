@@ -9,22 +9,46 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mypetcare.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.database.dto.ReviewData
+import com.example.mypetcare.database.dto.ReviewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.getValue
 
-class ReviewListAdapter(managerUid: String): RecyclerView.Adapter<ReviewListAdapter.ViewHolder>() {
+class ReviewListAdapter(managerUid: String, reviewUid: String): RecyclerView.Adapter<ReviewListAdapter.ViewHolder>() {
 
-    private val db = FirebaseFirestore.getInstance()
+    private val databaseReference = FirebaseDatabase.getInstance().getReference(Constants.REVIEWS)
     private val userUid = FirebaseAuth.getInstance().currentUser?.uid
-    private val reviewList = ArrayList<ReviewData>()
-    private val reviewUidForManagerList = ArrayList<String>()
-    private val reviewUidForUserList = ArrayList<String>()
-    private val manager = managerUid
+    private val reviewList = ArrayList<ReviewModel.Comment>()
+    private val reviewUidList = ArrayList<String>()
+    private val mManagerUid = managerUid
+    private val mReviewUid = reviewUid
 
     init {
-        // 리뷰 리스트 가져오기
-        getReviewListFromManagerUid()
-        getReviewListFromUserUid()
+        println("mManagerUid >> ${mManagerUid}")
+        println("mReviewUid >> ${mReviewUid}")
+
+        databaseReference.orderByChild("users/$userUid").equalTo(true)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    println("들어옴")
+                    for (item in snapshot.children) {
+
+                        reviewList.clear()
+
+                        val key = item.key.toString()
+                        println("key >> $key")
+
+                        // 리뷰 리스트 가져오기
+                        getReviewList(key)
+
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+
+
     }
 
     override fun onCreateViewHolder(
@@ -32,7 +56,7 @@ class ReviewListAdapter(managerUid: String): RecyclerView.Adapter<ReviewListAdap
         viewType: Int
     ): ReviewListAdapter.ViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.manager_review_list, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_manager_review_list, parent, false)
         return ViewHolder(view)
     }
 
@@ -41,10 +65,12 @@ class ReviewListAdapter(managerUid: String): RecyclerView.Adapter<ReviewListAdap
         val item = reviewList[position]
         holder.setItem(item)
 
+        // 로그인한 사람과 작성자 uid 비교
         if( userUid == item.uid ) {
             holder.deleteButton.visibility = View.VISIBLE
             holder.deleteButton.setOnClickListener{
-                deleteReview(reviewUidForManagerList[position], reviewUidForUserList[position])
+                // 리뷰 삭제
+                deleteReview(reviewUidList[position])
             }
         }
 
@@ -55,12 +81,12 @@ class ReviewListAdapter(managerUid: String): RecyclerView.Adapter<ReviewListAdap
     }
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val userName: TextView = view.findViewById(R.id.managerReview_userName)
+        private val userName: TextView = view.findViewById(R.id.managerReview_userName)
         private val content: TextView = view.findViewById(R.id.managerReview_content)
         private val writingTime: TextView = view.findViewById(R.id.managerReview_writingTime)
         val deleteButton: Button = view.findViewById(R.id.managerReview_delete)
 
-        fun setItem(item: ReviewData) {
+        fun setItem(item: ReviewModel.Comment) {
             userName.text = item.userName
             content.text = item.content
             writingTime.text = item.writingTime
@@ -68,88 +94,100 @@ class ReviewListAdapter(managerUid: String): RecyclerView.Adapter<ReviewListAdap
     }
 
     // 리뷰 리스트 가져오기
-    private fun getReviewListFromManagerUid() {
-        db.collection(Constants.REVIEW)
-            .document(manager)
-            .collection(Constants.REVIEW)
-            .addSnapshotListener { snapshot, error ->
-                reviewList.clear()
+    private fun getReviewList(key: String) {
+        databaseReference.child(key).child(Constants.REVIEW_COMMENT)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for( data in snapshot.children ) {
 
-                if( error != null )
-                    return@addSnapshotListener
+                        val item = data.getValue<ReviewModel.Comment>()
+                        val writerUid = item?.uid.toString()
+                        val userName = item?.userName.toString()
+                        val managerName = item?.managerName.toString()
+                        val writingTime = item?.writingTime.toString()
+                        val content = item?.content.toString()
+                        val reviewUid = data.key.toString()
 
-                if( snapshot != null ) {
-                    for( document in snapshot ) {
-
-                        val reviewUid = document.id
-                        val writerUid = document.getString("userUid").toString()
-                        val userName = document.getString("userName").toString()
-                        val managerName = document.getString("managerName").toString()
-                        val content = document.getString("content").toString()
-                        val writingTime = document.getString("writingTime").toString()
-
-                        reviewList.add(ReviewData(writerUid, userName, managerName, writingTime, content))
-                        reviewUidForManagerList.add(reviewUid)
+                        reviewList.add(ReviewModel.Comment(
+                            writerUid, userName, managerName, writingTime, content
+                        ))
+                        reviewUidList.add(reviewUid)
                     }
-
                     notifyDataSetChanged()
+                }
 
-                } else println("data null")
+                override fun onCancelled(error: DatabaseError) {
+                }
 
-            }
+            })
+//            .addChildEventListener(object : ChildEventListener {
+//                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+//
+//                    val item = snapshot.getValue<ReviewModel.Comment>()
+//                    reviewList.add(item!!)
+//                    val reviewUid = item.uid.toString()
+//                    println("getReviewList, reviewUid >> ${reviewUid}")
+//
+////                    for( data in snapshot.children ) {
+////
+////                        val item = data.getValue<ReviewModel.Comment>()
+////                        val writerUid = item?.uid.toString()
+////                        val userName = item?.userName.toString()
+////                        val managerName = item?.managerName.toString()
+////                        val writingTime = item?.writingTime.toString()
+////                        val content = item?.content.toString()
+////                        val reviewUid = data.key.toString()
+////
+////                        reviewList.add(ReviewModel.Comment(
+////                            writerUid, userName, managerName, writingTime, content))
+////
+//                        reviewUidList.add(reviewUid)
+////                    }
+//                    notifyDataSetChanged()
+//                }
+//
+//                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+//                }
+//
+//                override fun onChildRemoved(snapshot: DataSnapshot) {
+//                }
+//
+//                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                }
+//
+//            })
     }
 
-    // 리뷰 리스트 가져오기
-    private fun getReviewListFromUserUid() {
-        db.collection(Constants.REVIEW)
-            .document(userUid.toString())
-            .collection(Constants.REVIEW)
-            .addSnapshotListener { snapshot, error ->
-
-                if( error != null )
-                    return@addSnapshotListener
-
-                if( snapshot != null ) {
-                    for( document in snapshot ) {
-
-                        val reviewUid = document.id
-
-                        reviewUidForUserList.add(reviewUid)
-                    }
-
-                    notifyDataSetChanged()
-
-                } else println("data null")
-
-            }
-    }
 
     // 리뷰 삭제
-    // 매니저와 사용자 모두에게서 삭제
-    private fun deleteReview(position_managerList: String, position_userList: String) {
+    private fun deleteReview(selectedReview: String) {
+        databaseReference.orderByChild("users/$userUid").equalTo(true)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for( item in snapshot.children ) {
+                        val reviewModel = item.getValue<ReviewModel>()
 
-        // 매니저에게서 삭제
-        db.collection(Constants.REVIEW)
-            .document(manager)
-            .collection(Constants.REVIEW)
-            .document(position_managerList)
-            .delete()
-            .addOnCompleteListener {
-                if( it.isSuccessful )
-                    println("삭제 성공")
-            }
+                        if( reviewModel?.users!!.containsKey(mManagerUid) ) {
+                            println("deleteReview, item.key >> ${item.key}")
+                            println("deleteReview, reviewUidList >> $reviewUidList")
+                            val commentKey = item.key.toString()
 
-        // 사용자에게서 삭제
-        db.collection(Constants.REVIEW)
-            .document(userUid.toString())
-            .collection(Constants.REVIEW)
-            .document(position_userList)
-            .delete()
-            .addOnCompleteListener {
-                if( it.isSuccessful )
-                    println("삭제 성공")
-            }
+                            // 리뷰 value null 설정
+                            setReviewValueNull(commentKey, selectedReview)
+                        }
+                    }
+                    notifyDataSetChanged()
+                }
 
-        notifyDataSetChanged()
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+    }
+
+    private fun setReviewValueNull(commentKey: String, selectedReview: String) {
+        databaseReference.child(commentKey).child(Constants.REVIEW_COMMENT).child(selectedReview).setValue(null)
     }
 }
