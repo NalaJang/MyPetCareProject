@@ -51,7 +51,7 @@ class MyProfile constructor(context: Context): Dialog(context, R.drawable.dialog
             // 닫기
             R.id.proFile_close -> dismiss()
 
-            // 완료
+            // 수정
             R.id.profile_complete -> updateInfo()
         }
     }

@@ -13,6 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/showCalendarDialog"
+        android:textStyle="bold"
+        android:textColor="@drawable/text_effect"
+        android:background="@drawable/button_effect_blue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/home_profilePhoto" />

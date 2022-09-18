@@ -5,8 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
     tools:context=".bottomNavigation.home.schedule.view.CalendarDialog" >
 
     <!-- 닫기 -->
@@ -14,14 +12,20 @@
         android:id="@+id/calendar_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="@string/close"
+        android:textStyle="bold"
+        android:background="@color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="@string/schedule"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/calendarDialog_calendarView"
@@ -32,8 +36,11 @@
         android:id="@+id/calendarDialog_applyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="@string/apply"
-        android:background="@drawable/border_button"
+        android:textStyle="bold"
+        android:textColor="@drawable/text_effect"
+        android:background="@drawable/button_effect_blue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

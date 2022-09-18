@@ -13,10 +13,7 @@ import com.example.mypetcare.database.PreferenceManager
 import com.example.mypetcare.database.dto.ReviewModel
 import com.example.mypetcare.databinding.DialogManagerProfileBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
@@ -31,7 +28,7 @@ class ManagerProfile constructor(context: Context, managerUid: String): Dialog(c
     private val uid = FirebaseAuth.getInstance().currentUser?.uid
     private val databaseReference = FirebaseDatabase.getInstance().getReference(Constants.REVIEWS)
     private var reviewUid: String? = null
-    private val mManager = managerUid
+    private val mManagerUid = managerUid
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +44,7 @@ class ManagerProfile constructor(context: Context, managerUid: String): Dialog(c
         // reviewUid 가져오기
         getReviewUid()
 
+
         binding.managerClose.setOnClickListener{ dismiss() }
         binding.managerComposeButton.setOnClickListener{ writeReview() }
     }
@@ -59,7 +57,7 @@ class ManagerProfile constructor(context: Context, managerUid: String): Dialog(c
                 if( task.isSuccessful ) {
 
                     for( i in task.result!! ) {
-                        if( i.id == mManager ) {
+                        if( i.id == mManagerUid ) {
 
                             val name = i.data["managerName"].toString()
                             val possibleWork = i.data["possibleWork"].toString()
@@ -75,12 +73,12 @@ class ManagerProfile constructor(context: Context, managerUid: String): Dialog(c
     }
 
     // adapter 설정
-        private fun initAdapter() {
-        // recyclerview 에는 layoutManager 설정 필요
-        val layoutManager = LinearLayoutManager(context)
-        val reviewAdapter = ReviewListAdapter(mManager, reviewUid.toString())
-        binding.managerReviewList.layoutManager = layoutManager
-        binding.managerReviewList.adapter = reviewAdapter
+    private fun initAdapter() {
+    // recyclerview 에는 layoutManager 설정 필요
+    val layoutManager = LinearLayoutManager(context)
+    val reviewAdapter = ReviewListAdapter(mManagerUid)
+    binding.managerReviewList.layoutManager = layoutManager
+    binding.managerReviewList.adapter = reviewAdapter
     }
 
     // 리뷰 작성
@@ -99,7 +97,7 @@ class ManagerProfile constructor(context: Context, managerUid: String): Dialog(c
         if( reviewUid == null ) {
 
             val reviewModel = ReviewModel()
-            reviewModel.users.put(mManager, true)
+            reviewModel.users.put(mManagerUid, true)
             reviewModel.users.put(uid.toString(), true)
 
             databaseReference.push().setValue(reviewModel).addOnSuccessListener {
@@ -111,13 +109,13 @@ class ManagerProfile constructor(context: Context, managerUid: String): Dialog(c
                 // 딜레이 -> reviewUid = null 을 방지하기 위함.
                 Handler().postDelayed({
                     databaseReference.child(reviewUid.toString()).child(Constants.REVIEW_COMMENT).push().setValue(review)
+                    initAdapter()
 
                 }, 1000L)
             }
         }
         else
             databaseReference.child(reviewUid.toString()).child(Constants.REVIEW_COMMENT).push().setValue(review)
-
 
         binding.managerReviewContent.setText("")
     }
@@ -130,7 +128,7 @@ class ManagerProfile constructor(context: Context, managerUid: String): Dialog(c
                     for( item in snapshot.children ) {
 
                         val reviewModel = item.getValue<ReviewModel>()
-                        if( reviewModel?.users!!.containsKey(mManager) ) {
+                        if( reviewModel?.users!!.containsKey(mManagerUid) ) {
                             reviewUid = item.key
                         }
                     }
@@ -139,4 +137,5 @@ class ManagerProfile constructor(context: Context, managerUid: String): Dialog(c
                 }
             })
     }
+
 }

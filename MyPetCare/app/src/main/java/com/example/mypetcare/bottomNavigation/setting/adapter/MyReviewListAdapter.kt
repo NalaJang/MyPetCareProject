@@ -8,18 +8,39 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.mypetcare.Constants
 import com.example.mypetcare.R
-import com.example.mypetcare.database.dto.ReviewData
+import com.example.mypetcare.database.dto.ReviewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.getValue
 
 class MyReviewListAdapter: BaseAdapter() {
 
-    private val db = FirebaseFirestore.getInstance()
     private val uid = FirebaseAuth.getInstance().currentUser?.uid
-    private val reviewList = ArrayList<ReviewData>()
+    private val databaseReference = FirebaseDatabase.getInstance().getReference(Constants.REVIEWS)
+    private val reviewList = ArrayList<ReviewModel.Comment>()
+    private val commentUidList = ArrayList<String>()
+    private var reviewUid: String? = null
 
     init {
-        getReviewList()
+        databaseReference.orderByChild("users/$uid").equalTo(true)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    for( item in snapshot.children ) {
+                        println("item.key >> ${item.key}")
+                        reviewUid = item.key.toString()
+
+                        // 내가 쓴 리뷰 리스트 가져오기
+                        getReviewList(reviewUid!!)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
     }
 
     override fun getCount(): Int {
@@ -47,57 +68,51 @@ class MyReviewListAdapter: BaseAdapter() {
         content.text = item.content
         writingTime.text = item.writingTime
 
+        // 리뷰 삭제
+        deleteButton.setOnClickListener { deleteReview(commentUidList[position]) }
+
         return view
     }
 
-    private fun getReviewList() {
-        db.collection(Constants.REVIEW_COMMENT)
-            .document(uid.toString())
-            .collection(Constants.REVIEW_COMMENT)
-            .get()
-            .addOnCompleteListener { task ->
+    // 내가 쓴 리뷰 리스트 가져오기
+    private fun getReviewList(reviewUid: String) {
+        databaseReference.child(reviewUid).child(Constants.REVIEW_COMMENT)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    reviewList.clear()
 
-                reviewList.clear()
+                    for( data in snapshot.children ) {
+                        val item = data.getValue<ReviewModel.Comment>()
+                        println("getReviewList2 >> ${item?.managerName}")
 
-                if( task.isSuccessful ) {
-                    for( i in task.result!! ) {
+                        val writerUid = item?.uid.toString()
+                        val userName = item?.userName.toString()
+                        val managerName = item?.managerName.toString()
+                        val writingTime = item?.writingTime.toString()
+                        val content = item?.content.toString()
+                        val commentUid = data.key.toString()
 
-                        val userName = i.data["userName"].toString()
-                        val managerName = i.data["managerName"].toString()
-                        val writingTime = i.data["writingTime"].toString()
-                        val content = i.data["content"].toString()
-                        reviewList.add(ReviewData(uid, userName, managerName, writingTime, content))
+                        reviewList.add(ReviewModel.Comment(
+                            writerUid, userName, managerName, writingTime, content
+                        ))
+                        commentUidList.add(commentUid)
                     }
-
+                    notifyDataSetChanged()
                 }
-                notifyDataSetChanged()
-            }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
     }
 
-//    private fun deleteReview(position_managerList: String, position_userList: String) {
-//
-//        // 매니저에게서 삭제
-//        db.collection(Constants.REVIEW)
-//            .document(manager)
-//            .collection(Constants.REVIEW)
-//            .document(position_managerList)
-//            .delete()
-//            .addOnCompleteListener {
-//                if( it.isSuccessful )
-//                    println("삭제 성공")
-//            }
-//
-//        // 사용자에게서 삭제
-//        db.collection(Constants.REVIEW)
-//            .document(userUid.toString())
-//            .collection(Constants.REVIEW)
-//            .document(position_userList)
-//            .delete()
-//            .addOnCompleteListener {
-//                if( it.isSuccessful )
-//                    println("삭제 성공")
-//            }
-//
-//        notifyDataSetChanged()
-//    }
+    // 리뷰 삭제
+    private fun deleteReview(selectedReview: String) {
+        databaseReference.child(reviewUid!!)
+                        .child(Constants.REVIEW_COMMENT)
+                        .child(selectedReview)
+                        .setValue(null)
+
+        getReviewList(reviewUid!!)
+    }
+
 }

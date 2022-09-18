@@ -13,6 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/back"
+        android:textStyle="bold"
+        android:background="@color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,6 +23,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/chat"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/chat_listView"
         app:layout_constraintBaseline_toBaselineOf="@+id/chat_back" />
@@ -81,6 +86,7 @@
             android:layout_marginBottom="8dp"
             android:text="@string/send"
             android:enabled="false"
+            android:background="@drawable/button_effect_blue"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

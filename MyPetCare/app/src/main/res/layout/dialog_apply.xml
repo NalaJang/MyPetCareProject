@@ -18,16 +18,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/close"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:background="@color/transparent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/apply_date"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:maxLines="1"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
             android:autoSizeTextType="uniform"
+            app:layout_constraintBaseline_toBaselineOf="@+id/apply_close"
             app:layout_constraintStart_toEndOf="@+id/apply_close"
             app:layout_constraintEnd_toStartOf="@+id/apply_complete"
             app:layout_constraintTop_toTopOf="parent"
@@ -39,6 +46,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/complete"
+            android:textStyle="bold"
+            android:textColor="@drawable/text_effect"
+            android:background="@drawable/button_effect_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +67,8 @@
             android:id="@+id/apply_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:paddingStart="10dp"
             android:text="@string/category"
             app:layout_constraintTop_toBottomOf="@+id/apply_line1"
@@ -68,6 +79,7 @@
             android:id="@+id/apply_walk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="@string/walk"
             app:layout_constraintTop_toBottomOf="@+id/apply_category" />
 
@@ -88,7 +100,8 @@
         <View
             android:id="@+id/apply_line2"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="20dp"
             android:background="@color/darkGray"
             app:layout_constraintTop_toBottomOf="@+id/apply_visit"/>
 
@@ -107,8 +120,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:paddingStart="10dp"
             android:text="@string/start"
+            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/apply_time"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -117,6 +132,7 @@
             android:id="@+id/apply_startTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="@string/defaultStartTime"
             app:layout_constraintTop_toBottomOf="@+id/apply_time"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -128,6 +144,7 @@
             android:layout_marginTop="10dp"
             android:paddingStart="10dp"
             android:text="@string/end"
+            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/apply_startTime"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -144,8 +161,8 @@
         <View
             android:id="@+id/apply_line4"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="20dp"
             android:background="@color/darkGray"
             app:layout_constraintTop_toBottomOf="@+id/apply_endTime" />
 

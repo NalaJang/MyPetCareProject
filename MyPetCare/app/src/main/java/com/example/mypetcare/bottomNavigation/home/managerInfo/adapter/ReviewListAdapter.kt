@@ -8,46 +8,66 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mypetcare.Constants
 import com.example.mypetcare.R
-import com.example.mypetcare.database.dto.ReviewData
 import com.example.mypetcare.database.dto.ReviewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 
-class ReviewListAdapter(managerUid: String, reviewUid: String): RecyclerView.Adapter<ReviewListAdapter.ViewHolder>() {
+class ReviewListAdapter(managerUid: String): RecyclerView.Adapter<ReviewListAdapter.ViewHolder>() {
 
     private val databaseReference = FirebaseDatabase.getInstance().getReference(Constants.REVIEWS)
     private val userUid = FirebaseAuth.getInstance().currentUser?.uid
-    private val reviewList = ArrayList<ReviewModel.Comment>()
+    private var reviewList = ArrayList<ReviewModel.Comment>()
+    private val commentUidList = ArrayList<String>()
     private val reviewUidList = ArrayList<String>()
     private val mManagerUid = managerUid
-    private val mReviewUid = reviewUid
+    private var reviewUid: String? = null
+
 
     init {
-        println("mManagerUid >> ${mManagerUid}")
-        println("mReviewUid >> ${mReviewUid}")
+        databaseReference.orderByChild("users/$mManagerUid").equalTo(true)
+            .addChildEventListener(object : ChildEventListener {
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    println("onChildAdded 들어옴")
+                    reviewUid = snapshot.key.toString()
 
-        databaseReference.orderByChild("users/$userUid").equalTo(true)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    println("들어옴")
-                    for (item in snapshot.children) {
+                    // 리뷰 리스트 가져오기
+                    getReviewList(reviewUid!!)
+                    reviewUidList.add(reviewUid!!)
 
-                        reviewList.clear()
+                }
 
-                        val key = item.key.toString()
-                        println("key >> $key")
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                    println("onChildChanged")
+                    reviewList.clear()
+                    commentUidList.clear()
 
-                        // 리뷰 리스트 가져오기
-                        getReviewList(key)
-
+                    /*
+                     * 데이터 변화가 생기면 onChildChanged 에 들어오게 되는데
+                     * 이 때의 snapshot.key 의 값은 변화가 있던 key 값만이 담기게 된다.
+                     * 이 화면에서는 변화가 생긴 리뷰와 해당 manager 의 모든 리뷰를 가져와야 하기 때문에
+                     * 처음에 불려지는 onChildAdded 에서 모든 reviewUid 를 저장한 reviewUidList 를 가져와서
+                     * manager 의 리뷰 리스트를 갱신하도록 하였다.
+                     */
+                    for( uid in 0 until reviewUidList.size) {
+                        getReviewList(reviewUidList[uid])
+                        println("onChildChanged, reviewUidList[uid]: ${reviewUidList[uid]}")
                     }
                 }
 
-                override fun onCancelled(error: DatabaseError) {
+                override fun onChildRemoved(snapshot: DataSnapshot) {
+                    println("onChildRemoved")
                 }
-            })
 
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                    println("onChildMoved")
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    println("onCancelled")
+                }
+
+            })
 
     }
 
@@ -65,15 +85,15 @@ class ReviewListAdapter(managerUid: String, reviewUid: String): RecyclerView.Ada
         val item = reviewList[position]
         holder.setItem(item)
 
-        // 로그인한 사람과 작성자 uid 비교
+        // 로그인한 사람과 작성자 uid 비교 후 삭제 버튼 세팅
         if( userUid == item.uid ) {
             holder.deleteButton.visibility = View.VISIBLE
             holder.deleteButton.setOnClickListener{
                 // 리뷰 삭제
-                deleteReview(reviewUidList[position])
+                deleteReview(commentUidList[position])
             }
-        }
-
+        } else
+            holder.deleteButton.visibility = View.INVISIBLE
     }
 
     override fun getItemCount(): Int {
@@ -94,10 +114,12 @@ class ReviewListAdapter(managerUid: String, reviewUid: String): RecyclerView.Ada
     }
 
     // 리뷰 리스트 가져오기
-    private fun getReviewList(key: String) {
-        databaseReference.child(key).child(Constants.REVIEW_COMMENT)
+    private fun getReviewList(reviewUid: String) {
+
+        databaseReference.child(reviewUid).child(Constants.REVIEW_COMMENT)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+
                     for( data in snapshot.children ) {
 
                         val item = data.getValue<ReviewModel.Comment>()
@@ -106,59 +128,20 @@ class ReviewListAdapter(managerUid: String, reviewUid: String): RecyclerView.Ada
                         val managerName = item?.managerName.toString()
                         val writingTime = item?.writingTime.toString()
                         val content = item?.content.toString()
-                        val reviewUid = data.key.toString()
+                        val commentUid = data.key.toString()
 
                         reviewList.add(ReviewModel.Comment(
                             writerUid, userName, managerName, writingTime, content
                         ))
-                        reviewUidList.add(reviewUid)
+
+                        commentUidList.add(commentUid)
                     }
                     notifyDataSetChanged()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                 }
-
             })
-//            .addChildEventListener(object : ChildEventListener {
-//                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-//
-//                    val item = snapshot.getValue<ReviewModel.Comment>()
-//                    reviewList.add(item!!)
-//                    val reviewUid = item.uid.toString()
-//                    println("getReviewList, reviewUid >> ${reviewUid}")
-//
-////                    for( data in snapshot.children ) {
-////
-////                        val item = data.getValue<ReviewModel.Comment>()
-////                        val writerUid = item?.uid.toString()
-////                        val userName = item?.userName.toString()
-////                        val managerName = item?.managerName.toString()
-////                        val writingTime = item?.writingTime.toString()
-////                        val content = item?.content.toString()
-////                        val reviewUid = data.key.toString()
-////
-////                        reviewList.add(ReviewModel.Comment(
-////                            writerUid, userName, managerName, writingTime, content))
-////
-//                        reviewUidList.add(reviewUid)
-////                    }
-//                    notifyDataSetChanged()
-//                }
-//
-//                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-//                }
-//
-//                override fun onChildRemoved(snapshot: DataSnapshot) {
-//                }
-//
-//                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//                }
-//
-//            })
     }
 
 
@@ -171,8 +154,7 @@ class ReviewListAdapter(managerUid: String, reviewUid: String): RecyclerView.Ada
                         val reviewModel = item.getValue<ReviewModel>()
 
                         if( reviewModel?.users!!.containsKey(mManagerUid) ) {
-                            println("deleteReview, item.key >> ${item.key}")
-                            println("deleteReview, reviewUidList >> $reviewUidList")
+
                             val commentKey = item.key.toString()
 
                             // 리뷰 value null 설정
@@ -187,7 +169,10 @@ class ReviewListAdapter(managerUid: String, reviewUid: String): RecyclerView.Ada
             })
     }
 
-    private fun setReviewValueNull(commentKey: String, selectedReview: String) {
-        databaseReference.child(commentKey).child(Constants.REVIEW_COMMENT).child(selectedReview).setValue(null)
+    private fun setReviewValueNull(reviewUid: String, selectedReview: String) {
+        databaseReference.child(reviewUid)
+                        .child(Constants.REVIEW_COMMENT)
+                        .child(selectedReview)
+                        .setValue(null)
     }
 }

@@ -62,12 +62,13 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
             // 로그인
             R.id.login_login -> {
 
-                // 입력된 정보가 없이 로그인을 눌렀을 경우
-                if( binding.loginEmail.length() < 1 && binding.loginPassword.length() < 1 ) {
+                // 입력된 정보 없이 로그인을 눌렀을 경우
+                if( binding.loginEmail.length() < 1 )
                     binding.loginWarningEmail.visibility = View.VISIBLE
+
+                if( binding.loginPassword.length() < 1 )
                     binding.loginWarningPassword.visibility = View.VISIBLE
 
-                }
                 // 정보를 모두 입력했을 경우
                 else if( binding.loginWarningEmail.isInvisible && binding.loginWarningPassword.isInvisible ) {
                     val myEmail = binding.loginEmail.text.toString()

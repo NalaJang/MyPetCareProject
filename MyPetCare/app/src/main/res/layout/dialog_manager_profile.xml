@@ -14,6 +14,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/close"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:background="@color/transparent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/manager_profilePhoto" />
@@ -140,6 +143,8 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:text="@string/writeReview"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             app:layout_constraintBaseline_toBaselineOf="@+id/manager_reviewContent"
             app:layout_constraintStart_toEndOf="@id/manager_reviewContent"
             app:layout_constraintEnd_toEndOf="parent"
