@@ -117,11 +117,14 @@ class ScheduleListAdapter: BaseAdapter() {
                 if( snapshot != null ) {
 
                     for( document in snapshot ) {
-                        println("registrationTime >> ${document.getString("registrationTime")}")
+                        println("스케줄 어댑터, registrationTime >> ${document.getString("registrationTime")}")
+                        println("스케줄 어댑터, manager >> ${document.getString("manager")}")
                         val category = document.getString("selectedCategory").toString()
                         val startTime = document.getString("startTime").toString()
                         val endTime = document.getString("endTime").toString()
                         val memo = document.getString("memo").toString()
+                        val managerUid = document.getString("managerUid").toString()
+                        val managerName = document.getString("managerName").toString()
                         val registrationTime = document.getString("registrationTime").toString()
 
                         scheduleList.add(UserScheduleDTO(
@@ -130,6 +133,8 @@ class ScheduleListAdapter: BaseAdapter() {
                                                         startTime,
                                                         endTime,
                                                         memo,
+                                                        managerUid,
+                                                        managerName,
                                                         registrationTime
                         ))
 

@@ -6,7 +6,8 @@ data class UserScheduleDTO(
     var startTime: String = "",
     var endTime: String = "",
     var memo: String = "",
-    var manager: String? = null,
+    var managerUid: String? = null,
+    var managerName: String? = null,
     var registrationTime: String = "",
 
 )

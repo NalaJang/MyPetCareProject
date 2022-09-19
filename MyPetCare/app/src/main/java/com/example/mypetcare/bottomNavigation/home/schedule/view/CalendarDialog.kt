@@ -154,6 +154,8 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
                 val startTime = data[position].startTime
                 val endTime = data[position].endTime
                 val memo = data[position].memo
+                val managerUid = data[position].managerUid
+                val managerName = data[position].managerName
 
                 val setData = ArrayList<UserScheduleDTO>()
                 setData.add(UserScheduleDTO(
@@ -162,7 +164,8 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
                                             startTime,
                                             endTime,
                                             memo,
-                                    "",
+                                            managerUid,
+                                            managerName,
                                 ""
                                         ))
 
