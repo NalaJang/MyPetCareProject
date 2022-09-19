@@ -6,6 +6,7 @@ data class ChatData(
     val member: HashMap<String, Boolean> = HashMap(),
     var userEmail: String? = null,
     var userName: String? = null,
+    var managerName: String? = null,
     var message: String? = null,
     var time: String? = null
 )

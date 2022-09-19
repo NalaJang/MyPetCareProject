@@ -6,7 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.example.mypetcare.R
-import com.example.mypetcare.bottomNavigation.home.managerInfo.ManagerProfile
+import com.example.mypetcare.bottomNavigation.home.managerInfo.view.ManagerProfile
 import com.example.mypetcare.database.dto.UserScheduleDTO
 import com.example.mypetcare.databinding.DialogScheduleCheckBinding
 

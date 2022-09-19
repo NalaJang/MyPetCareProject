@@ -131,8 +131,12 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
                 println("실패 >> ${e.message}")
 
                 when(e.message) {
-                    "The email address is badly formatted." -> toastMessage("올바르지 않은 이메일 형식입니다.")
-                    "The password is invalid or the user does not have a password." -> toastMessage("아이디 또는 비밀번호가 맞지 않습니다.")
+                    "The email address is badly formatted."
+                        -> toastMessage("올바르지 않은 이메일 형식입니다.")
+                    "The password is invalid or the user does not have a password."
+                        -> toastMessage("아이디 또는 비밀번호가 맞지 않습니다.")
+                    "An internal error has occurred"
+                        -> toastMessage("인터넷 연결이 불안정합니다.")
                 }
             }
     }

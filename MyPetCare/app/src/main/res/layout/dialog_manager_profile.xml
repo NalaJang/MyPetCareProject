@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
+        <!-- 닫기 -->
         <Button
             android:id="@+id/manager_close"
             android:layout_width="wrap_content"
@@ -20,6 +21,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/manager_profilePhoto" />
+
+        <Button
+            android:id="@+id/manager_startChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/chat"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/button_effect_blue"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <!-- 프로필 사진 -->
         <de.hdodenhof.circleimageview.CircleImageView
@@ -64,7 +77,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <!-- 가능 업무 -->
@@ -85,7 +99,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <!-- 소개 -->
@@ -106,7 +121,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:textColor="@color/black" />
             </LinearLayout>
         </LinearLayout>
 
@@ -133,11 +149,11 @@
             android:background="@drawable/border_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/manager_line1"
-            app:layout_constraintEnd_toStartOf="@+id/manager_composeButton"/>
+            app:layout_constraintEnd_toStartOf="@+id/manager_writeReviewButton"/>
 
         <!-- 작성 완료 버튼 -->
         <Button
-            android:id="@+id/manager_composeButton"
+            android:id="@+id/manager_writeReviewButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

@@ -13,8 +13,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import java.lang.IllegalStateException
 
-class HomeFragment : Fragment(), View.OnClickListener {
+class HomeFragment : Fragment() {
 
     private var mBinding : FragmentHomeBinding? = null
     private val binding get() = mBinding!!
@@ -37,23 +38,16 @@ class HomeFragment : Fragment(), View.OnClickListener {
         // 사용자 정보 가져오기
         getUserInfo()
 
-        binding.homeShowCalendarDialog.setOnClickListener(this)
+        // 일정 확인
+        binding.homeShowCalendarDialog.setOnClickListener{
+            val calendarDialog = CalendarDialog(requireContext())
+            calendarDialog.show()
+        }
 
         return binding.root
     }
 
-    override fun onClick(view: View?) {
-        when(view?.id) {
-
-            // 일정 확인
-            R.id.home_showCalendarDialog -> {
-                val calendarDialog = CalendarDialog(requireContext())
-                calendarDialog.show()
-            }
-
-        }
-    }
-
+    // 사용자 정보 가져오기
     private fun getUserInfo() {
 
         db  ?.collection("userInfo")

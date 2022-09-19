@@ -4,26 +4,47 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mypetcare.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.chat.view.ChatActivity
-import com.example.mypetcare.database.dto.ChatData
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.example.mypetcare.database.dto.ChatModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 
 class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
 
-    private var databaseReference = FirebaseDatabase.getInstance().getReference("chatRoom")
-    private val dataList: ArrayList<ChatData> = arrayListOf()
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid
+    private var databaseReference = FirebaseDatabase.getInstance().getReference(Constants.CHAT_ROOM)
+    private val roomList: ArrayList<ChatModel> = arrayListOf()
+    private val roomInfo: ArrayList<ChatModel.Comment> = arrayListOf()
     private val roomUidList: ArrayList<String> = arrayListOf()
+    private var roomUid: String? = null
 
     init {
-        getRoomList()
+        databaseReference.orderByChild("users/${uid}").equalTo(true)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for( data in snapshot.children ) {
+
+                        roomUid = data.key!!
+                        roomUidList.add(roomUid!!)
+
+                        // 채팅방 목록 가져오기
+                        getRoomList()
+                        // 채팅방 정보 가져오기
+                        getRoomInfo()
+//                        getRoomInfo2()
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,24 +53,28 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val chatData: ChatData = dataList[position]
+        println("onBindViewHolder, ${roomList.size}")
+        val comment: ChatModel.Comment = roomInfo[position]
         
-        holder.roomName.text = chatData.userName
-        holder.lastMessage.text = chatData.message
-        holder.latTime.text = chatData.time
-
+        holder.roomName.text = comment.managerName
+        holder.lastMessage.text = comment.message
+        holder.latTime.text = comment.time
 
         // 클릭한 채팅방으로 이동
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, ChatActivity::class.java)
             intent.putExtra("roomUid", roomUidList[position])
+            intent.putExtra("managerName", comment.managerName)
             ContextCompat.startActivity(holder.itemView.context, intent, null)
-            println("이동!")
+        }
+
+        holder.deleteButton.setOnClickListener {
+            deleteRoom(roomUidList[position])
         }
     }
 
     override fun getItemCount(): Int {
-        return dataList.size
+        return roomList.size
     }
 
 
@@ -57,29 +82,68 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
         val roomName = itemView.findViewById<TextView>(R.id.roomListAdapter_roomName)
         val lastMessage = itemView.findViewById<TextView>(R.id.roomListAdapter_lastMessage)
         val latTime = itemView.findViewById<TextView>(R.id.roomListAdapter_lastMsgTime)
+        val deleteButton = itemView.findViewById<Button>(R.id.roomListAdapter_delete)
     }
 
     // firebase 에서 채팅방 목록 가져오기
     private fun getRoomList() {
-        var roomUid: String
+        databaseReference.child(roomUid.toString())
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                roomList.clear()
 
-        databaseReference.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    dataList.clear()
+                                val item = snapshot.getValue<ChatModel>()
+                                roomList.add(item!!)
 
-                    for( data in snapshot.children ) {
-                        val item = data.getValue<ChatData>()
-                        dataList.add(item!!)
-                        roomUid = data.key!!
-                        roomUidList.add(roomUid)
+                                notifyDataSetChanged()
+                            }
 
-                    }
+                            override fun onCancelled(error: DatabaseError) {
+                            }
+                        })
+    }
 
+    // 채팅방 정보 가져오기
+    private fun getRoomInfo() {
+        databaseReference.child(roomUid.toString())
+            .child(Constants.CHAT_COMMENTS)
+            .limitToLast(1) // 마지막 메시지와 마지막 시간을 가져오기 위함
+            .addChildEventListener(object : ChildEventListener {
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    roomInfo.clear()
+
+                    val item = snapshot.getValue<ChatModel.Comment>()
+                    roomInfo.add(item!!)
+                }
+
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                    println("getRoomInfo, onChildChanged")
+                }
+
+                override fun onChildRemoved(snapshot: DataSnapshot) {
+                    println("getRoomInfo, onChildRemoved")
+                    println("${snapshot.key}")
+                    roomList.clear()
+
+                    val item = snapshot.getValue<ChatModel>()
+                    roomList.add(item!!)
                     notifyDataSetChanged()
+                }
+
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                 }
+
+
             })
+    }
+
+
+    // 채팅방 삭제
+    private fun deleteRoom(roomUid: String) {
+        println("deleteRoom: ${roomUid}")
+        databaseReference.child(roomUid).setValue(null)
     }
 }

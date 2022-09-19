@@ -31,7 +31,7 @@
         <entry key="app/src/main/res/layout/content_schedule_check_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_apply.xml" value="0.2180232558139535" />
         <entry key="app/src/main/res/layout/dialog_calendar.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/dialog_manager_profile.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/dialog_manager_profile.xml" value="0.25" />
         <entry key="app/src/main/res/layout/dialog_my_profile.xml" value="0.231722958529286" />
         <entry key="app/src/main/res/layout/dialog_my_review.xml" value="0.165" />
         <entry key="app/src/main/res/layout/dialog_schedule_check.xml" value="0.25" />

@@ -5,8 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.example.mypetcare.Constants
 import com.example.mypetcare.R
-import com.example.mypetcare.database.dto.ChatMessageData
+import com.example.mypetcare.database.dto.ChatModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
@@ -14,13 +15,13 @@ import com.google.firebase.database.ktx.getValue
 class ChatAdapter(private val roomUid: String): BaseAdapter() {
 
     private var database = FirebaseDatabase.getInstance()
-    private var databaseReference = database.getReference("chatRoom")
+    private var databaseReference = database.getReference(Constants.CHAT_ROOM)
     private var uid = FirebaseAuth.getInstance().currentUser?.uid
-    private val messageList = ArrayList<ChatMessageData>()
+    private val messageList = ArrayList<ChatModel.Comment>()
 
 
     init {
-        databaseReference.orderByChild("member/$uid").equalTo(true)
+        databaseReference.orderByChild("users/$uid").equalTo(true)
                             .addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -58,7 +59,7 @@ class ChatAdapter(private val roomUid: String): BaseAdapter() {
         val text_name = view.findViewById<TextView>(R.id.chatting_name)
         val text_message = view.findViewById<TextView>(R.id.chatting_message)
 
-        text_name.text = item.name
+        text_name.text = item.userName
         text_message.text = item.message
 
         return view
@@ -67,12 +68,16 @@ class ChatAdapter(private val roomUid: String): BaseAdapter() {
     private fun getMessageList() {
         // ValueEventListener 는 하나의 값이 바뀌어도 전체를 새로 주고
         // ChildEventListener 는 새로 추가된 값만 읽어온다.
-        databaseReference.child(roomUid).child("comments")
+        databaseReference.child(roomUid).child(Constants.CHAT_COMMENTS)
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    val item = snapshot.getValue<ChatMessageData>()
+
+                    val item = snapshot.getValue<ChatModel.Comment>()
                     messageList.add(item!!)
                     notifyDataSetChanged()
+
+                    println("chatAdapter, getMessageList, ${item.message} ")
+
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
