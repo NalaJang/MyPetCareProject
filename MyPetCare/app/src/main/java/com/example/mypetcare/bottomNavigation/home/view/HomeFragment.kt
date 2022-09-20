@@ -1,10 +1,12 @@
 package com.example.mypetcare.bottomNavigation.home.view
 
 import android.os.Bundle
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.example.mypetcare.bottomNavigation.home.schedule.view.CalendarDialog
 import com.example.mypetcare.R
 import com.example.mypetcare.database.PreferenceManager
@@ -13,15 +15,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageException.ERROR_OBJECT_NOT_FOUND
 import java.lang.IllegalStateException
 
 class HomeFragment : Fragment() {
 
     private var mBinding : FragmentHomeBinding? = null
     private val binding get() = mBinding!!
-    private lateinit var auth: FirebaseAuth
-    private var db: FirebaseFirestore? = null
-    private var uid: String? = null
+    private var db = FirebaseFirestore.getInstance()
+    private var uid = FirebaseAuth.getInstance().currentUser?.uid
+    private val storage = FirebaseStorage.getInstance()
+    private val storageRef = storage.reference
+    private val filePath = "profile_images"
+    private val fileName = "${uid}.png"
 
 
     override fun onCreateView(
@@ -31,12 +38,10 @@ class HomeFragment : Fragment() {
 
         mBinding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        auth = Firebase.auth
-        db = FirebaseFirestore.getInstance()
-        uid = FirebaseAuth.getInstance().currentUser?.uid
-
         // 사용자 정보 가져오기
         getUserInfo()
+        // 사용자 프로필 이미지 가져오기
+        getProfileImage()
 
         // 일정 확인
         binding.homeShowCalendarDialog.setOnClickListener{
@@ -49,7 +54,6 @@ class HomeFragment : Fragment() {
 
     // 사용자 정보 가져오기
     private fun getUserInfo() {
-
         db  ?.collection("userInfo")
             ?.get()
             ?.addOnCompleteListener { task ->
@@ -86,7 +90,34 @@ class HomeFragment : Fragment() {
             ?.addOnFailureListener { e ->
                 println("실패 >> ${e.message}")
             }
+    }
 
+    // 사용자 프로필 이미지 가져오기
+    private fun getProfileImage() {
+        val file = activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/${filePath}")
+
+        // file 에서 디렉토리 확인
+        // 만약 없다면 디렉토리를 생성
+        if( !file!!.isDirectory ) {
+            file.mkdir()
+        }
+        downloadProfileImage()
+    }
+
+    // 프로필 이미지 가져오기
+    private fun downloadProfileImage() {
+        storageRef.child("${filePath}/").child(fileName).downloadUrl
+            .addOnSuccessListener { uri ->
+                println("사진 다운로드 성공 uri: ${uri}")
+                // context X -> activity
+                Glide.with(activity).load(uri).into(binding.homeProfileImage)
+            }
+            .addOnFailureListener {
+                if( it.message == "Object does not exist at location." )
+                    binding.homeProfileImage.setImageResource(R.drawable.profile_photo)
+                else
+                    println("다운로드 실패 -> ${it.message}")
+            }
     }
 
 }

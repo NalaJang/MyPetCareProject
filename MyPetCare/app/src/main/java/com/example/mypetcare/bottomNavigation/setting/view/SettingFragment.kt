@@ -38,7 +38,6 @@ class SettingFragment : Fragment(), View.OnClickListener {
             // 프로필 편집
             R.id.setting_myProfile -> {
                 val myProfileDialog = MyProfile().getInstance()
-//                myProfileDialog.show(activity?.supportFragmentManager, "")
                 activity?.supportFragmentManager?.let {
                     myProfileDialog.show(
                         it, "MyProfile"

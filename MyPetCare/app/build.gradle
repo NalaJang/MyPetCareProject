@@ -66,4 +66,6 @@ dependencies {
 
     // circle imageView 라이브러리
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    // Glide 라이브러리
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
 }

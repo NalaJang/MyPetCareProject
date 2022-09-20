@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="@string/myName"
-                android:textColor="#706E6E"/>
+                android:textColor="#706E6E" />
 
             <TextView
                 android:id="@+id/profile_myName"
@@ -113,13 +113,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="@string/myPhoneNum" />
+                android:text="@string/myPhoneNum"
+                android:textColor="#706E6E" />
 
             <TextView
                 android:id="@+id/profile_myPhoneNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:textColor="@color/black"
                 android:background="@drawable/border_text" />
         </LinearLayout>
 
@@ -136,13 +138,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="@string/myPetName" />
+                android:text="@string/myPetName"
+                android:textColor="#706E6E" />
 
             <EditText
                 android:id="@+id/profile_myPetName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:textColor="@color/black"
                 android:background="@drawable/border_text" />
         </LinearLayout>
 
@@ -159,13 +163,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="@string/myPetAge" />
+                android:text="@string/myPetAge"
+                android:textColor="#706E6E" />
 
             <EditText
                 android:id="@+id/profile_myPetAge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:textColor="@color/black"
                 android:background="@drawable/border_text" />
         </LinearLayout>
 
@@ -182,13 +188,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="@string/myPetSpecies" />
+                android:text="@string/myPetSpecies"
+                android:textColor="#706E6E" />
 
             <EditText
                 android:id="@+id/profile_myPetSpecies"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:textColor="@color/black"
                 android:background="@drawable/border_text" />
         </LinearLayout>
 
@@ -206,13 +214,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="@string/myPetWeight" />
+                android:text="@string/myPetWeight"
+                android:textColor="#706E6E" />
 
             <EditText
                 android:id="@+id/profile_myPetWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:textColor="@color/black"
                 android:background="@drawable/border_text" />
         </LinearLayout>
 
@@ -229,7 +239,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="@string/myPetCharacter" />
+                android:text="@string/myPetCharacter"
+                android:textColor="#706E6E" />
 
             <EditText
                 android:id="@+id/profile_myPetCharacter"
@@ -237,6 +248,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:padding="10dp"
+                android:textColor="@color/black"
                 android:background="@drawable/border_text" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

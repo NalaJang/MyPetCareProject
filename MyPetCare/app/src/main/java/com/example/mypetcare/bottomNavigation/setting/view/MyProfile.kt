@@ -1,24 +1,18 @@
 package com.example.mypetcare.bottomNavigation.setting.view
 
-import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
-import android.app.Dialog
-import android.content.Context
 import android.content.Intent
-import android.database.Cursor
-import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
+import com.bumptech.glide.Glide
 import com.example.mypetcare.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogMyProfileBinding
@@ -27,21 +21,29 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MyProfile : DialogFragment()
     , View.OnClickListener {
 
-    private var TAG = "MyProfile"
     private var mBinding: DialogMyProfileBinding? = null
     private val binding get() = mBinding!!
-    private lateinit var auth: FirebaseAuth
-    private var db: FirebaseFirestore? = null
-    private var uid: String? = null
+    private var db = FirebaseFirestore.getInstance()
+    private var uid = FirebaseAuth.getInstance().currentUser?.uid
 
+    private val filePath = "profile_images"
+    private val fileName = "${uid}.png"
+    private val storage = FirebaseStorage.getInstance()
+    /*
+     * 참조 생성
+     * 파일 업로드, 다운로드, 삭제, 메타데이터 가져오기 또는 업데이트를 하려면 참조를 만든다.
+     * 참조는 클라우드의 파일을 가리키는 포인터이다.
+     * 참조는 메모리에 부담을 주지 않으므로 원하는 만큼 만들 수 있으며 여러 작업에서 재사용할 수도 있다.
+     */
+    private val storageRef = storage.reference
     private var profileImageUri: Uri? = null
+    private lateinit var getResult: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,25 +58,18 @@ class MyProfile : DialogFragment()
     ): View? {
         mBinding = DialogMyProfileBinding.inflate(inflater, container, false)
 
-        auth = Firebase.auth
-        db = FirebaseFirestore.getInstance()
-        uid = FirebaseAuth.getInstance().currentUser?.uid
-
-        // 정보 가져오기
+        // 사용자 정보 가져오기
         getUserInfo()
+        // 사용자 프로필 이미지 가져오기
+        getProfileImage()
 
         getResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if( result.resultCode == RESULT_OK && result.data != null ) {
-                println("RESULT_OK: ${result.data}")
                 profileImageUri = result.data?.data
-                println("profileImageUri: ${profileImageUri}")
 
-//                val bitmap = result?.data?.extras?.get("data") as Bitmap
-//                profileImageUri?.let { uri ->
-//                    var file = File(getPathFromUri(uri))
-//                }
                 binding.profileProfileImage.setImageURI(profileImageUri)
-                uploadImageToFirebase(profileImageUri!!)
+                // firebaseStorage 에 이미지 업로드
+                uploadProfileImage(profileImageUri!!)
             }
         }
 
@@ -98,12 +93,11 @@ class MyProfile : DialogFragment()
         }
     }
 
-    // 정보 가져오기
+    // 사용자 정보 가져오기
     private fun getUserInfo() {
-
-        db?.collection("userInfo")
-            ?.get()
-            ?.addOnCompleteListener { task ->
+        db  .collection("userInfo")
+            .get()
+            .addOnCompleteListener { task ->
                 if( task.isSuccessful ) {
 
                     for( i in task.result!! ) {
@@ -129,15 +123,36 @@ class MyProfile : DialogFragment()
                         }
                     }
                 } else
-                    println("${TAG} No such document")
+                    println("No such document")
             }
-            ?.addOnFailureListener { e ->
+            .addOnFailureListener { e ->
                 println("실패 >> ${e.message}")
             }
-
     }
 
-    private lateinit var getResult: ActivityResultLauncher<Intent>
+    // 사용자 프로필 이미지 가져오기
+    private fun getProfileImage() {
+        val file = activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/${filePath}")
+
+        // file 에서 디렉토리 확인
+        // 만약 없다면 디렉토리를 생성
+        if( !file!!.isDirectory ) {
+            file.mkdir()
+        }
+        downloadProfileImage()
+    }
+
+    // 프로필 이미지 가져오기
+    private fun downloadProfileImage() {
+        storageRef.child("${filePath}/").child(fileName).downloadUrl
+            .addOnSuccessListener { uri ->
+                println("사진 다운로드 성공 uri: $uri")
+                // context X -> activity
+                Glide.with(activity).load(uri).into(binding.profileProfileImage)
+            }
+    }
+
+    // 휴대폰 갤러리 접근
     private fun openGallery() {
         val intent = Intent()
         intent.type = "image/*"
@@ -145,28 +160,32 @@ class MyProfile : DialogFragment()
         getResult.launch(intent)
     }
 
-    private fun uploadImageToFirebase(uri: Uri) {
-        val storage = FirebaseStorage.getInstance()
-        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA).format(Date())
-        // 파일 이름 생성
-        val fileName = "IMAGE_${timestamp}_.png"
-        /*
-         * 참조 생성
-         * 파일 업로드, 다운로드, 삭제, 메타데이터 가져오기 또는 업데이트를 하려면 참조를 만든다.
-         * 참조는 클라우드의 파일을 가리키는 포인터이다.
-         * 참조는 메모리에 부담을 주지 않으므로 원하는 만큼 만들 수 있으며 여러 작업에서 재사용할 수도 있다.
-         */
-        val storageRef = storage.reference
-        val imagesRef = storageRef.child("images").child(fileName)
+    // firebaseStorage 에 이미지 업로드
+    private fun uploadProfileImage(uri: Uri) {
 
-        imagesRef.putFile(uri)
-            .addOnSuccessListener {
-                println("사진 업로드 성공")
-            }
-            .addOnFailureListener {
-                println("사진 업로드 실패 -> ${it.message}")
-                //E/StorageException: The server has terminated the upload session 해결
-            }
+        // 이미지 업로드
+        val uploadImagesRef = storageRef.child("${filePath}/").child(fileName)
+        uploadImagesRef.putFile(uri)
+                .addOnSuccessListener {
+                    println("사진 업로드 성공")
+                }
+                .addOnFailureListener {
+                    println("사진 업로드 실패 -> ${it.message}")
+                    //E/StorageException: The server has terminated the upload session 해결
+                }
+
+        // 기존 저장된 이미지 삭제
+        val deleteImagesRef = storageRef.child("${filePath}/").child(fileName)
+        deleteImagesRef.delete()
+                        .addOnSuccessListener {
+                            println("사진 삭제 성공")
+                        }
+                        .addOnFailureListener {
+                            if( it.message == "Object does not exist at location." ) {
+                                println("기존 저장된 이미지가 없습니다.")
+                            } else
+                                println("사진 삭제 실패 -> ${it.message}")
+                        }
     }
 
     // 정보 업데이트
@@ -178,10 +197,10 @@ class MyProfile : DialogFragment()
         map["userPetWeight"] = binding.profileMyPetWeight.text.toString()
         map["userPetCharacter"] = binding.profileMyPetCharacter.text.toString()
 
-        db  ?.collection(Constants.USER_INFO)
-            ?.document(uid!!)
-            ?.update(map)
-            ?.addOnCompleteListener { task ->
+        db  .collection(Constants.USER_INFO)
+            .document(uid!!)
+            .update(map)
+            .addOnCompleteListener { task ->
                 if( task.isSuccessful ) {
                     Toast.makeText(context, "정보 수정 완료", Toast.LENGTH_SHORT).show()
                 }

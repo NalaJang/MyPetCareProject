@@ -5,9 +5,11 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.mypetcare.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.chat.view.ChatActivity
@@ -20,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,6 +41,10 @@ class ManagerProfile constructor(context: Context, managerUid: String):
     private val mManagerUid = managerUid
     private var managerName: String? = null
     private val intent = Intent(context, ChatActivity::class.java)
+    private val filePath = "profile_images"
+    private val fileName = "${uid}.png"
+    private val storage = FirebaseStorage.getInstance()
+    private val storageRef = storage.reference
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +54,8 @@ class ManagerProfile constructor(context: Context, managerUid: String):
 
         // 매니저 프로필 가져오기
         getManagerProfile()
+        // 매니저 프로필 이미지 가져오기
+        getProfileImage()
 
         // adapter 설정
         initAdapter()
@@ -97,6 +106,28 @@ class ManagerProfile constructor(context: Context, managerUid: String):
                         }
                     }
                 }
+            }
+    }
+
+    // 매니저 프로필 이미지 가져오기
+    private fun getProfileImage() {
+        val file = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/${filePath}")
+
+        // file 에서 디렉토리 확인
+        // 만약 없다면 디렉토리를 생성
+        if( !file!!.isDirectory ) {
+            file.mkdir()
+        }
+        downloadProfileImage()
+    }
+
+    // 매니저 프로필 이미지 가져오기
+    private fun downloadProfileImage() {
+        storageRef.child("${filePath}/").child(fileName).downloadUrl
+            .addOnSuccessListener { uri ->
+                println("사진 다운로드 성공 uri: $uri")
+                // context X -> activity
+                Glide.with(context).load(uri).into(binding.managerProfileImage)
             }
     }
 

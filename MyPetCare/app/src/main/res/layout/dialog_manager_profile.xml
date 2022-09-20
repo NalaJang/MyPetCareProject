@@ -36,7 +36,7 @@
 
         <!-- 프로필 사진 -->
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/manager_profilePhoto"
+            android:id="@+id/manager_profileImage"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:src="@drawable/profile_photo"
@@ -56,7 +56,7 @@
             android:background="@drawable/border_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/manager_profilePhoto"
+            app:layout_constraintTop_toBottomOf="@+id/manager_profileImage"
             app:layout_constraintBottom_toBottomOf="@+id/manager_line1">
 
             <!-- 이름 -->
