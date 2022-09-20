@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.core.view.isInvisible
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogSignUpBinding
-import com.example.userpetcare.dto.UserInfoDTO
+import com.example.mypetcare.database.dto.UserInfoDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore

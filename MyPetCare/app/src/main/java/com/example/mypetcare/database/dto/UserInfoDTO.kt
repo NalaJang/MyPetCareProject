@@ -1,9 +1,10 @@
-package com.example.userpetcare.dto
+package com.example.mypetcare.database.dto
 
 data class UserInfoDTO(
     var uid: String? = null,
     var userEmail: String? = null,
     var userPassword: String? = null,
+    var profileImageUri: String? = null,
     var userName: String? = "",
     var userPhoneNum: String? = "",
     var userPetName: String? = "",
@@ -11,5 +12,4 @@ data class UserInfoDTO(
     var userPetSpecies: String? = null,
     var userPetWeight: String? = "",
     var userPetCharacter: String? = null,
-
 )

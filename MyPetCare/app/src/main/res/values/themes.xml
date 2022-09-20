@@ -42,6 +42,12 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="dialog_fullscreen" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
     <style name="Theme.MyPetCare.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MyPetCare.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
