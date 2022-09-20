@@ -26,7 +26,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MyProfile : DialogFragment()
     , View.OnClickListener {
@@ -67,10 +70,11 @@ class MyProfile : DialogFragment()
                 println("profileImageUri: ${profileImageUri}")
 
 //                val bitmap = result?.data?.extras?.get("data") as Bitmap
-                profileImageUri?.let { uri ->
-                    var file = File(getPathFromUri(uri))
-                }
+//                profileImageUri?.let { uri ->
+//                    var file = File(getPathFromUri(uri))
+//                }
                 binding.profileProfileImage.setImageURI(profileImageUri)
+                uploadImageToFirebase(profileImageUri!!)
             }
         }
 
@@ -141,14 +145,30 @@ class MyProfile : DialogFragment()
         getResult.launch(intent)
     }
 
-    private fun getPathFromUri(uri: Uri): String {
-        val buildName = Build.MANUFACTURER
-        println("getPathFromUri, buildName: ${buildName}")
-        var columnIndex = 0
-        val project = arrayOf(MediaStore.Images.Media.DATA)
+    private fun uploadImageToFirebase(uri: Uri) {
+        val storage = FirebaseStorage.getInstance()
+        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA).format(Date())
+        // 파일 이름 생성
+        val fileName = "IMAGE_${timestamp}_.png"
+        /*
+         * 참조 생성
+         * 파일 업로드, 다운로드, 삭제, 메타데이터 가져오기 또는 업데이트를 하려면 참조를 만든다.
+         * 참조는 클라우드의 파일을 가리키는 포인터이다.
+         * 참조는 메모리에 부담을 주지 않으므로 원하는 만큼 만들 수 있으며 여러 작업에서 재사용할 수도 있다.
+         */
+        val storageRef = storage.reference
+        val imagesRef = storageRef.child("images").child(fileName)
 
-        return ""
+        imagesRef.putFile(uri)
+            .addOnSuccessListener {
+                println("사진 업로드 성공")
+            }
+            .addOnFailureListener {
+                println("사진 업로드 실패 -> ${it.message}")
+                //E/StorageException: The server has terminated the upload session 해결
+            }
     }
+
     // 정보 업데이트
     private fun updateInfo() {
         val map = mutableMapOf<String, Any>()

@@ -61,6 +61,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     // database 접근
     implementation 'com.google.firebase:firebase-database:20.0.5'
+    // firestorage 사용
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
     // circle imageView 라이브러리
     implementation 'de.hdodenhof:circleimageview:3.1.0'
