@@ -1,14 +1,20 @@
 package com.example.mypetcare.signUp
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.isInvisible
+import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogSignUpBinding
 import com.example.mypetcare.database.dto.UserInfoDTO
@@ -26,9 +32,13 @@ class SignUpDialog constructor(context: Context): Dialog(context, R.drawable.dia
     private var auth: FirebaseAuth? = null
     private var db: FirebaseFirestore? = null
 
-    var myEmail: String? = null
-    var myPassword: String? = null
-    private var PASSWORD_MIN_LENGTH = 6
+    private var myEmail: String? = null
+    private var myPassword: String? = null
+    private var myPhoneNum: String? = null
+    private var myPetAge: String? = null
+    private var myPetSpecies: String? = null
+    private var myPetCharacter: String? = null
+    private val PASSWORD_MIN_LENGTH = 6
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +68,12 @@ class SignUpDialog constructor(context: Context): Dialog(context, R.drawable.dia
             R.id.signIn_signIn -> {
                 myEmail = binding.signInMyEmail.text.toString()
                 myPassword = binding.signInMyPassword.text.toString()
-                if( wrongAccess() ) {
+
+                if( wrongAccess() )
                     createAccount(myEmail!!, myPassword!!)
-                } else {
+                else
                     toastMessage("정보를 모두 입력해 주세요.")
-                }
-//                dismiss()
+
             }
         }
 
@@ -126,10 +136,7 @@ class SignUpDialog constructor(context: Context): Dialog(context, R.drawable.dia
     override fun afterTextChanged(p0: Editable?) {
     }
 
-    var myPhoneNum: String? = null
-    var myPetAge: String? = null
-    var myPetSpecies: String? = null
-    var myPetCharacter: String? = null
+
 
     private fun wrongAccess(): Boolean {
         myEmail = binding.signInMyEmail.text.toString()
@@ -167,23 +174,25 @@ class SignUpDialog constructor(context: Context): Dialog(context, R.drawable.dia
         return false
     }
 
+    // 계정 생성
     private fun createAccount(email: String, password: String) {
 
         if( email.isNotEmpty() && password.isNotEmpty() ) {
             auth?.createUserWithEmailAndPassword(email, password)
                 ?.addOnCompleteListener {
                     if( it.isSuccessful ) {
+                        // DB 에 저장
                         saveInfoToDB()
                         toastMessage("가입되었습니다.")
                         dismiss()
 
-                    } else {
+                    } else
                         toastMessage("다시 시도해 주세요.")
-                    }
                 }
         }
     }
 
+    // DB 에 저장
     private fun saveInfoToDB() {
         val myName: String = binding.signInMyName.text.toString()
         val myPetName: String = binding.signInMyPetName.text.toString()
@@ -201,20 +210,6 @@ class SignUpDialog constructor(context: Context): Dialog(context, R.drawable.dia
         userInfoDTO.userPetWeight = myPetWeight
         userInfoDTO.userPetCharacter= myPetCharacter
 
-        // 또는 map 방식으로 데이터 저장 가능
-        val userInfo = hashMapOf(
-            "uid" to auth?.currentUser?.uid,
-            "userEmail" to myEmail,
-            "userPassword" to myPassword,
-            "userName" to myName,
-            "userPhoneNum" to myPhoneNum,
-            "petName" to myPetName,
-            "petAge" to myPetAge,
-            "petSpecies" to myPetSpecies,
-            "petWeight" to myPetWeight,
-            "petCharacter" to myPetCharacter
-        )
-
         db  ?.collection("userInfo")
             ?.document(auth!!.currentUser!!.uid)
             ?.set(userInfoDTO)
@@ -228,5 +223,15 @@ class SignUpDialog constructor(context: Context): Dialog(context, R.drawable.dia
 
     private fun toastMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    // 화면 바깥 터치 시 키보드 내리기
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        val focusView = currentFocus
+
+        if( focusView != null)
+            HideKeyboard().hideKeyboard(focusView, context, event)
+
+        return super.dispatchTouchEvent(event)
     }
 }

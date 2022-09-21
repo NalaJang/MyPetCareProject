@@ -20,7 +20,7 @@
             android:background="@color/transparent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/manager_profilePhoto" />
+            app:layout_constraintBottom_toTopOf="@+id/manager_profileImage" />
 
         <Button
             android:id="@+id/manager_startChat"

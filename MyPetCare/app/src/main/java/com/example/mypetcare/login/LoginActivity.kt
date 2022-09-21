@@ -2,21 +2,21 @@ package com.example.mypetcare.login
 
 import android.content.Intent
 import android.graphics.Paint
-import android.nfc.FormatException
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isInvisible
+import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.BottomNavigation
 import com.example.mypetcare.databinding.ActivityLoginBinding
 import com.example.mypetcare.signUp.SignUpDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.core.Platform
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
     private lateinit var auth: FirebaseAuth
     private var db: FirebaseFirestore? = null
     private var uid: String? = null
-    private var PASSWORD_MIN_LENGTH = 6
+    private val PASSWORD_MIN_LENGTH = 6
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,14 +48,6 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
         binding.loginSignIn.setOnClickListener(this)
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        val currentUser = auth.currentUser
-//        if( currentUser != null)
-//            reload();
-    }
-
     override fun onClick(view: View?) {
         when(view?.id) {
 
@@ -73,8 +65,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
                 else if( binding.loginWarningEmail.isInvisible && binding.loginWarningPassword.isInvisible ) {
                     val myEmail = binding.loginEmail.text.toString()
                     val myPassword = binding.loginPassword.text.toString()
-//                    val myEmail = "test1@email.com"
-//                    val myPassword = "123456"
+
                     userLogin(myEmail, myPassword)
 
                 }
@@ -133,8 +124,10 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
                 when(e.message) {
                     "The email address is badly formatted."
                         -> toastMessage("올바르지 않은 이메일 형식입니다.")
+
                     "The password is invalid or the user does not have a password."
                         -> toastMessage("아이디 또는 비밀번호가 맞지 않습니다.")
+
                     "An internal error has occurred"
                         -> toastMessage("인터넷 연결이 불안정합니다.")
                 }
@@ -143,6 +136,16 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
 
     private fun toastMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    // 화면 바깥 터치 시 키보드 내리기
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val focusView = currentFocus
+
+        if( focusView != null)
+            HideKeyboard().hideKeyboard(focusView, applicationContext, ev)
+
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun onDestroy() {

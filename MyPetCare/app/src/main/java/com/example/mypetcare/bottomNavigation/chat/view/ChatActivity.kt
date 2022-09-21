@@ -1,10 +1,14 @@
 package com.example.mypetcare.bottomNavigation.chat.view
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.mypetcare.Constants
+import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.chat.adapter.ChatAdapter
 import com.example.mypetcare.database.PreferenceManager
@@ -32,6 +36,7 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
     private var managerName: String? = null
 
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityChatBinding.inflate(layoutInflater)
@@ -55,6 +60,11 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.chatBack.setOnClickListener(this)
         binding.chatSend.setOnClickListener(this)
+        binding.chatListView.setOnTouchListener { _, _ ->
+            // 키보드 바깥 터치 시 키보드 내리기
+            HideKeyboard().hideKeyboard(this)
+            true
+        }
     }
 
 

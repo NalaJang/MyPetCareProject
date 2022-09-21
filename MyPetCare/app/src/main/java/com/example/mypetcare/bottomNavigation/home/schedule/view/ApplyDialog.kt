@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.CompoundButton
 import android.widget.TimePicker
 import com.example.mypetcare.Constants
+import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogApplyBinding
 import com.example.mypetcare.database.dto.UserScheduleDTO
@@ -210,30 +211,11 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
     // 화면 바깥 터치 시 키보드 내리기
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val focusView = currentFocus
-        if( focusView != null && ev != null ) {
-            val rect = Rect()
-            focusView.getGlobalVisibleRect(rect)
-            val x = ev.x.toInt()
-            val y = ev.y.toInt()
 
-            if (!rect.contains(x, y)) {
-                val imm = context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(focusView.windowToken, 0)
-                focusView.clearFocus()
-            }
-        }
+        if( focusView != null)
+            HideKeyboard().hideKeyboard(focusView, context, ev)
 
         return super.dispatchTouchEvent(ev)
     }
-
-
-    //    fun setOnCheck(checkListener: (String) -> Unit) {
-//        listener = object : OnCheckedBox {
-//            override fun setCheckedCategory(category: String) {
-//                checkListener(category)
-//            }
-//
-//        }
-//    }
 }
 

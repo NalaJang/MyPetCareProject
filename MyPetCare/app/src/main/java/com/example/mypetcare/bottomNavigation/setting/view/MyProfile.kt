@@ -1,19 +1,24 @@
 package com.example.mypetcare.bottomNavigation.setting.view
 
+import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.example.mypetcare.Constants
+import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogMyProfileBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -24,8 +29,7 @@ import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyProfile : DialogFragment()
-    , View.OnClickListener {
+class MyProfile : DialogFragment(), View.OnClickListener {
 
     private var mBinding: DialogMyProfileBinding? = null
     private val binding get() = mBinding!!
@@ -51,6 +55,7 @@ class MyProfile : DialogFragment()
         isCancelable = false
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,6 +81,11 @@ class MyProfile : DialogFragment()
         binding.proFileClose.setOnClickListener(this)
         binding.profileProfileImage.setOnClickListener(this)
         binding.profileComplete.setOnClickListener(this)
+        binding.profileLayout.setOnTouchListener { _, _ ->
+            // 키보드 바깥 터치 시 키보드 내리기
+            HideKeyboard().hideKeyboardInDialogFragment(requireContext(), requireView())
+            true
+        }
 
         return binding.root
     }
@@ -210,4 +220,5 @@ class MyProfile : DialogFragment()
     fun getInstance(): MyProfile {
         return MyProfile()
     }
+
 }

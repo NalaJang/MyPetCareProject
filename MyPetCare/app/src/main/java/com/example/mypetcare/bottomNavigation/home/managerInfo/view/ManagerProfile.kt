@@ -7,10 +7,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
+import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.mypetcare.Constants
+import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.chat.view.ChatActivity
 import com.example.mypetcare.bottomNavigation.home.managerInfo.adapter.ReviewListAdapter
@@ -54,8 +55,6 @@ class ManagerProfile constructor(context: Context, managerUid: String):
 
         // 매니저 프로필 가져오기
         getManagerProfile()
-        // 매니저 프로필 이미지 가져오기
-        getProfileImage()
 
         // adapter 설정
         initAdapter()
@@ -127,7 +126,8 @@ class ManagerProfile constructor(context: Context, managerUid: String):
             .addOnSuccessListener { uri ->
                 println("사진 다운로드 성공 uri: $uri")
                 // context X -> activity
-                Glide.with(context).load(uri).into(binding.managerProfileImage)
+//                Glide.with(context).load(uri).into(binding.managerProfileImage)
+                binding.managerProfileImage.setImageURI(uri)
             }
     }
 
@@ -256,6 +256,16 @@ class ManagerProfile constructor(context: Context, managerUid: String):
                 override fun onCancelled(error: DatabaseError) {
                 }
             })
+    }
+
+    // 화면 바깥 터치 시 키보드 내리기
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val focusView = currentFocus
+
+        if( focusView != null)
+            HideKeyboard().hideKeyboard(focusView, context, ev)
+
+        return super.dispatchTouchEvent(ev)
     }
 
 }
