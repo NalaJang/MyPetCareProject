@@ -10,7 +10,7 @@ import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mypetcare.Constants
+import com.example.mypetcare.database.Constants
 import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.chat.view.ChatActivity

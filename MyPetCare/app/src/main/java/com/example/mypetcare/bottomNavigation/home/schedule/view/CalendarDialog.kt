@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.CalendarView
-import com.example.mypetcare.Constants
+import com.example.mypetcare.database.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.home.schedule.adapter.ScheduleListAdapter
 import com.example.mypetcare.database.dto.UserScheduleDTO

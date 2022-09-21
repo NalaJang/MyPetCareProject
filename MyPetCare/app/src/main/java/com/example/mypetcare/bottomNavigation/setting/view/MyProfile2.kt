@@ -8,8 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import com.example.mypetcare.Constants
+import com.example.mypetcare.database.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogMyProfileBinding
 import com.google.firebase.auth.FirebaseAuth

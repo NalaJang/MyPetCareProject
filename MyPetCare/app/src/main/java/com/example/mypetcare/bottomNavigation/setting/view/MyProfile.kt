@@ -2,32 +2,24 @@ package com.example.mypetcare.bottomNavigation.setting.view
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
-import com.bumptech.glide.Glide
-import com.example.mypetcare.Constants
+import com.example.mypetcare.database.Constants
 import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
+import com.example.mypetcare.database.firebase.GetUserInfo
 import com.example.mypetcare.databinding.DialogMyProfileBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MyProfile : DialogFragment(), View.OnClickListener {
 
@@ -64,19 +56,20 @@ class MyProfile : DialogFragment(), View.OnClickListener {
         mBinding = DialogMyProfileBinding.inflate(inflater, container, false)
 
         // 사용자 정보 가져오기
-        getUserInfo()
+        GetUserInfo(requireActivity()).getUserInfo( binding.profileMyName,
+                                                    binding.profileMyPhoneNum,
+                                                    binding.profileMyPetName,
+                                                    binding.profileMyPetAge,
+                                                    binding.profileMyPetWeight,
+                                                    binding.profileMyPetSpecies,
+                                                    binding.profileMyPetCharacter,
+                                                    requireContext()
+                                                )
         // 사용자 프로필 이미지 가져오기
-        getProfileImage()
+        GetUserInfo(requireActivity()).getProfileImage(binding.profileProfileImage)
 
-        getResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if( result.resultCode == RESULT_OK && result.data != null ) {
-                profileImageUri = result.data?.data
-
-                binding.profileProfileImage.setImageURI(profileImageUri)
-                // firebaseStorage 에 이미지 업로드
-                uploadProfileImage(profileImageUri!!)
-            }
-        }
+        // 프로필 사진 변경에 대한 결과값 받기
+        getActivityResult()
 
         binding.proFileClose.setOnClickListener(this)
         binding.profileProfileImage.setOnClickListener(this)
@@ -99,67 +92,23 @@ class MyProfile : DialogFragment(), View.OnClickListener {
             R.id.profile_profileImage -> openGallery()
 
             // 수정
-            R.id.profile_complete -> updateInfo()
+            R.id.profile_complete -> {
+                updateInfo()
+                // firebaseStorage 에 이미지 업로드
+                uploadProfileImage(profileImageUri!!)
+            }
         }
     }
 
-    // 사용자 정보 가져오기
-    private fun getUserInfo() {
-        db  .collection("userInfo")
-            .get()
-            .addOnCompleteListener { task ->
-                if( task.isSuccessful ) {
+    // 프로필 사진 변경에 대한 결과값 받기
+    private fun getActivityResult() {
+        getResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if( result.resultCode == RESULT_OK && result.data != null ) {
+                profileImageUri = result.data?.data
 
-                    for( i in task.result!! ) {
-                        if( i.id == uid.toString() ) {
-
-                            val myName = i.data["userName"]
-                            val myPhoneNum = i.data["userPhoneNum"]
-                            val myPetName = i.data["userPetName"]
-                            val myPetAGE = i.data["userPetAge"]
-                            val myPetWeight = i.data["userPetWeight"]
-                            val myPetSpecies = i.data["userPetSpecies"]
-                            val myPetCharacter = i.data["userPetCharacter"]
-
-                            binding.profileMyName.text = myName.toString()
-                            binding.profileMyPhoneNum.text = myPhoneNum.toString()
-                            binding.profileMyPetName.setText(myPetName.toString())
-                            binding.profileMyPetAge.setText(myPetAGE.toString())
-                            binding.profileMyPetWeight.setText(myPetWeight.toString())
-                            binding.profileMyPetSpecies.setText(myPetSpecies.toString())
-                            binding.profileMyPetCharacter.setText(myPetCharacter.toString())
-
-                            break
-                        }
-                    }
-                } else
-                    println("No such document")
+                binding.profileProfileImage.setImageURI(profileImageUri)
             }
-            .addOnFailureListener { e ->
-                println("실패 >> ${e.message}")
-            }
-    }
-
-    // 사용자 프로필 이미지 가져오기
-    private fun getProfileImage() {
-        val file = activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/${filePath}")
-
-        // file 에서 디렉토리 확인
-        // 만약 없다면 디렉토리를 생성
-        if( !file!!.isDirectory ) {
-            file.mkdir()
         }
-        downloadProfileImage()
-    }
-
-    // 프로필 이미지 가져오기
-    private fun downloadProfileImage() {
-        storageRef.child("${filePath}/").child(fileName).downloadUrl
-            .addOnSuccessListener { uri ->
-                println("사진 다운로드 성공 uri: $uri")
-                // context X -> activity
-                Glide.with(activity).load(uri).into(binding.profileProfileImage)
-            }
     }
 
     // 휴대폰 갤러리 접근
@@ -176,13 +125,13 @@ class MyProfile : DialogFragment(), View.OnClickListener {
         // 이미지 업로드
         val uploadImagesRef = storageRef.child("${filePath}/").child(fileName)
         uploadImagesRef.putFile(uri)
-                .addOnSuccessListener {
-                    println("사진 업로드 성공")
-                }
-                .addOnFailureListener {
-                    println("사진 업로드 실패 -> ${it.message}")
-                    //E/StorageException: The server has terminated the upload session 해결
-                }
+                        .addOnSuccessListener {
+                            println("사진 업로드 성공")
+                        }
+                        .addOnFailureListener {
+                            println("사진 업로드 실패 -> ${it.message}")
+                            //E/StorageException: The server has terminated the upload session 해결
+                        }
 
         // 기존 저장된 이미지 삭제
         val deleteImagesRef = storageRef.child("${filePath}/").child(fileName)
@@ -201,10 +150,10 @@ class MyProfile : DialogFragment(), View.OnClickListener {
     // 정보 업데이트
     private fun updateInfo() {
         val map = mutableMapOf<String, Any>()
-        map["userPetName"] = binding.profileMyPetName.text.toString()
-        map["userPetAge"] = binding.profileMyPetAge.text.toString()
-        map["userPetSpecies"] = binding.profileMyPetSpecies.text.toString()
-        map["userPetWeight"] = binding.profileMyPetWeight.text.toString()
+        map["userPetName"]      = binding.profileMyPetName.text.toString()
+        map["userPetAge"]       = binding.profileMyPetAge.text.toString()
+        map["userPetSpecies"]   = binding.profileMyPetSpecies.text.toString()
+        map["userPetWeight"]    = binding.profileMyPetWeight.text.toString()
         map["userPetCharacter"] = binding.profileMyPetCharacter.text.toString()
 
         db  .collection(Constants.USER_INFO)

@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mypetcare.Constants
+import com.example.mypetcare.database.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.chat.view.ChatActivity
 import com.example.mypetcare.database.dto.ChatModel

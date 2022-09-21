@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.mypetcare.Constants
+import com.example.mypetcare.database.Constants
 import com.example.mypetcare.R
 import com.example.mypetcare.database.dto.ChatModel
 import com.google.firebase.auth.FirebaseAuth

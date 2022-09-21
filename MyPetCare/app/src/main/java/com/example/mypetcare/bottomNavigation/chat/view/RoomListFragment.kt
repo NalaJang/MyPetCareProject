@@ -6,14 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mypetcare.Constants
-import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.chat.adapter.RoomListAdapter
-import com.example.mypetcare.database.PreferenceManager
 import com.example.mypetcare.databinding.FragmentRoomListBinding
-import com.example.mypetcare.database.dto.ChatData
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 
 class RoomListFragment : Fragment() {
 
