@@ -107,8 +107,8 @@ class ReviewListAdapter(managerUid: String): RecyclerView.Adapter<ReviewListAdap
         val deleteButton: Button = view.findViewById(R.id.managerReview_delete)
 
         fun setItem(item: ReviewModel.Comment) {
-            userName.text = item.userName
-            content.text = item.content
+            userName.text    = item.userName
+            content.text     = item.content
             writingTime.text = item.writingTime
         }
     }
@@ -122,13 +122,13 @@ class ReviewListAdapter(managerUid: String): RecyclerView.Adapter<ReviewListAdap
 
                     for( data in snapshot.children ) {
 
-                        val item = data.getValue<ReviewModel.Comment>()
-                        val writerUid = item?.uid.toString()
-                        val userName = item?.userName.toString()
+                        val item        = data.getValue<ReviewModel.Comment>()
+                        val writerUid   = item?.uid.toString()
+                        val userName    = item?.userName.toString()
                         val managerName = item?.managerName.toString()
                         val writingTime = item?.writingTime.toString()
-                        val content = item?.content.toString()
-                        val commentUid = data.key.toString()
+                        val content     = item?.content.toString()
+                        val commentUid  = data.key.toString()
 
                         reviewList.add(ReviewModel.Comment(
                             writerUid, userName, managerName, writingTime, content
@@ -171,8 +171,8 @@ class ReviewListAdapter(managerUid: String): RecyclerView.Adapter<ReviewListAdap
 
     private fun setReviewValueNull(reviewUid: String, selectedReview: String) {
         databaseReference.child(reviewUid)
-                        .child(UserInfoConstants.REVIEW_COMMENT)
-                        .child(selectedReview)
-                        .setValue(null)
+                         .child(UserInfoConstants.REVIEW_COMMENT)
+                         .child(selectedReview)
+                         .setValue(null)
     }
 }

@@ -38,7 +38,6 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
                         getRoomList()
                         // 채팅방 정보 가져오기
                         getRoomInfo()
-//                        getRoomInfo2()
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
@@ -87,10 +86,11 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
 
     // firebase 에서 채팅방 목록 가져오기
     private fun getRoomList() {
+        println("getRoomList")
         databaseReference.child(roomUid.toString())
                         .addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
-                                roomList.clear()
+//                                roomList.clear()
 
                                 val item = snapshot.getValue<ChatModel>()
                                 roomList.add(item!!)
@@ -110,7 +110,7 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
             .limitToLast(1) // 마지막 메시지와 마지막 시간을 가져오기 위함
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    roomInfo.clear()
+//                    roomInfo.clear()
 
                     val item = snapshot.getValue<ChatModel.Comment>()
                     roomInfo.add(item!!)

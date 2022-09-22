@@ -9,9 +9,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.TimePicker
-import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
+import com.example.mypetcare.database.constant.ScheduleConstants
 import com.example.mypetcare.databinding.DialogApplyBinding
 import com.example.mypetcare.database.dto.UserScheduleDTO
 import com.example.mypetcare.listener.OnApplyTimeListener
@@ -184,7 +184,7 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
         userScheduleDTO.registrationTime = registrationTime
 
 
-        db  .collection(UserInfoConstants.USER_SCHEDULE)
+        db  .collection(ScheduleConstants.USER_SCHEDULE)
             .document(uid.toString())
             .collection(selectedYear.toString())
             .document(selectedMonth.toString())

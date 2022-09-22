@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.R
 import com.example.mypetcare.database.constant.ScheduleConstants
 import com.example.mypetcare.database.dto.UserScheduleDTO
@@ -64,7 +63,7 @@ class ScheduleListAdapter: BaseAdapter() {
         val month = calendar.get(Calendar.MONTH) + 1
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        db  .collection(UserInfoConstants.USER_SCHEDULE)
+        db  .collection(ScheduleConstants.USER_SCHEDULE)
             .document(uid.toString())
             .collection(year.toString())
             .document(month.toString())
@@ -101,7 +100,7 @@ class ScheduleListAdapter: BaseAdapter() {
     // 일정 목록
     fun getScheduleList(year: Int, month: Int, day: Int) {
 
-        db  .collection(UserInfoConstants.USER_SCHEDULE)
+        db  .collection(ScheduleConstants.USER_SCHEDULE)
             .document(uid.toString())
             .collection(year.toString())
             .document(month.toString())

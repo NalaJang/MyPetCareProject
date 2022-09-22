@@ -15,6 +15,7 @@ import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.chat.view.ChatActivity
 import com.example.mypetcare.bottomNavigation.home.managerInfo.adapter.ReviewListAdapter
 import com.example.mypetcare.database.PreferenceManager
+import com.example.mypetcare.database.constant.ManagerInfoConstants
 import com.example.mypetcare.database.dto.ChatModel
 import com.example.mypetcare.database.dto.ReviewModel
 import com.example.mypetcare.database.firebase.ProfileImage
@@ -89,7 +90,7 @@ class ManagerProfile constructor(activity: Activity, managerUid: String):
 
     // 매니저 프로필 가져오기
     private fun getManagerProfile() {
-        db.collection(UserInfoConstants.MANAGER_INFO)
+        db  .collection(ManagerInfoConstants.MANAGER_INFO)
             .get()
             .addOnCompleteListener { task ->
                 if( task.isSuccessful ) {
@@ -97,9 +98,9 @@ class ManagerProfile constructor(activity: Activity, managerUid: String):
                     for( i in task.result!! ) {
                         if( i.id == mManagerUid ) {
 
-                            managerName = i.data["managerName"].toString()
-                            val possibleWork = i.data["possibleWork"].toString()
-                            val introduce = i.data["introduce"].toString()
+                            managerName = i.data[ManagerInfoConstants.MANAGER_NAME].toString()
+                            val possibleWork = i.data[ManagerInfoConstants.POSSIBLE_WORK].toString()
+                            val introduce = i.data[ManagerInfoConstants.INTRODUCE].toString()
 
                             binding.managerName.text = managerName
                             binding.managerPossibleWork.text = possibleWork
@@ -123,7 +124,7 @@ class ManagerProfile constructor(activity: Activity, managerUid: String):
     // 채팅 시작
     private fun startChat() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
-        val userName = PreferenceManager.getString(context, "userName")
+        val userName = PreferenceManager.getString(context, UserInfoConstants.USER_NAME)
 
         val comment = ChatModel.Comment()
         comment.uid = uid.toString()

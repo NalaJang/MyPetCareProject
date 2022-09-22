@@ -10,10 +10,7 @@ import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.R
 import com.example.mypetcare.database.dto.ReviewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 
 class MyReviewListAdapter: BaseAdapter() {
@@ -22,24 +19,41 @@ class MyReviewListAdapter: BaseAdapter() {
     private val databaseReference = FirebaseDatabase.getInstance().getReference(UserInfoConstants.REVIEWS)
     private var reviewList = ArrayList<ReviewModel.Comment>()
     private val commentUidList = ArrayList<String>()
+    private val reviewUidList = ArrayList<String>()
     private var reviewUid: String? = null
 
     init {
         databaseReference.orderByChild("users/$uid").equalTo(true)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
+            .addChildEventListener(object : ChildEventListener {
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    println("onChildAdded 들어옴")
+                    reviewUid = snapshot.key.toString()
 
-                    for( item in snapshot.children ) {
-                        println("item.key >> ${item.key}")
-                        reviewUid = item.key.toString()
+                    // 리뷰 리스트 가져오기
+                    getReviewList(reviewUid!!)
+                    reviewUidList.add(reviewUid!!)
+                }
 
-                        // 내가 쓴 리뷰 리스트 가져오기
-                        getReviewList(reviewUid!!)
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                    println("onChildChanged")
+                    reviewList.clear()
+                    commentUidList.clear()
+
+                    for( uid in 0 until reviewUidList.size) {
+                        getReviewList(reviewUidList[uid])
+                        println("onChildChanged, reviewUidList[uid]: ${reviewUidList[uid]}")
                     }
+                }
+
+                override fun onChildRemoved(snapshot: DataSnapshot) {
+                }
+
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                 }
+
             })
     }
 
@@ -79,17 +93,17 @@ class MyReviewListAdapter: BaseAdapter() {
         databaseReference.child(reviewUid).child(UserInfoConstants.REVIEW_COMMENT)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    reviewList.clear()
+//                    reviewList.clear()
 
                     for( data in snapshot.children ) {
 
-                        val item = data.getValue<ReviewModel.Comment>()
-                        val writerUid = item?.uid.toString()
-                        val userName = item?.userName.toString()
+                        val item        = data.getValue<ReviewModel.Comment>()
+                        val writerUid   = item?.uid.toString()
+                        val userName    = item?.userName.toString()
                         val managerName = item?.managerName.toString()
                         val writingTime = item?.writingTime.toString()
-                        val content = item?.content.toString()
-                        val commentUid = data.key.toString()
+                        val content     = item?.content.toString()
+                        val commentUid  = data.key.toString()
 
                         reviewList.add(ReviewModel.Comment(
                             writerUid, userName, managerName, writingTime, content
@@ -107,11 +121,9 @@ class MyReviewListAdapter: BaseAdapter() {
     // 리뷰 삭제
     private fun deleteReview(selectedReview: String) {
         databaseReference.child(reviewUid!!)
-                        .child(UserInfoConstants.REVIEW_COMMENT)
-                        .child(selectedReview)
-                        .setValue(null)
-
-        getReviewList(reviewUid!!)
+                         .child(UserInfoConstants.REVIEW_COMMENT)
+                         .child(selectedReview)
+                         .setValue(null)
     }
 
 }

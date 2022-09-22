@@ -4,7 +4,6 @@ data class UserInfoDTO(
     var uid: String? = null,
     var userEmail: String? = null,
     var userPassword: String? = null,
-    var profileImageUri: String? = null,
     var userName: String? = "",
     var userPhoneNum: String? = "",
     var userPetName: String? = "",

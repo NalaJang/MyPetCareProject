@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.CalendarView
-import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.home.schedule.adapter.ScheduleListAdapter
+import com.example.mypetcare.database.constant.ScheduleConstants
 import com.example.mypetcare.database.dto.UserScheduleDTO
 import com.example.mypetcare.databinding.DialogCalendarBinding
 import com.example.mypetcare.listener.OnApplyTimeListener
@@ -142,7 +142,7 @@ class CalendarDialog constructor(activity: Activity): Dialog(activity, R.drawabl
     // 일정 가져오기
     private fun getScheduleList(year: Int, month: Int, date: Int, position: Int) {
 
-        db  .collection(UserInfoConstants.USER_SCHEDULE)
+        db  .collection(ScheduleConstants.USER_SCHEDULE)
             .document(uid.toString())
             .collection(year.toString())
             .document(month.toString())
