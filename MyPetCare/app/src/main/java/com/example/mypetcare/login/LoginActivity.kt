@@ -113,7 +113,6 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
                     val intent = Intent(this, BottomNavigation::class.java)
                     startActivity(intent)
                     finish()
-
                 } else {
                     println("실패")
                 }

@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mypetcare.database.Constants
+import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.chat.view.ChatActivity
 import com.example.mypetcare.database.dto.ChatModel
@@ -19,7 +19,7 @@ import com.google.firebase.database.ktx.getValue
 class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
 
     private val uid = FirebaseAuth.getInstance().currentUser?.uid
-    private var databaseReference = FirebaseDatabase.getInstance().getReference(Constants.CHAT_ROOM)
+    private var databaseReference = FirebaseDatabase.getInstance().getReference(UserInfoConstants.CHAT_ROOM)
     private val roomList: ArrayList<ChatModel> = arrayListOf()
     private val roomInfo: ArrayList<ChatModel.Comment> = arrayListOf()
     private val roomUidList: ArrayList<String> = arrayListOf()
@@ -106,7 +106,7 @@ class RoomListAdapter: RecyclerView.Adapter<RoomListAdapter.ViewHolder>() {
     // 채팅방 정보 가져오기
     private fun getRoomInfo() {
         databaseReference.child(roomUid.toString())
-            .child(Constants.CHAT_COMMENTS)
+            .child(UserInfoConstants.CHAT_COMMENTS)
             .limitToLast(1) // 마지막 메시지와 마지막 시간을 가져오기 위함
             .addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {

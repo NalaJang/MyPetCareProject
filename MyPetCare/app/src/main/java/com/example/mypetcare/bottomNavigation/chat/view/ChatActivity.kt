@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.example.mypetcare.database.Constants
+import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.chat.adapter.ChatAdapter
@@ -24,7 +24,7 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
     private var mBinding : ActivityChatBinding? = null
     private val binding get() = mBinding!!
     private var database = FirebaseDatabase.getInstance()
-    private var databaseReference = database.getReference(Constants.CHAT_ROOM)
+    private var databaseReference = database.getReference(UserInfoConstants.CHAT_ROOM)
     private var uid = FirebaseAuth.getInstance().currentUser?.uid
 
     private val messageList = ArrayList<ChatMessageData>()
@@ -96,7 +96,7 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
         val comment = ChatModel.Comment(uid.toString(), userName, managerName, message, currentTime)
 
         // 메시지 보내기
-        databaseReference.child(roomUid!!).child(Constants.CHAT_COMMENTS).push().setValue(comment)
+        databaseReference.child(roomUid!!).child(UserInfoConstants.CHAT_COMMENTS).push().setValue(comment)
         binding.chatMessage.setText("")
 
         // 메시지를 보내면 스크롤을 맨 아래로 내림

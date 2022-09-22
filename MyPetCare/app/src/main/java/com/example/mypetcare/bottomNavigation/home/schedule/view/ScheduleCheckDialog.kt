@@ -1,20 +1,22 @@
 package com.example.mypetcare.bottomNavigation.home.schedule.view
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.home.managerInfo.view.ManagerProfile
 import com.example.mypetcare.database.dto.UserScheduleDTO
+import com.example.mypetcare.database.firebase.ProfileImage
 import com.example.mypetcare.databinding.DialogScheduleCheckBinding
 
 @SuppressLint("ResourceType")
-class ScheduleCheckDialog constructor(context: Context, getData: ArrayList<UserScheduleDTO>,
-                                      year: String, month: String, date: String):
-    Dialog(context, R.drawable.dialog_full_screen) {
+class ScheduleCheckDialog constructor(activity: Activity, getData: ArrayList<UserScheduleDTO>,
+                                      year: Int, month: Int, date: Int):
+    Dialog(activity, R.drawable.dialog_full_screen) {
 
+    private val mActivity = activity
     private var mBinding: DialogScheduleCheckBinding? = null
     private val binding get() = mBinding!!
     private val itemList = getData
@@ -45,8 +47,7 @@ class ScheduleCheckDialog constructor(context: Context, getData: ArrayList<UserS
 
             // 매니저 프로필
             R.id.scheduleCheck_managerInfo -> {
-//                val managerUid = "r6RWzihGNWUIgbpOes2SQp8ZLds1"
-                val managerProfile = ManagerProfile(context, managerUid!!)
+                val managerProfile = ManagerProfile(mActivity, managerUid!!)
                 managerProfile.show()
             }
         }
@@ -62,7 +63,10 @@ class ScheduleCheckDialog constructor(context: Context, getData: ArrayList<UserS
         else {
             binding.scheduleCheckManagerInfo.visibility = View.VISIBLE
             binding.scheduleCheckManagerName.text = itemList[0].managerName
+            val profileImage = ProfileImage(mActivity, managerUid!!)
+            profileImage.getProfileImage(binding.scheduleCheckManagerProfileImage)
 
+            // 매니저 프로필
             binding.scheduleCheckManagerInfo.setOnClickListener(clickListener)
         }
     }
@@ -70,13 +74,13 @@ class ScheduleCheckDialog constructor(context: Context, getData: ArrayList<UserS
     // 일정 정보
     private fun getScheduleInfo() {
         // yyyy 년 mm월 dd일
-        val applicationDate = context.getString(R.string.applicationDate, selectedYear, selectedMonth, selectedDate)
+        val applicationDate = context.getString(R.string.yyyy_mm_dd, selectedYear, selectedMonth, selectedDate)
 
-        binding.scheduleCheckCategory.text = itemList[0].selectedCategory
-        binding.scheduleCheckDate.text = applicationDate
+        binding.scheduleCheckCategory.text  = itemList[0].selectedCategory
+        binding.scheduleCheckDate.text      = applicationDate
         binding.scheduleCheckStartTime.text = itemList[0].startTime
-        binding.scheduleCheckEndTime.text = itemList[0].endTime
-        binding.scheduleCheckMemo.text = itemList[0].memo
+        binding.scheduleCheckEndTime.text   = itemList[0].endTime
+        binding.scheduleCheckMemo.text      = itemList[0].memo
     }
 
 }

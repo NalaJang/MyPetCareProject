@@ -1,16 +1,15 @@
 package com.example.mypetcare.bottomNavigation.home.managerInfo.view
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mypetcare.database.Constants
+import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.chat.view.ChatActivity
@@ -18,35 +17,35 @@ import com.example.mypetcare.bottomNavigation.home.managerInfo.adapter.ReviewLis
 import com.example.mypetcare.database.PreferenceManager
 import com.example.mypetcare.database.dto.ChatModel
 import com.example.mypetcare.database.dto.ReviewModel
+import com.example.mypetcare.database.firebase.ProfileImage
 import com.example.mypetcare.databinding.DialogManagerProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import java.text.SimpleDateFormat
 import java.util.*
 
 @SuppressLint("ResourceType")
-class ManagerProfile constructor(context: Context, managerUid: String):
-    Dialog(context, R.drawable.dialog_full_screen), View.OnClickListener {
+class ManagerProfile constructor(activity: Activity, managerUid: String):
+    Dialog(activity, R.drawable.dialog_full_screen), View.OnClickListener {
 
     private var mBinding: DialogManagerProfileBinding? = null
     private val binding get() = mBinding!!
     private val db = FirebaseFirestore.getInstance()
     private val uid = FirebaseAuth.getInstance().currentUser?.uid
-    private val databaseReference_review = FirebaseDatabase.getInstance().getReference(Constants.REVIEWS)
-    private val databaseReference_chat = FirebaseDatabase.getInstance().getReference(Constants.CHAT_ROOM)
+    private val reviewDatabaseReference = FirebaseDatabase.getInstance().getReference(
+        UserInfoConstants.REVIEWS)
+    private val chatDatabaseReference = FirebaseDatabase.getInstance().getReference(
+        UserInfoConstants.CHAT_ROOM)
+
     private var reviewUid: String? = null
     private var chatRoomUid: String? = null
     private val mManagerUid = managerUid
     private var managerName: String? = null
-    private val intent = Intent(context, ChatActivity::class.java)
-    private val filePath = "profile_images"
-    private val fileName = "${uid}.png"
-    private val storage = FirebaseStorage.getInstance()
-    private val storageRef = storage.reference
 
+    private val intent = Intent(context, ChatActivity::class.java)
+    private val profileImage = ProfileImage(activity, managerUid)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +54,9 @@ class ManagerProfile constructor(context: Context, managerUid: String):
 
         // 매니저 프로필 가져오기
         getManagerProfile()
+
+        // 매니저 프로필 이미지 가져오기
+        profileImage.getProfileImage(binding.managerProfileImage)
 
         // adapter 설정
         initAdapter()
@@ -87,7 +89,7 @@ class ManagerProfile constructor(context: Context, managerUid: String):
 
     // 매니저 프로필 가져오기
     private fun getManagerProfile() {
-        db.collection(Constants.MANAGER_INFO)
+        db.collection(UserInfoConstants.MANAGER_INFO)
             .get()
             .addOnCompleteListener { task ->
                 if( task.isSuccessful ) {
@@ -108,28 +110,6 @@ class ManagerProfile constructor(context: Context, managerUid: String):
             }
     }
 
-    // 매니저 프로필 이미지 가져오기
-    private fun getProfileImage() {
-        val file = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/${filePath}")
-
-        // file 에서 디렉토리 확인
-        // 만약 없다면 디렉토리를 생성
-        if( !file!!.isDirectory ) {
-            file.mkdir()
-        }
-        downloadProfileImage()
-    }
-
-    // 매니저 프로필 이미지 가져오기
-    private fun downloadProfileImage() {
-        storageRef.child("${filePath}/").child(fileName).downloadUrl
-            .addOnSuccessListener { uri ->
-                println("사진 다운로드 성공 uri: $uri")
-                // context X -> activity
-//                Glide.with(context).load(uri).into(binding.managerProfileImage)
-                binding.managerProfileImage.setImageURI(uri)
-            }
-    }
 
     // adapter 설정
     private fun initAdapter() {
@@ -140,6 +120,7 @@ class ManagerProfile constructor(context: Context, managerUid: String):
         binding.managerReviewList.adapter = reviewAdapter
     }
 
+    // 채팅 시작
     private fun startChat() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         val userName = PreferenceManager.getString(context, "userName")
@@ -148,8 +129,8 @@ class ManagerProfile constructor(context: Context, managerUid: String):
         comment.uid = uid.toString()
         comment.userName = userName
         comment.managerName = managerName
-        comment.message = ""
-        comment.time = ""
+        comment.message = null
+        comment.time = null
 
         // 선택한 사용자와의 채팅방이 없다면 chatRoomUid 를 새로 생성
         if( chatRoomUid == null ) {
@@ -158,13 +139,13 @@ class ManagerProfile constructor(context: Context, managerUid: String):
             chatModel.users.put(mManagerUid, true)    // 매니저 uid
 
             // setValue 를 통해 roomUid 생성
-            databaseReference_chat.push().setValue(chatModel).addOnSuccessListener {
+            chatDatabaseReference.push().setValue(chatModel).addOnSuccessListener {
 
                 getChatRoomUid()
 
                 Handler().postDelayed({
-                    databaseReference_chat.child(chatRoomUid.toString())
-                                            .child(Constants.CHAT_COMMENTS)
+                    chatDatabaseReference.child(chatRoomUid.toString())
+                                            .child(UserInfoConstants.CHAT_COMMENTS)
                                             .push()
                                             .setValue(comment)
 
@@ -184,7 +165,7 @@ class ManagerProfile constructor(context: Context, managerUid: String):
 
     // roomUid 가져오기
     private fun getChatRoomUid() {
-        databaseReference_chat.orderByChild("users/${uid}").equalTo(true)
+        chatDatabaseReference.orderByChild("users/${uid}").equalTo(true)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for( item in snapshot.children ) {
@@ -204,7 +185,7 @@ class ManagerProfile constructor(context: Context, managerUid: String):
     // 리뷰 작성
     private fun writeReview() {
 
-        val userName = PreferenceManager.getString(context, "userName")
+        val userName = PreferenceManager.getString(context, UserInfoConstants.USER_NAME)
         val now = System.currentTimeMillis()
         val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH:mm", Locale.KOREA)
         val writingTime = dateFormat.format(Date(now))
@@ -219,7 +200,7 @@ class ManagerProfile constructor(context: Context, managerUid: String):
             reviewModel.users.put(mManagerUid, true)
             reviewModel.users.put(uid.toString(), true)
 
-            databaseReference_review.push().setValue(reviewModel).addOnSuccessListener {
+            reviewDatabaseReference.push().setValue(reviewModel).addOnSuccessListener {
 
                 // setValue() 후 새로 생성된 reviewUid 를 가져온다.
                 getReviewUid()
@@ -227,14 +208,14 @@ class ManagerProfile constructor(context: Context, managerUid: String):
                 // reviewUid 생성이 되면 1초 딜레이 후 review data 를 넣어준다.
                 // 딜레이 -> reviewUid = null 을 방지하기 위함.
                 Handler().postDelayed({
-                    databaseReference_review.child(reviewUid.toString()).child(Constants.REVIEW_COMMENT).push().setValue(review)
+                    reviewDatabaseReference.child(reviewUid.toString()).child(UserInfoConstants.REVIEW_COMMENT).push().setValue(review)
                     initAdapter()
 
                 }, 1000L)
             }
         }
         else
-            databaseReference_review.child(reviewUid.toString()).child(Constants.REVIEW_COMMENT).push().setValue(review)
+            reviewDatabaseReference.child(reviewUid.toString()).child(UserInfoConstants.REVIEW_COMMENT).push().setValue(review)
 
         binding.managerReviewContent.setText("")
     }
@@ -242,7 +223,7 @@ class ManagerProfile constructor(context: Context, managerUid: String):
     // reviewUid 가져오기
     private fun getReviewUid() {
         // 데이터를 선택적으로 검색하기 전에 먼저 정렬 함수(orderByChild)로 정렬 방법을 지정한다.
-        databaseReference_review.orderByChild("users/${uid}").equalTo(true)
+        reviewDatabaseReference.orderByChild("users/${uid}").equalTo(true)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for( item in snapshot.children ) {

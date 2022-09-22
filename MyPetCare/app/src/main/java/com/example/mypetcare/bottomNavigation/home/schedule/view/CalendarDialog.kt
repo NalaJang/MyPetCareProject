@@ -1,13 +1,13 @@
 package com.example.mypetcare.bottomNavigation.home.schedule.view
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.CalendarView
-import com.example.mypetcare.database.Constants
+import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.home.schedule.adapter.ScheduleListAdapter
 import com.example.mypetcare.database.dto.UserScheduleDTO
@@ -21,18 +21,19 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 @SuppressLint("ResourceType")
-class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.dialog_full_screen)
+class CalendarDialog constructor(activity: Activity): Dialog(activity, R.drawable.dialog_full_screen)
     , View.OnClickListener, CalendarView.OnDateChangeListener {
 
+    private val mActivity = activity
     private var mBinding: DialogCalendarBinding? = null
     private val binding get() = mBinding!!
     private var db = FirebaseFirestore.getInstance()
     private var uid = FirebaseAuth.getInstance().currentUser?.uid
 
     private var scheduleAdapter: ScheduleListAdapter? = null
-    private var selectedYear: String? = null
-    private var selectedMonth: String? = null
-    private var selectedDate: String? = null
+    private var selectedYear: Int? = null
+    private var selectedMonth: Int? = null
+    private var selectedDate: Int? = null
 
     init {
         setCanceledOnTouchOutside(true)
@@ -44,7 +45,7 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
         setContentView(binding.root)
 
 
-        binding.calendarDialogSelectedDate.text = "오늘"
+        binding.calendarDialogSelectedDate.text = context.getString(R.string.today)
 
         // listAdapter 설정
         initAdapter()
@@ -77,7 +78,7 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
 
                 // 선택한 유형
                 applyDialog.setOnCheck(object : OnCheckedBox {
-                    override fun setCheckedCategory(category: String) {
+                    override fun setCheckedCategory(category: Int) {
 //                        binding.calendarSelectedCategory.text = category
                     }
                 })
@@ -109,18 +110,17 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
     override fun onSelectedDayChange(view: CalendarView, year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
         val today: Int = calendar.get(Calendar.DAY_OF_MONTH)
-        val selectedDay = "${year}년 ${month+1}월 ${dayOfMonth}일"
+        val selectedDay = context.getString(R.string.yyyy_mm_dd, year, month+1, dayOfMonth)
 
         if( dayOfMonth == today )
-            binding.calendarDialogSelectedDate.text = "오늘"
+            binding.calendarDialogSelectedDate.text = context.getString(R.string.today)
         else
             binding.calendarDialogSelectedDate.text = selectedDay
 
-        selectedYear = year.toString()
-        selectedMonth = (month + 1).toString()
-        selectedDate = dayOfMonth.toString()
+        selectedYear = year
+        selectedMonth = month + 1
+        selectedDate = dayOfMonth
 
-        println("달력 날짜 클릭")
         // 일정 가져오기
         scheduleAdapter?.getScheduleList(selectedYear!!, selectedMonth!!, selectedDate!!)
     }
@@ -134,27 +134,27 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
         val date = calendar.get(Calendar.DAY_OF_MONTH)
 
         if( selectedYear == null )
-            getScheduleList(year.toString(), month.toString(), date.toString(), position)
+            getScheduleList(year, month, date, position)
         else
             getScheduleList(selectedYear!!, selectedMonth!!, selectedDate!!, position)
     }
 
     // 일정 가져오기
-    private fun getScheduleList(year: String, month: String, date: String, position: Int) {
+    private fun getScheduleList(year: Int, month: Int, date: Int, position: Int) {
 
-        db.collection(Constants.USER_SCHEDULE)
+        db  .collection(UserInfoConstants.USER_SCHEDULE)
             .document(uid.toString())
-            .collection(year)
-            .document(month)
-            .collection(date)
+            .collection(year.toString())
+            .document(month.toString())
+            .collection(date.toString())
             .get()
             .addOnSuccessListener { result ->
-                val data = result.toObjects<UserScheduleDTO>()
-                val category = data[position].selectedCategory
-                val startTime = data[position].startTime
-                val endTime = data[position].endTime
-                val memo = data[position].memo
-                val managerUid = data[position].managerUid
+                val data        = result.toObjects<UserScheduleDTO>()
+                val category    = data[position].selectedCategory
+                val startTime   = data[position].startTime
+                val endTime     = data[position].endTime
+                val memo        = data[position].memo
+                val managerUid  = data[position].managerUid
                 val managerName = data[position].managerName
 
                 val setData = ArrayList<UserScheduleDTO>()
@@ -169,7 +169,7 @@ class CalendarDialog constructor(context: Context): Dialog(context, R.drawable.d
                                 ""
                                         ))
 
-                val scheduleCheckDialog = ScheduleCheckDialog(context, setData, year, month, date)
+                val scheduleCheckDialog = ScheduleCheckDialog(mActivity, setData, year, month, date)
                 scheduleCheckDialog.show()
             }
     }

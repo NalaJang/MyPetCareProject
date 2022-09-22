@@ -9,7 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.TimePicker
-import com.example.mypetcare.database.Constants
+import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
 import com.example.mypetcare.databinding.DialogApplyBinding
@@ -17,9 +17,7 @@ import com.example.mypetcare.database.dto.UserScheduleDTO
 import com.example.mypetcare.listener.OnApplyTimeListener
 import com.example.mypetcare.listener.OnCheckedBox
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,8 +27,8 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
 
     private var mBinding: DialogApplyBinding? = null
     private val binding get() = mBinding!!
-    private var auth: FirebaseAuth? = null
-    private var db: FirebaseFirestore? = null
+    private val db = FirebaseFirestore.getInstance()
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid
 
     private var checkBoxListener : OnCheckedBox? = null
     private var applyTimeListener: OnApplyTimeListener? = null
@@ -46,8 +44,6 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
         mBinding = DialogApplyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        auth = Firebase.auth
-        db = FirebaseFirestore.getInstance()
 
         // view 초기화
         initView()
@@ -91,8 +87,8 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
 
         binding.applyDate.text = applyDate
 
-        if( applyDate == "오늘" ) {
-            applyDate = "${year}년 ${month+1}월 ${dayOfMonth}일"
+        if( applyDate == context.getString(R.string.today) ) {
+            applyDate = context.getString(R.string.yyyy_mm_dd, year, month+1, dayOfMonth)
         }
 
         val applyDateSplit = applyDate.split("년", "월")
@@ -115,9 +111,9 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
     override fun onCheckedChanged(button: CompoundButton?, isChecked: Boolean) {
         if( isChecked ) {
             when(button?.id) {
-                R.id.apply_walk -> checkBoxListener?.setCheckedCategory("산책")
-                R.id.apply_bath -> checkBoxListener?.setCheckedCategory("목욕")
-                R.id.apply_visit -> checkBoxListener?.setCheckedCategory("방문")
+                R.id.apply_walk -> checkBoxListener?.setCheckedCategory(R.string.walk)
+                R.id.apply_bath -> checkBoxListener?.setCheckedCategory(R.string.bath)
+                R.id.apply_visit -> checkBoxListener?.setCheckedCategory(R.string.visit)
             }
        }
     }
@@ -132,14 +128,15 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
             calendar.set(Calendar.HOUR_OF_DAY, hour)
             calendar.set(Calendar.MINUTE, minute)
 
-            val time = "${hour}시 ${minute}분부터"
+            val startTime = context.getString(R.string.selectedStartTime, hour, minute)
+            val endTime = context.getString(R.string.selectedEndTime, hour, minute)
 
             if( id == R.id.apply_startTime ) {
-                binding.applyStartTime.text = time
+                binding.applyStartTime.text = startTime
                 applyTimeListener?.setOnStartTime(hour, minute)
 
             } else if( id == R.id.apply_endTime ) {
-                binding.applyEndTime.text = time
+                binding.applyEndTime.text = endTime
                 applyTimeListener?.setOnEndTime(hour, minute)
             }
         }
@@ -179,7 +176,7 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
 
 
         val userScheduleDTO = UserScheduleDTO()
-        userScheduleDTO.uid = auth?.uid
+        userScheduleDTO.uid = uid
         userScheduleDTO.selectedCategory = selectedCategory
         userScheduleDTO.startTime = startTime
         userScheduleDTO.endTime = endTime
@@ -187,19 +184,19 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
         userScheduleDTO.registrationTime = registrationTime
 
 
-        db  ?.collection(Constants.USER_SCHEDULE)
-            ?.document(auth!!.currentUser!!.uid)
-            ?.collection(selectedYear.toString())
-            ?.document(selectedMonth.toString())
-            ?.collection(selectedDate.toString())
-            ?.document()
-            ?.set(userScheduleDTO)
-            ?.addOnSuccessListener {
+        db  .collection(UserInfoConstants.USER_SCHEDULE)
+            .document(uid.toString())
+            .collection(selectedYear.toString())
+            .document(selectedMonth.toString())
+            .collection(selectedDate.toString())
+            .document()
+            .set(userScheduleDTO)
+            .addOnSuccessListener {
 
                 println("일정 등록 성공")
                 dismiss()
             }
-            ?.addOnFailureListener { e ->
+            .addOnFailureListener { e ->
                 println("일정 등록 실패 >> ${e.message}")
             }
 

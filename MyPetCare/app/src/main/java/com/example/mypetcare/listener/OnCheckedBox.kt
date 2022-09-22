@@ -1,5 +1,5 @@
 package com.example.mypetcare.listener
 
 interface OnCheckedBox {
-    fun setCheckedCategory(category: String)
+    fun setCheckedCategory(category: Int)
 }

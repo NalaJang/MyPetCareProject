@@ -5,8 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.mypetcare.database.Constants
+import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.R
+import com.example.mypetcare.database.constant.ScheduleConstants
 import com.example.mypetcare.database.dto.UserScheduleDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,14 +21,13 @@ class ScheduleListAdapter: BaseAdapter() {
     private var scheduleList: ArrayList<UserScheduleDTO> = arrayListOf()
 
     init {
-
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH) + 1
         val day = calendar.get(Calendar.DAY_OF_MONTH)
+
         // 일정 목록
-        getScheduleList(year.toString(), month.toString(), day.toString())
-//        getTodaySchedule()
+        getScheduleList(year, month, day)
     }
 
     override fun getCount(): Int {
@@ -64,7 +64,7 @@ class ScheduleListAdapter: BaseAdapter() {
         val month = calendar.get(Calendar.MONTH) + 1
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        db.collection(Constants.USER_SCHEDULE)
+        db  .collection(UserInfoConstants.USER_SCHEDULE)
             .document(uid.toString())
             .collection(year.toString())
             .document(month.toString())
@@ -77,11 +77,11 @@ class ScheduleListAdapter: BaseAdapter() {
 
                     for( i in task.result!! ) {
 
-                        val category = i.data["selectedCategory"].toString()
-                        val startTime = i.data["startTime"].toString()
-                        val endTime = i.data["endTime"].toString()
-                        val memo = i.data["memo"].toString()
-                        val registrationTime = i.data["registrationTime"].toString()
+                        val category  = i.data[ScheduleConstants.CATEGORY].toString()
+                        val startTime = i.data[ScheduleConstants.START_TIME].toString()
+                        val endTime   = i.data[ScheduleConstants.END_TIME].toString()
+                        val memo      = i.data[ScheduleConstants.MEMO].toString()
+                        val registrationTime = i.data[ScheduleConstants.REGISTRATION_TIME].toString()
 
                         scheduleList.add(UserScheduleDTO(
                                             uid,
@@ -99,13 +99,13 @@ class ScheduleListAdapter: BaseAdapter() {
     }
 
     // 일정 목록
-    fun getScheduleList(year: String, month: String, day: String) {
+    fun getScheduleList(year: Int, month: Int, day: Int) {
 
-        db.collection(Constants.USER_SCHEDULE)
+        db  .collection(UserInfoConstants.USER_SCHEDULE)
             .document(uid.toString())
-            .collection(year)
-            .document(month)
-            .collection(day)
+            .collection(year.toString())
+            .document(month.toString())
+            .collection(day.toString())
             .addSnapshotListener { snapshot, error ->
 
                 scheduleList.clear()
@@ -116,15 +116,13 @@ class ScheduleListAdapter: BaseAdapter() {
                 if( snapshot != null ) {
 
                     for( document in snapshot ) {
-                        println("스케줄 어댑터, registrationTime >> ${document.getString("registrationTime")}")
-                        println("스케줄 어댑터, manager >> ${document.getString("manager")}")
-                        val category = document.getString("selectedCategory").toString()
-                        val startTime = document.getString("startTime").toString()
-                        val endTime = document.getString("endTime").toString()
-                        val memo = document.getString("memo").toString()
-                        val managerUid = document.getString("managerUid").toString()
-                        val managerName = document.getString("managerName").toString()
-                        val registrationTime = document.getString("registrationTime").toString()
+                        val category         = document.getString(ScheduleConstants.CATEGORY).toString()
+                        val startTime        = document.getString(ScheduleConstants.START_TIME).toString()
+                        val endTime          = document.getString(ScheduleConstants.END_TIME).toString()
+                        val memo             = document.getString(ScheduleConstants.MEMO).toString()
+                        val managerUid       = document.getString(ScheduleConstants.MANAGER_UID).toString()
+                        val managerName      = document.getString(ScheduleConstants.MANAGER_NAME).toString()
+                        val registrationTime = document.getString(ScheduleConstants.REGISTRATION_TIME).toString()
 
                         scheduleList.add(UserScheduleDTO(
                                                         uid,

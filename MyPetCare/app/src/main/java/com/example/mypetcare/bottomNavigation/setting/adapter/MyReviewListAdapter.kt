@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.TextView
-import com.example.mypetcare.database.Constants
+import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.R
 import com.example.mypetcare.database.dto.ReviewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -19,8 +19,8 @@ import com.google.firebase.database.ktx.getValue
 class MyReviewListAdapter: BaseAdapter() {
 
     private val uid = FirebaseAuth.getInstance().currentUser?.uid
-    private val databaseReference = FirebaseDatabase.getInstance().getReference(Constants.REVIEWS)
-    private val reviewList = ArrayList<ReviewModel.Comment>()
+    private val databaseReference = FirebaseDatabase.getInstance().getReference(UserInfoConstants.REVIEWS)
+    private var reviewList = ArrayList<ReviewModel.Comment>()
     private val commentUidList = ArrayList<String>()
     private var reviewUid: String? = null
 
@@ -76,15 +76,14 @@ class MyReviewListAdapter: BaseAdapter() {
 
     // 내가 쓴 리뷰 리스트 가져오기
     private fun getReviewList(reviewUid: String) {
-        databaseReference.child(reviewUid).child(Constants.REVIEW_COMMENT)
+        databaseReference.child(reviewUid).child(UserInfoConstants.REVIEW_COMMENT)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     reviewList.clear()
 
                     for( data in snapshot.children ) {
-                        val item = data.getValue<ReviewModel.Comment>()
-                        println("getReviewList2 >> ${item?.managerName}")
 
+                        val item = data.getValue<ReviewModel.Comment>()
                         val writerUid = item?.uid.toString()
                         val userName = item?.userName.toString()
                         val managerName = item?.managerName.toString()
@@ -108,7 +107,7 @@ class MyReviewListAdapter: BaseAdapter() {
     // 리뷰 삭제
     private fun deleteReview(selectedReview: String) {
         databaseReference.child(reviewUid!!)
-                        .child(Constants.REVIEW_COMMENT)
+                        .child(UserInfoConstants.REVIEW_COMMENT)
                         .child(selectedReview)
                         .setValue(null)
 

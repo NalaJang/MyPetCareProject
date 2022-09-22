@@ -161,9 +161,10 @@
         app:layout_constraintStart_toStartOf="parent" >
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/scheduleCheck_managerProfileImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/profile_photo" />
+            android:src="@drawable/basic_profile_image" />
 
         <TextView
             android:id="@+id/scheduleCheck_managerName"

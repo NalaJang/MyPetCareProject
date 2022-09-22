@@ -3,30 +3,29 @@ package com.example.mypetcare.signUp
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
-import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.isInvisible
 import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
+import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.databinding.DialogSignUpBinding
 import com.example.mypetcare.database.dto.UserInfoDTO
+import com.example.mypetcare.database.firebase.ProfileImage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 @SuppressLint("ResourceType")
-class SignUpDialog constructor(context: Context): Dialog(context, R.drawable.dialog_full_screen)
+class SignUpDialog constructor(activity: Activity): Dialog(activity, R.drawable.dialog_full_screen)
     , View.OnClickListener, TextWatcher {
 
+    private val mActivity = activity
     private var mBinding: DialogSignUpBinding? = null
     private val binding get() = mBinding!!
     private var auth: FirebaseAuth? = null
@@ -194,23 +193,23 @@ class SignUpDialog constructor(context: Context): Dialog(context, R.drawable.dia
 
     // DB 에 저장
     private fun saveInfoToDB() {
-        val myName: String = binding.signInMyName.text.toString()
-        val myPetName: String = binding.signInMyPetName.text.toString()
+        val myName: String      = binding.signInMyName.text.toString()
+        val myPetName: String   = binding.signInMyPetName.text.toString()
         val myPetWeight: String = binding.signInMyPetWeight.text.toString()
 
         val userInfoDTO = UserInfoDTO()
-        userInfoDTO.uid = auth?.uid
-        userInfoDTO.userEmail = auth?.currentUser?.email
-        userInfoDTO.userPassword = myPassword
-        userInfoDTO.userName = myName
-        userInfoDTO.userPhoneNum = myPhoneNum
-        userInfoDTO.userPetName = myPetName
-        userInfoDTO.userPetAge = myPetAge
-        userInfoDTO.userPetSpecies = myPetSpecies
-        userInfoDTO.userPetWeight = myPetWeight
+        userInfoDTO.uid             = auth?.uid
+        userInfoDTO.userEmail       = auth?.currentUser?.email
+        userInfoDTO.userPassword    = myPassword
+        userInfoDTO.userName        = myName
+        userInfoDTO.userPhoneNum    = myPhoneNum
+        userInfoDTO.userPetName     = myPetName
+        userInfoDTO.userPetAge      = myPetAge
+        userInfoDTO.userPetSpecies  = myPetSpecies
+        userInfoDTO.userPetWeight   = myPetWeight
         userInfoDTO.userPetCharacter= myPetCharacter
 
-        db  ?.collection("userInfo")
+        db  ?.collection(UserInfoConstants.USER_INFO)
             ?.document(auth!!.currentUser!!.uid)
             ?.set(userInfoDTO)
             ?.addOnSuccessListener {
@@ -219,6 +218,11 @@ class SignUpDialog constructor(context: Context): Dialog(context, R.drawable.dia
             ?.addOnFailureListener { e ->
                 println("실패 >> ${e.message}")
             }
+
+        // firebaseStorage 에 기본 프로필 이미지 저장
+        val profileImage = ProfileImage(mActivity, auth!!.currentUser!!.uid)
+        profileImage.setProfileImage(context)
+
     }
 
     private fun toastMessage(message: String) {
@@ -234,4 +238,6 @@ class SignUpDialog constructor(context: Context): Dialog(context, R.drawable.dia
 
         return super.dispatchTouchEvent(event)
     }
+
+
 }

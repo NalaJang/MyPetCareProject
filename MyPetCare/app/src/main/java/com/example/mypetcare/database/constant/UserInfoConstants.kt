@@ -1,8 +1,8 @@
-package com.example.mypetcare.database
+package com.example.mypetcare.database.constant
 
-class Constants {
+class UserInfoConstants {
     companion object {
-
+        // 사용자 정보 관련
         const val USER_INFO: String = "userInfo"
         const val USER_NAME: String = "userName"
         const val USER_PHONE_NUM: String = "userPhoneNum"

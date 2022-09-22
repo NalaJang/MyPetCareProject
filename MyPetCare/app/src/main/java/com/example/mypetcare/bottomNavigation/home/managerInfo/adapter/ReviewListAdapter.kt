@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mypetcare.database.Constants
+import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.R
 import com.example.mypetcare.database.dto.ReviewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -15,7 +15,7 @@ import com.google.firebase.database.ktx.getValue
 
 class ReviewListAdapter(managerUid: String): RecyclerView.Adapter<ReviewListAdapter.ViewHolder>() {
 
-    private val databaseReference = FirebaseDatabase.getInstance().getReference(Constants.REVIEWS)
+    private val databaseReference = FirebaseDatabase.getInstance().getReference(UserInfoConstants.REVIEWS)
     private val userUid = FirebaseAuth.getInstance().currentUser?.uid
     private var reviewList = ArrayList<ReviewModel.Comment>()
     private val commentUidList = ArrayList<String>()
@@ -116,7 +116,7 @@ class ReviewListAdapter(managerUid: String): RecyclerView.Adapter<ReviewListAdap
     // 리뷰 리스트 가져오기
     private fun getReviewList(reviewUid: String) {
 
-        databaseReference.child(reviewUid).child(Constants.REVIEW_COMMENT)
+        databaseReference.child(reviewUid).child(UserInfoConstants.REVIEW_COMMENT)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -171,7 +171,7 @@ class ReviewListAdapter(managerUid: String): RecyclerView.Adapter<ReviewListAdap
 
     private fun setReviewValueNull(reviewUid: String, selectedReview: String) {
         databaseReference.child(reviewUid)
-                        .child(Constants.REVIEW_COMMENT)
+                        .child(UserInfoConstants.REVIEW_COMMENT)
                         .child(selectedReview)
                         .setValue(null)
     }
