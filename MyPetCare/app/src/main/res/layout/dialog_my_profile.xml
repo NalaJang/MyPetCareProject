@@ -63,7 +63,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- 프로필 사진 -->
+        <!-- 프로필 이미지 -->
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_profileImage"
             android:layout_width="150dp"
@@ -75,6 +75,16 @@
             app:layout_constraintTop_toBottomOf="@+id/proFile_close"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- 프로필 이미지 삭제 -->
+        <Button
+            android:id="@+id/profile_deleteProfileImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"
+            app:layout_constraintStart_toEndOf="@+id/profile_profileImage"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_profileImage"/>
+
 
         <!-- 이름 -->
         <LinearLayout
@@ -98,7 +108,8 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:textColor="@color/black"
-                android:background="@drawable/border_text" />
+                android:background="@drawable/border_text"
+                android:backgroundTint="#E3E3E3" />
         </LinearLayout>
 
         <!-- 휴대폰번호 -->
@@ -123,7 +134,8 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:textColor="@color/black"
-                android:background="@drawable/border_text" />
+                android:background="@drawable/border_text"
+                android:backgroundTint="#E3E3E3" />
         </LinearLayout>
 
         <!-- myPet 이름 -->
@@ -147,6 +159,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:inputType="text"
+                android:lines="1"
                 android:textColor="@color/black"
                 android:background="@drawable/border_text" />
         </LinearLayout>
@@ -167,13 +181,31 @@
                 android:text="@string/myPetAge"
                 android:textColor="#706E6E" />
 
-            <EditText
-                android:id="@+id/profile_myPetAge"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textColor="@color/black"
-                android:background="@drawable/border_text" />
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/profile_myPetAge"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.1"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:background="@drawable/border_text" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.9"
+                    android:layout_marginStart="3dp"
+                    android:gravity="start|center"
+                    android:text="@string/ageUnit" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- myPet 종 -->
@@ -197,6 +229,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:lines="1"
+                android:inputType="text"
                 android:textColor="@color/black"
                 android:background="@drawable/border_text" />
         </LinearLayout>
@@ -218,13 +252,31 @@
                 android:text="@string/myPetWeight"
                 android:textColor="#706E6E" />
 
-            <EditText
-                android:id="@+id/profile_myPetWeight"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textColor="@color/black"
-                android:background="@drawable/border_text" />
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/profile_myPetWeight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:inputType="number"
+                    android:textColor="@color/black"
+                    android:background="@drawable/border_text" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.9"
+                    android:layout_marginStart="3dp"
+                    android:gravity="start|center"
+                    android:text="@string/weightUnit" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- myPet 성격 -->

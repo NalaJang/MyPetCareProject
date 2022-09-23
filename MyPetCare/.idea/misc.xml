@@ -55,6 +55,7 @@
         <entry key="app/src/main/res/layout/my_message_box.xml" value="0.165" />
         <entry key="app/src/main/res/layout/your_message_box.xml" value="0.25" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/xml/filepaths.xml" value="0.1" />
       </map>
     </option>
   </component>

@@ -6,8 +6,8 @@
     <string name="close">닫기</string>
     <string name="complete">완료</string>
 
-    <string name="ageUnit">%1$s 살</string>
-    <string name="weightUnit">%1$s kg</string>
+    <string name="ageUnit">살</string>
+    <string name="weightUnit">kg</string>
 
     <!-- 정보 -->
     <string name="email">이메일</string>

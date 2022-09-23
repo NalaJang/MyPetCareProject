@@ -3,6 +3,7 @@ package com.example.mypetcare.bottomNavigation.setting.view
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.HideKeyboard
 import com.example.mypetcare.R
+import com.example.mypetcare.database.Cache
 import com.example.mypetcare.database.firebase.ProfileImage
 import com.example.mypetcare.database.firebase.GetUserInfo
 import com.example.mypetcare.databinding.DialogMyProfileBinding
@@ -62,11 +64,12 @@ class MyProfile : DialogFragment(), View.OnClickListener {
         // 사용자 프로필 이미지 가져오기
         profileImage!!.getProfileImage(binding.profileProfileImage)
 
-        // 프로필 사진 변경에 대한 결과값 받기
+        // 프로필 이미지 변경에 대한 결과값 받기
         getActivityResult()
 
         binding.proFileClose.setOnClickListener(this)
         binding.profileProfileImage.setOnClickListener(this)
+        binding.profileDeleteProfileImage.setOnClickListener(this)
         binding.profileComplete.setOnClickListener(this)
         binding.profileLayout.setOnTouchListener { _, _ ->
             // 키보드 바깥 터치 시 키보드 내리기
@@ -82,8 +85,15 @@ class MyProfile : DialogFragment(), View.OnClickListener {
             // 닫기
             R.id.proFile_close -> dismiss()
 
-            // 프로필 사진 변경
+            // 프로필 이미지 변경
             R.id.profile_profileImage -> openGallery()
+
+            // 프로필 이미지 삭제 -> 기본 이미지로 저장
+            R.id.profile_deleteProfileImage -> {
+                profileImage!!.setProfileImage(requireContext())
+                profileImage!!.deleteProfileImage()
+                binding.profileProfileImage.setImageResource(R.drawable.basic_profile_image)
+            }
 
             // 수정
             R.id.profile_complete -> {
@@ -97,13 +107,33 @@ class MyProfile : DialogFragment(), View.OnClickListener {
         }
     }
 
-    // 프로필 사진 변경에 대한 결과값 받기
+    // 프로필 이미지 변경에 대한 결과값 받기
     private fun getActivityResult() {
         getResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if( result.resultCode == RESULT_OK && result.data != null ) {
                 profileImageUri = result.data?.data
 
-                binding.profileProfileImage.setImageURI(profileImageUri)
+//                binding.profileProfileImage.setImageURI(profileImageUri)
+
+                //
+                try {
+                    val inputStream = requireActivity().contentResolver.openInputStream(profileImageUri!!)
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    val fileName = "${uid}.png"
+                    inputStream!!.close()
+                    println("getActivityResult 들어옴")
+                    // non-null 체크
+                    bitmap?.let {
+                        binding.profileProfileImage.setImageBitmap(bitmap)
+                        // 내부 저장소에 파일 저장
+                        Cache(requireActivity(), fileName).saveImageToCache(bitmap)
+                    } ?: let {
+                        // bitmap 이 null 일 경우
+                        binding.profileProfileImage.setImageURI(profileImageUri)
+                    }
+                } catch (e: Exception) {
+                    println("getActivityResult : ${e.message}")
+                }
             }
         }
     }

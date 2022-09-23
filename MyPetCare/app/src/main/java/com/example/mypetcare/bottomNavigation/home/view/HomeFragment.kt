@@ -1,15 +1,18 @@
 package com.example.mypetcare.bottomNavigation.home.view
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.mypetcare.bottomNavigation.home.schedule.view.CalendarDialog
+import com.example.mypetcare.database.Cache
 import com.example.mypetcare.database.firebase.ProfileImage
 import com.example.mypetcare.database.firebase.GetUserInfo
 import com.example.mypetcare.databinding.FragmentHomeBinding
 import com.google.firebase.auth.FirebaseAuth
+import java.lang.Exception
 
 class HomeFragment : Fragment() {
 
@@ -37,7 +40,16 @@ class HomeFragment : Fragment() {
                                 requireContext()
                             )
         // 사용자 프로필 이미지 가져오기
-        profileImage.getProfileImage(binding.homeProfileImage)
+//        profileImage.getProfileImage(binding.homeProfileImage)
+//        Cache(requireActivity(), "${uid}.png").getImageFromCache(binding.homeProfileImage)
+        try {
+            val imagePath = "${requireActivity().cacheDir}/${uid}.png"
+            val bitmap = BitmapFactory.decodeFile(imagePath)
+            binding.homeProfileImage.setImageBitmap(bitmap)
+            println("프로필 이미지")
+        } catch (e: Exception) {
+            println("프로필 이미지 e: ${e.message}")
+        }
 
         // 일정 확인
         binding.homeShowCalendarDialog.setOnClickListener{

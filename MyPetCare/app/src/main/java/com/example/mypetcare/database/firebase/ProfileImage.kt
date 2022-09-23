@@ -9,6 +9,7 @@ import android.os.Environment
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.example.mypetcare.R
+import com.example.mypetcare.database.Cache
 import com.example.mypetcare.database.constant.UserInfoConstants
 import com.google.firebase.storage.FirebaseStorage
 import java.lang.Exception
@@ -50,24 +51,25 @@ class ProfileImage(activity: Activity, uid: String) {
                          * java.lang.NoClassDefFoundError: Failed resolution of: Landroid/support/v4/app/FragmentActivity;
                          */
                         // context X -> activity
-                        Glide.with(mActivity).load(uri).into(imageView)
-
-                        val options = BitmapFactory.Options().apply {
-                            inJustDecodeBounds = true
-                        }
-                        try {
-                            val inputStream = mActivity.contentResolver.openInputStream(uri)
-                            val bitmap = BitmapFactory.decodeStream(inputStream, null, options)
-                            inputStream!!.close()
-
-                            // non-null 체크
-                            bitmap?.let {
-                                imageView.setImageBitmap(bitmap)
-                            } ?: let {
-                                // bitmap 이 null 일 경우
-                                imageView.setImageURI(uri)
-                            }
-                        } catch (e: Exception) {}
+                        Glide.with(mActivity).load(uri).asBitmap().into(imageView)
+//                        Cache(mActivity).saveImageToCache(fileName, bitmap)
+//                        val options = BitmapFactory.Options().apply {
+//                            inJustDecodeBounds = true
+//                        }
+//                        try {
+//                            val inputStream = mActivity.contentResolver.openInputStream(uri)
+//                            val bitmap = BitmapFactory.decodeStream(inputStream, null, options)
+//                            inputStream!!.close()
+//
+//                            // non-null 체크
+//                            bitmap?.let {
+//                                imageView.setImageBitmap(bitmap)
+//                                Cache(mActivity).saveImageToCache(fileName, bitmap)
+//                            } ?: let {
+//                                // bitmap 이 null 일 경우
+//                                imageView.setImageURI(uri)
+//                            }
+//                        } catch (e: Exception) {}
 
                     }
                     .addOnFailureListener {
@@ -94,10 +96,10 @@ class ProfileImage(activity: Activity, uid: String) {
 
         uploadImagesRef .putFile(uri)
                         .addOnSuccessListener {
-                            println("GetProfileImage, 사진 업로드 성공")
+                            println("ProfileImage, 사진 업로드 성공")
                         }
                         .addOnFailureListener {
-                            println("GetProfileImage, 사진 업로드 실패 -> ${it.message}")
+                            println("ProfileImage, 사진 업로드 실패 -> ${it.message}")
                             //E/StorageException: The server has terminated the upload session 해결
                         }
     }

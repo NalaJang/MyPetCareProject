@@ -37,8 +37,8 @@ class GetUserInfo {
                             userName.text     = myName.toString()
                             userPhoneNum.text = myPhoneNum.toString()
                             petName.text      = myPetName.toString()
-                            petAge.text       = context.getString(R.string.ageUnit, myPetAGE.toString())
-                            petWeight.text    = context.getString(R.string.weightUnit, myPetWeight.toString())
+                            petAge.text       = myPetAGE.toString()
+                            petWeight.text    = myPetWeight.toString()
                             petSpecies.text   = myPetSpecies.toString()
                             petCharacter.text = myPetCharacter.toString()
 
