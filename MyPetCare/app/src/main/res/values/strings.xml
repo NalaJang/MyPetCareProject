@@ -5,6 +5,7 @@
     <string name="delete">삭제</string>
     <string name="close">닫기</string>
     <string name="complete">완료</string>
+    <string name="search">검색</string>
 
     <string name="ageUnit">살</string>
     <string name="weightUnit">kg</string>
@@ -15,11 +16,12 @@
     <string name="profile">프로필</string>
     <string name="myName">이름</string>
     <string name="myPhoneNum">휴대폰 번호</string>
+    <string name="myAddress">주소</string>
     <string name="myPetName">My Pet 이름</string>
     <string name="myPetAge">My Pet 나이</string>
-    <string name="myPetSpecies">종</string>
-    <string name="myPetWeight">몸무게(kg)</string>
-    <string name="myPetCharacter">성격</string>
+    <string name="myPetSpecies">품종</string>
+    <string name="myPetWeight">무게(kg)</string>
+    <string name="myPetCharacter">소개</string>
 
     <!-- 로그인 -->
     <string name="autoLogin">자동 로그인</string>
@@ -29,12 +31,13 @@
     <!-- 회원가입 -->
     <string name="signIn">가입하기</string>
     <string name="essential">* 표시는 필수 입력 사항입니다.</string>
-    <string name="signInMyEmail">* 이메일</string>
-    <string name="signInMyPassword">* 비밀번호</string>
-    <string name="signInMyPhoneNum">* 휴대폰번호</string>
-    <string name="signInMyPetAge">* My Pet 나이</string>
-    <string name="signInMyPetSpecies">* My Pet 종</string>
-    <string name="signInMyPetCharacter">* My Pet 성격</string>
+    <string name="signInMyEmail">이메일</string>
+    <string name="signInMyPassword">비밀번호</string>
+    <string name="signInMyPhoneNum">휴대폰번호</string>
+    <string name="signInMyPetAge">My Pet 나이</string>
+    <string name="signInMyPetSpecies">My Pet 품종</string>
+    <string name="signInMyPetWeight">My Pet 무게</string>
+    <string name="signInMyPetCharacter">My Pet 소개</string>
     <string name="myPetCharacterHint">상세하게 적어주세요.</string>
 
     <!-- 경고 메시지 -->
@@ -42,8 +45,8 @@
     <string name="warningPassword">비밀번호를 입력하세요.</string>
     <string name="warningPhoneNum">휴대폰번호를 입력하세요.</string>
     <string name="warningMyPetAge">My Pet의 나이를 입력하세요.</string>
-    <string name="warningMyPetSpecies">My Pet의 종을 입력하세요.</string>
-    <string name="warningMyPetCharacter">My Pet의 성격을 입력하세요.</string>
+    <string name="warningMyPetSpecies">My Pet의 품종을 입력하세요.</string>
+    <string name="warningMyPetCharacter">My Pet의 성격을 입격력하세요.</string>
 
     <!-- bottom navigation menu -->
     <string name="home">홈</string>
@@ -70,20 +73,20 @@
     <string name="today">오늘</string>
 
     <!-- 일정 정보 -->
-    <string name="category">유형</string>
-        <string name="walk">산책</string>
-        <string name="bath">목욕</string>
-        <string name="visit">방문</string>
+    <string name="serviceCategory">서비스 유형</string>
+    <string name="walk">산책</string>
+    <string name="bath">목욕</string>
+    <string name="visit">방문</string>
     <string name="time">시간</string>
-        <string name="start">시작</string>
-        <string name="end">종료</string>
-        <string name="startTime">%1$d시 부터</string>
-        <string name="endTime">%1$d시 까지</string>
-        <string name="selectedStartTime">%1$d시 %2$d분 부터</string>
-        <string name="selectedEndTime">%1$d시 %2$d분 까지</string>
-        <string name="defaultStartTime">오전 12시부터</string>
-        <string name="defaultEndTime">오후 12시까지</string>
-        <string name="yyyy_mm_dd">%1$d년 %2$d월 %3$d일</string>
+    <string name="start">시작</string>
+    <string name="end">종료</string>
+    <string name="startTime">%1$d시 부터</string>
+    <string name="endTime">%1$d시 까지</string>
+    <string name="selectedStartTime">%1$d시 %2$d분 부터</string>
+    <string name="selectedEndTime">%1$d시 %2$d분 까지</string>
+    <string name="defaultStartTime">오전 12시부터</string>
+    <string name="defaultEndTime">오후 12시까지</string>
+    <string name="yyyy_mm_dd">%1$d년 %2$d월 %3$d일</string>
     <string name="memo">메모</string>
 
     <!-- 매니저 정보 -->
@@ -94,5 +97,14 @@
 
     <!-- 후기 -->
     <string name="writeReview">후기 작성</string>
+    <string name="title_activity_web_view">WebView</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
 </resources>

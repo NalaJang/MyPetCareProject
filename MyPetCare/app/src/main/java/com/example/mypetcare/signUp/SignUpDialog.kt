@@ -33,9 +33,12 @@ class SignUpDialog constructor(activity: Activity): Dialog(activity, R.drawable.
 
     private var myEmail: String? = null
     private var myPassword: String? = null
+    private var myName: String? = null
     private var myPhoneNum: String? = null
+    private var myPetName: String? = null
     private var myPetAge: String? = null
     private var myPetSpecies: String? = null
+    private var myPetWeight: String? = null
     private var myPetCharacter: String? = null
     private val PASSWORD_MIN_LENGTH = 6
 
@@ -51,10 +54,12 @@ class SignUpDialog constructor(activity: Activity): Dialog(activity, R.drawable.
         binding.signInSignIn.setOnClickListener(this)
         binding.signInMyEmail.addTextChangedListener(this)
         binding.signInMyPassword.addTextChangedListener(this)
+        binding.signInMyName.addTextChangedListener(this)
         binding.signInMyPhoneNum.addTextChangedListener(this)
+        binding.signInMyPetName.addTextChangedListener(this)
         binding.signInMyPetAge.addTextChangedListener(this)
         binding.signInMyPetSpecies.addTextChangedListener(this)
-        binding.signInMyPetCharacter.addTextChangedListener(this)
+        binding.signInMyPetWeight.addTextChangedListener(this)
     }
 
     override fun onClick(view: View?) {
@@ -68,109 +73,40 @@ class SignUpDialog constructor(activity: Activity): Dialog(activity, R.drawable.
                 myEmail = binding.signInMyEmail.text.toString()
                 myPassword = binding.signInMyPassword.text.toString()
 
-                if( wrongAccess() )
-                    createAccount(myEmail!!, myPassword!!)
-                else
-                    toastMessage("정보를 모두 입력해 주세요.")
-
+                createAccount(myEmail!!, myPassword!!)
             }
         }
 
     }
 
+    private var wrongAccess = false
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
     }
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        // 이메일
-        if( binding.signInMyEmail.hasFocus() ) {
-            if( binding.signInMyEmail.length() > 5 )
-                binding.signInWarningMyEmail.visibility = View.INVISIBLE
-            else
-                binding.signInWarningMyEmail.visibility = View.VISIBLE
-        }
 
-        // 비밀번호
-        // 비밀번호는 최소 6자리 이상
-        if( binding.signInMyPassword.hasFocus() ) {
-            if( binding.signInMyPassword.length() >= PASSWORD_MIN_LENGTH )
-                binding.signInWarningMyPassword.visibility = View.INVISIBLE
-            else
-                binding.signInWarningMyPassword.visibility = View.VISIBLE
-        }
+        wrongAccess = (
+                // 이메일 && 비밀번호
+                binding.signInMyEmail.length() > 5 && binding.signInMyPassword.length() >= PASSWORD_MIN_LENGTH
+                // 이름 && 휴대폰 번호
+                && binding.signInMyName.text.isNotEmpty() && binding.signInMyPhoneNum.length() >= 11
+                //  myPet 이름 && myPet 나이
+                && binding.signInMyPetName.text.isNotEmpty() && binding.signInMyPetAge.text.isNotEmpty()
+                // myPet 품종 && myPet 무게
+                && binding.signInMyPetSpecies.text.isNotEmpty() && binding.signInMyPetWeight.text.isNotEmpty()
+                )
 
-        // 휴대폰번호
-        if( binding.signInMyPhoneNum.hasFocus() ) {
-            if( binding.signInMyPhoneNum.length() >= 11 )
-                binding.signInWarningMyPhoneNum.visibility = View.INVISIBLE
-            else
-                binding.signInWarningMyPhoneNum.visibility = View.VISIBLE
-        }
 
-        // myPet 나이
-        if( binding.signInMyPetAge.hasFocus() ) {
-            if( binding.signInMyPetAge.length() < 1 )
-                binding.signInWarningMyPetAge.visibility = View.VISIBLE
-            else
-                binding.signInWarningMyPetAge.visibility = View.INVISIBLE
-        }
-
-        // myPet 종
-        if( binding.signInMyPetSpecies.hasFocus() ) {
-            if( binding.signInMyPetSpecies.length() < 1 )
-                binding.signInWarningMyPetSpecies.visibility = View.VISIBLE
-            else
-                binding.signInWarningMyPetSpecies.visibility = View.INVISIBLE
-        }
-
-        // myPet 성격
-        if( binding.signInMyPetCharacter.hasFocus() ) {
-            if( binding.signInMyPetCharacter.length() >= 1 )
-                binding.signInWarningMyPetCharacter.visibility = View.INVISIBLE
-            else
-                binding.signInWarningMyPetCharacter.visibility = View.VISIBLE
+        if( wrongAccess ) {
+            println("true")
+            binding.signInSignIn.isEnabled = true
+        } else {
+            println("false")
+            binding.signInSignIn.isEnabled = false
         }
     }
 
     override fun afterTextChanged(p0: Editable?) {
-    }
-
-
-
-    private fun wrongAccess(): Boolean {
-        myEmail = binding.signInMyEmail.text.toString()
-        myPassword = binding.signInMyPassword.text.toString()
-        myPhoneNum = binding.signInMyPhoneNum.text.toString()
-        myPetAge = binding.signInMyPetAge.text.toString()
-        myPetSpecies = binding.signInMyPetSpecies.text.toString()
-        myPetCharacter = binding.signInMyPetCharacter.text.toString()
-
-
-        if( myEmail!!.isEmpty() ) // = myEmail.length < 1
-            binding.signInWarningMyEmail.visibility = View.VISIBLE
-
-        if( myPassword!!.isEmpty() )
-            binding.signInWarningMyPassword.visibility = View.VISIBLE
-
-        if( myPhoneNum!!.isEmpty() )
-            binding.signInWarningMyPhoneNum.visibility = View.VISIBLE
-
-        if( myPetAge!!.isEmpty() )
-            binding.signInWarningMyPetAge.visibility = View.VISIBLE
-
-        if( myPetSpecies!!.isEmpty() )
-            binding.signInWarningMyPetSpecies.visibility = View.VISIBLE
-
-        if( myPetCharacter!!.isEmpty() )
-            binding.signInWarningMyPetCharacter.visibility = View.VISIBLE
-
-        if( binding.signInWarningMyEmail.isInvisible && binding.signInWarningMyPassword.isInvisible
-            && binding.signInWarningMyPhoneNum.isInvisible && binding.signInWarningMyPetAge.isInvisible
-            && binding.signInWarningMyPetSpecies.isInvisible && binding.signInWarningMyPetCharacter.isInvisible ) {
-
-            return true
-        }
-        return false
     }
 
     // 계정 생성
@@ -193,9 +129,9 @@ class SignUpDialog constructor(activity: Activity): Dialog(activity, R.drawable.
 
     // DB 에 저장
     private fun saveInfoToDB() {
-        val myName: String      = binding.signInMyName.text.toString()
-        val myPetName: String   = binding.signInMyPetName.text.toString()
-        val myPetWeight: String = binding.signInMyPetWeight.text.toString()
+//        val myName: String      = binding.signInMyName.text.toString()
+//        val myPetName: String   = binding.signInMyPetName.text.toString()
+//        val myPetWeight: String = binding.signInMyPetWeight.text.toString()
 
         val userInfoDTO = UserInfoDTO()
         userInfoDTO.uid             = auth?.uid

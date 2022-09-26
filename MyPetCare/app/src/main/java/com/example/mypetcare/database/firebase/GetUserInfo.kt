@@ -2,7 +2,6 @@ package com.example.mypetcare.database.firebase
 
 import android.content.Context
 import android.widget.TextView
-import com.example.mypetcare.R
 import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.database.PreferenceManager
 import com.google.firebase.auth.FirebaseAuth
@@ -13,9 +12,9 @@ class GetUserInfo {
     private val uid = FirebaseAuth.getInstance().currentUser?.uid
 
     // 사용자 정보 가져오기
-    fun getUserInfo(userName: TextView, userPhoneNum: TextView, petName: TextView,
-                    petAge: TextView, petWeight: TextView, petSpecies: TextView,
-                    petCharacter: TextView, context: Context) {
+    fun getUserInfo(userName: TextView, userPhoneNum: TextView,
+                    petName: TextView, petAge: TextView, petWeight: TextView,
+                    petSpecies: TextView, petCharacter: TextView, context: Context) {
 
         db  .collection(UserInfoConstants.USER_INFO)
             .get()
