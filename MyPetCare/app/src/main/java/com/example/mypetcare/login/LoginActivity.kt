@@ -129,6 +129,9 @@ class LoginActivity : AppCompatActivity(), TextWatcher, View.OnClickListener {
 
                     "An internal error has occurred"
                         -> toastMessage("인터넷 연결이 불안정합니다.")
+
+                    "Ignoring header X-Firebase-Locale because its value was null."
+                        -> toastMessage("인터넷 연결이 불안정합니다.")
                 }
             }
     }

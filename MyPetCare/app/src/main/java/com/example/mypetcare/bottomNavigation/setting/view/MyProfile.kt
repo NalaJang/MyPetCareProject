@@ -30,6 +30,8 @@ class MyProfile : DialogFragment(), View.OnClickListener {
     private var db = FirebaseFirestore.getInstance()
     private var uid = FirebaseAuth.getInstance().currentUser?.uid
 
+    private val fileName = "${uid}.png"
+    private var cache: Cache? = null
     private var profileImageUri: Uri? = null
     private var profileImage: ProfileImage? = null
     private lateinit var getResult: ActivityResultLauncher<Intent>
@@ -49,6 +51,8 @@ class MyProfile : DialogFragment(), View.OnClickListener {
         mBinding = DialogMyProfileBinding.inflate(inflater, container, false)
 
         val getUserInfo = GetUserInfo()
+        cache = Cache(requireActivity(), fileName)
+
         profileImage = ProfileImage(requireActivity(), uid!!)
 
         // 사용자 정보 가져오기
@@ -62,7 +66,14 @@ class MyProfile : DialogFragment(), View.OnClickListener {
                                 requireContext()
                             )
         // 사용자 프로필 이미지 가져오기
-        profileImage!!.getProfileImage(binding.profileProfileImage)
+        try {
+            // 캐시에서 bitmap 이미지 가져오기
+            cache!!.getImageFromCache(binding.profileProfileImage)
+
+        } catch (e: java.lang.Exception) {
+            println("프로필 이미지 e: ${e.message}")
+            profileImage!!.getProfileImage(binding.profileProfileImage)
+        }
 
         // 프로필 이미지 변경에 대한 결과값 받기
         getActivityResult()
@@ -90,22 +101,28 @@ class MyProfile : DialogFragment(), View.OnClickListener {
 
             // 프로필 이미지 삭제 -> 기본 이미지로 저장
             R.id.profile_deleteProfileImage -> {
-                profileImage!!.setProfileImage(requireContext())
-                profileImage!!.deleteProfileImage()
+                profileImageUri = null
+                // imageView 에 기본 이미지 설정
                 binding.profileProfileImage.setImageResource(R.drawable.basic_profile_image)
             }
 
             // 수정
             R.id.profile_complete -> {
-
+                // 정보 업데이트
                 updateInfo()
                 // firebaseStorage 에 이미지 업로드
-                profileImage!!.uploadProfileImage(profileImageUri!!)
-                // 기존 저장된 이미지 삭제
-                profileImage!!.deleteProfileImage()
+                println("profileImageUri: $profileImageUri")
+                if( profileImageUri == null )
+                    profileImage!!.setBasicProfileImage(requireContext())
+                else
+                    profileImage!!.uploadProfileImageToFirebase(profileImageUri!!)
+
+                // firebaseStorage 에서 이전 이미지 삭제
+                profileImage!!.deleteProfileImageFromFirebase()
             }
         }
     }
+
 
     // 프로필 이미지 변경에 대한 결과값 받기
     private fun getActivityResult() {
@@ -113,20 +130,18 @@ class MyProfile : DialogFragment(), View.OnClickListener {
             if( result.resultCode == RESULT_OK && result.data != null ) {
                 profileImageUri = result.data?.data
 
-//                binding.profileProfileImage.setImageURI(profileImageUri)
-
-                //
+                // 선택한 이미지 bitmap 변환 후 cache 파일로 저장
                 try {
                     val inputStream = requireActivity().contentResolver.openInputStream(profileImageUri!!)
                     val bitmap = BitmapFactory.decodeStream(inputStream)
-                    val fileName = "${uid}.png"
                     inputStream!!.close()
-                    println("getActivityResult 들어옴")
+
                     // non-null 체크
                     bitmap?.let {
                         binding.profileProfileImage.setImageBitmap(bitmap)
                         // 내부 저장소에 파일 저장
-                        Cache(requireActivity(), fileName).saveImageToCache(bitmap)
+                        cache!!.saveImageToCache(bitmap)
+
                     } ?: let {
                         // bitmap 이 null 일 경우
                         binding.profileProfileImage.setImageURI(profileImageUri)

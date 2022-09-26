@@ -1,6 +1,5 @@
 package com.example.mypetcare.bottomNavigation.home.view
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -39,16 +38,15 @@ class HomeFragment : Fragment() {
                                 binding.homeMyPetCharacter,
                                 requireContext()
                             )
+
+        val cache = Cache(requireActivity(), "${uid}.png")
         // 사용자 프로필 이미지 가져오기
-//        profileImage.getProfileImage(binding.homeProfileImage)
-//        Cache(requireActivity(), "${uid}.png").getImageFromCache(binding.homeProfileImage)
-        try {
-            val imagePath = "${requireActivity().cacheDir}/${uid}.png"
-            val bitmap = BitmapFactory.decodeFile(imagePath)
-            binding.homeProfileImage.setImageBitmap(bitmap)
-            println("프로필 이미지")
-        } catch (e: Exception) {
-            println("프로필 이미지 e: ${e.message}")
+        // 캐시에서 bitmap 이미지 가져오기
+        val getImage: Boolean = cache.getImageFromCache(binding.homeProfileImage)
+
+        if( !getImage ) {
+            profileImage.setBasicProfileImage(requireContext())
+            profileImage.getProfileImage(binding.homeProfileImage)
         }
 
         // 일정 확인

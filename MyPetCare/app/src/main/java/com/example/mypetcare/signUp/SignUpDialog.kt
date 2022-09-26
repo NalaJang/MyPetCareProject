@@ -219,9 +219,9 @@ class SignUpDialog constructor(activity: Activity): Dialog(activity, R.drawable.
                 println("실패 >> ${e.message}")
             }
 
-        // firebaseStorage 에 기본 프로필 이미지 저장
+        // firebaseStorage 에 기본 프로필 이미지 저장 및 캐시 파일 생성
         val profileImage = ProfileImage(mActivity, auth!!.currentUser!!.uid)
-        profileImage.setProfileImage(context)
+        profileImage.setBasicProfileImage(context)
 
     }
 
