@@ -87,7 +87,7 @@
     <string name="defaultStartTime">오전 12시부터</string>
     <string name="defaultEndTime">오후 12시까지</string>
     <string name="yyyy_mm_dd">%1$d년 %2$d월 %3$d일</string>
-    <string name="memo">메모</string>
+    <string name="request">요청 사항</string>
 
     <!-- 매니저 정보 -->
     <string name="managerInfo">매니저 정보</string>

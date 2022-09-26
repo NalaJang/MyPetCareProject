@@ -9,14 +9,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" >
+        android:layout_height="wrap_content" >
 
         <!-- 닫기 -->
         <Button
             android:id="@+id/apply_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="@string/close"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -45,6 +45,7 @@
             android:id="@+id/apply_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="@string/complete"
             android:textStyle="bold"
             android:textColor="@drawable/text_effect"
@@ -70,6 +71,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:paddingStart="10dp"
             android:text="@string/serviceCategory"
             app:layout_constraintTop_toBottomOf="@+id/apply_line1"
@@ -80,7 +83,7 @@
             android:id="@+id/apply_walk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             android:text="@string/walk"
             app:layout_constraintTop_toBottomOf="@+id/apply_category" />
 
@@ -88,6 +91,7 @@
             android:id="@+id/apply_bath"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:text="@string/bath"
             app:layout_constraintTop_toBottomOf="@+id/apply_walk" />
 
@@ -95,6 +99,7 @@
             android:id="@+id/apply_visit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:text="@string/visit"
             app:layout_constraintTop_toBottomOf="@+id/apply_bath" />
 
@@ -103,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_marginTop="20dp"
-            android:background="@color/darkGray"
+            android:background="@color/line"
             app:layout_constraintTop_toBottomOf="@+id/apply_visit"/>
 
         <!-- 시간 -->
@@ -111,7 +116,7 @@
             android:id="@+id/apply_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             android:paddingStart="10dp"
             android:text="@string/time"
             app:layout_constraintTop_toBottomOf="@+id/apply_line2"
@@ -121,7 +126,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             android:paddingStart="10dp"
             android:text="@string/start"
             android:textColor="@color/black"
@@ -133,8 +138,9 @@
             android:id="@+id/apply_startTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             android:text="@string/defaultStartTime"
+            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/apply_time"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -142,7 +148,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             android:paddingStart="10dp"
             android:text="@string/end"
             android:textColor="@color/black"
@@ -154,8 +160,9 @@
             android:id="@+id/apply_endTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             android:text="@string/defaultEndTime"
+            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/apply_startTime"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -164,10 +171,10 @@
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_marginTop="20dp"
-            android:background="@color/darkGray"
+            android:background="@color/line"
             app:layout_constraintTop_toBottomOf="@+id/apply_endTime" />
 
-        <!-- 메모 -->
+        <!-- 요청 사항 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -178,17 +185,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/memo"
-                android:layout_marginTop="10dp"
-                android:paddingStart="10dp" />
+                android:layout_margin="10dp"
+                android:paddingStart="10dp"
+                android:text="@string/request" />
 
             <EditText
-                android:id="@+id/apply_memo"
+                android:id="@+id/apply_request"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
+                android:layout_margin="10dp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

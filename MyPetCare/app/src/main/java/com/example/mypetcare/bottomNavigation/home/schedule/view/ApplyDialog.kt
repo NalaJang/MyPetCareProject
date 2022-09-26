@@ -128,14 +128,24 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
             calendar.set(Calendar.HOUR_OF_DAY, hour)
             calendar.set(Calendar.MINUTE, minute)
 
-            val startTime = context.getString(R.string.selectedStartTime, hour, minute)
-            val endTime = context.getString(R.string.selectedEndTime, hour, minute)
+            val startTime: String?
+            val endTime: String?
 
             if( id == R.id.apply_startTime ) {
+                if( minute == 0 ) {
+                    startTime = context.getString(R.string.startTime, hour)
+                } else
+                    startTime = context.getString(R.string.selectedStartTime, hour, minute)
+
                 binding.applyStartTime.text = startTime
                 applyTimeListener?.setOnStartTime(hour, minute)
 
             } else if( id == R.id.apply_endTime ) {
+                if( minute == 0 ) {
+                    endTime = context.getString(R.string.endTime, hour)
+                } else
+                    endTime = context.getString(R.string.selectedEndTime, hour, minute)
+
                 binding.applyEndTime.text = endTime
                 applyTimeListener?.setOnEndTime(hour, minute)
             }
@@ -168,7 +178,7 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
 
         val startTime = binding.applyStartTime.text.toString()
         val endTime = binding.applyEndTime.text.toString()
-        val memo = binding.applyMemo.text.toString()
+        val request = binding.applyRequest.text.toString()
 
         val now : Long = System.currentTimeMillis()
         val dateFormat = SimpleDateFormat("HH:mm:ss", Locale.KOREA)
@@ -180,7 +190,7 @@ class ApplyDialog constructor(context: Context, selectedDate: String): Dialog(co
         userScheduleDTO.selectedCategory = selectedCategory
         userScheduleDTO.startTime = startTime
         userScheduleDTO.endTime = endTime
-        userScheduleDTO.memo = memo
+        userScheduleDTO.request = request
         userScheduleDTO.registrationTime = registrationTime
 
 

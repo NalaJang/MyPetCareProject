@@ -10,6 +10,7 @@
 
     <color name="transparent">#00FFFFFF</color>
     <color name="representativeColor">#5AC0ED</color>
+    <color name="line">#D5D5D5</color>
     <color name="darkGray">#CFCECE</color>
     <color name="yellow">#FFEB3B</color>
 </resources>

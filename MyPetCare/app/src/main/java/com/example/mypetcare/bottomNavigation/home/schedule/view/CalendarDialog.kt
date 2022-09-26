@@ -153,7 +153,7 @@ class CalendarDialog constructor(activity: Activity): Dialog(activity, R.drawabl
                 val category    = data[position].selectedCategory
                 val startTime   = data[position].startTime
                 val endTime     = data[position].endTime
-                val memo        = data[position].memo
+                val request        = data[position].request
                 val managerUid  = data[position].managerUid
                 val managerName = data[position].managerName
 
@@ -163,7 +163,7 @@ class CalendarDialog constructor(activity: Activity): Dialog(activity, R.drawabl
                                             category,
                                             startTime,
                                             endTime,
-                                            memo,
+                                            request,
                                             managerUid,
                                             managerName,
                                 ""

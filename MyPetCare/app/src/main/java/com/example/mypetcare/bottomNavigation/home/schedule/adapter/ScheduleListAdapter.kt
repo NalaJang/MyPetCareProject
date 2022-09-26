@@ -79,7 +79,7 @@ class ScheduleListAdapter: BaseAdapter() {
                         val category  = i.data[ScheduleConstants.CATEGORY].toString()
                         val startTime = i.data[ScheduleConstants.START_TIME].toString()
                         val endTime   = i.data[ScheduleConstants.END_TIME].toString()
-                        val memo      = i.data[ScheduleConstants.MEMO].toString()
+                        val request      = i.data[ScheduleConstants.REQUEST].toString()
                         val registrationTime = i.data[ScheduleConstants.REGISTRATION_TIME].toString()
 
                         scheduleList.add(UserScheduleDTO(
@@ -87,7 +87,7 @@ class ScheduleListAdapter: BaseAdapter() {
                                             category,
                                             startTime,
                                             endTime,
-                                            memo,
+                                            request,
                                             registrationTime
                                         ))
                     }
@@ -118,7 +118,7 @@ class ScheduleListAdapter: BaseAdapter() {
                         val category         = document.getString(ScheduleConstants.CATEGORY).toString()
                         val startTime        = document.getString(ScheduleConstants.START_TIME).toString()
                         val endTime          = document.getString(ScheduleConstants.END_TIME).toString()
-                        val memo             = document.getString(ScheduleConstants.MEMO).toString()
+                        val request             = document.getString(ScheduleConstants.REQUEST).toString()
                         val managerUid       = document.getString(ScheduleConstants.MANAGER_UID).toString()
                         val managerName      = document.getString(ScheduleConstants.MANAGER_NAME).toString()
                         val registrationTime = document.getString(ScheduleConstants.REGISTRATION_TIME).toString()
@@ -128,7 +128,7 @@ class ScheduleListAdapter: BaseAdapter() {
                                                         category,
                                                         startTime,
                                                         endTime,
-                                                        memo,
+                                                        request,
                                                         managerUid,
                                                         managerName,
                                                         registrationTime
