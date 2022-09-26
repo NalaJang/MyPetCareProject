@@ -129,9 +129,13 @@ class SignUpDialog constructor(activity: Activity): Dialog(activity, R.drawable.
 
     // DB 에 저장
     private fun saveInfoToDB() {
-//        val myName: String      = binding.signInMyName.text.toString()
-//        val myPetName: String   = binding.signInMyPetName.text.toString()
-//        val myPetWeight: String = binding.signInMyPetWeight.text.toString()
+        myName = binding.signInMyName.text.toString()
+        myPhoneNum = binding.signInMyPhoneNum.text.toString()
+        myPetName  = binding.signInMyPetName.text.toString()
+        myPetAge = binding.signInMyPetAge.text.toString()
+        myPetSpecies = binding.signInMyPetSpecies.text.toString()
+        myPetWeight = binding.signInMyPetWeight.text.toString()
+        myPetCharacter = binding.signInMyPetCharacter.text.toString()
 
         val userInfoDTO = UserInfoDTO()
         userInfoDTO.uid             = auth?.uid

@@ -92,6 +92,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_profileImage" >
 
@@ -118,6 +120,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_nameLayout" >
 
@@ -144,6 +148,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_phoneNumLayout" >
 
@@ -171,6 +177,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_myPetNameLayout" >
 
@@ -181,31 +189,16 @@
                 android:text="@string/myPetAge"
                 android:textColor="#706E6E" />
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/profile_myPetAge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <EditText
-                    android:id="@+id/profile_myPetAge"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.1"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:lines="1"
-                    android:textColor="@color/black"
-                    android:background="@drawable/border_text" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.9"
-                    android:layout_marginStart="3dp"
-                    android:gravity="start|center"
-                    android:text="@string/ageUnit" />
-            </LinearLayout>
+                android:padding="10dp"
+                android:gravity="center"
+                android:inputType="number"
+                android:lines="1"
+                android:textColor="@color/black"
+                android:background="@drawable/border_text" />
         </LinearLayout>
 
         <!-- myPet 종 -->
@@ -214,6 +207,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_myPetAgeLayout" >
 
@@ -242,6 +237,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_myPetSpeciesLayout" >
 
@@ -252,31 +249,16 @@
                 android:text="@string/myPetWeight"
                 android:textColor="#706E6E" />
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/profile_myPetWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <EditText
-                    android:id="@+id/profile_myPetWeight"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.1"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:inputType="number"
-                    android:textColor="@color/black"
-                    android:background="@drawable/border_text" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.9"
-                    android:layout_marginStart="3dp"
-                    android:gravity="start|center"
-                    android:text="@string/weightUnit" />
-            </LinearLayout>
+                android:padding="10dp"
+                android:gravity="center"
+                android:lines="1"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:background="@drawable/border_text" />
         </LinearLayout>
 
         <!-- myPet 성격 -->
@@ -285,6 +267,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profile_myPetWeightLayout" >
 
