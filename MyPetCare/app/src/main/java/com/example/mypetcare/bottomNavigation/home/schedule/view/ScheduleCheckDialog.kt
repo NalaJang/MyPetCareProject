@@ -80,7 +80,7 @@ class ScheduleCheckDialog constructor(activity: Activity, getData: ArrayList<Use
         binding.scheduleCheckDate.text      = applicationDate
         binding.scheduleCheckStartTime.text = itemList[0].startTime
         binding.scheduleCheckEndTime.text   = itemList[0].endTime
-        binding.scheduleCheckMemo.text      = itemList[0].request
+        binding.scheduleCheckRequest.text      = itemList[0].request
     }
 
 }
