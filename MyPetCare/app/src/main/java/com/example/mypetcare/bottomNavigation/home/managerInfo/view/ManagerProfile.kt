@@ -124,7 +124,7 @@ class ManagerProfile constructor(activity: Activity, managerUid: String):
     // 채팅 시작
     private fun startChat() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
-        val userName = PreferenceManager.getString(context, UserInfoConstants.USER_NAME)
+        val userName = PreferenceManager().getString(context, UserInfoConstants.USER_NAME)
 
         val comment = ChatModel.Comment()
         comment.uid = uid.toString()
@@ -186,7 +186,7 @@ class ManagerProfile constructor(activity: Activity, managerUid: String):
     // 리뷰 작성
     private fun writeReview() {
 
-        val userName = PreferenceManager.getString(context, UserInfoConstants.USER_NAME)
+        val userName = PreferenceManager().getString(context, UserInfoConstants.USER_NAME)
         val now = System.currentTimeMillis()
         val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH:mm", Locale.KOREA)
         val writingTime = dateFormat.format(Date(now))

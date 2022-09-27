@@ -40,7 +40,7 @@ class ChatActivity : AppCompatActivity(), View.OnClickListener {
         mBinding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        userName = PreferenceManager.getString(this, "userName")
+        userName = PreferenceManager().getString(this, "userName").toString()
 
         if( intent.hasExtra("roomUid") ) {
             roomUid = intent.getStringExtra("roomUid")

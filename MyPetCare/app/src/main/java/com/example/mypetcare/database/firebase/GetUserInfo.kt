@@ -2,8 +2,8 @@ package com.example.mypetcare.database.firebase
 
 import android.content.Context
 import android.widget.TextView
-import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.database.PreferenceManager
+import com.example.mypetcare.database.constant.UserInfoConstants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -41,7 +41,7 @@ class GetUserInfo {
                             petSpecies.text   = myPetSpecies.toString()
                             petCharacter.text = myPetCharacter.toString()
 
-                            PreferenceManager.setString(
+                            PreferenceManager().setString(
                                 context,
                                 UserInfoConstants.USER_NAME,
                                 myName.toString()
