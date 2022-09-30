@@ -7,7 +7,7 @@
 ## Table of contents
 * About Project
 * Technologies(개발 환경)
-* 화면 구성
+* Flowchart
 * 주요 기능
 * 주요 기능 상세
 * Reference
