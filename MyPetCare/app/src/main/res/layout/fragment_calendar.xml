@@ -5,21 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".bottomNavigation.home.schedule.view.CalendarDialog" >
-
-    <!-- 닫기 -->
-    <Button
-        android:id="@+id/calendar_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/close"
-        android:textStyle="bold"
-        android:background="@color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".bottomNavigation.home.view.CalendarFragment" >
 
     <TextView
+        android:id="@+id/calendar_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/schedule"
@@ -28,12 +17,12 @@
         android:textColor="@color/black"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/calendarDialog_calendarView"
-        app:layout_constraintBaseline_toBaselineOf="@+id/calendar_close" />
+        app:layout_constraintBottom_toTopOf="@+id/calendar_calendarView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/calendar_applyButton" />
 
     <!-- 신청 -->
     <Button
-        android:id="@+id/calendarDialog_applyButton"
+        android:id="@+id/calendar_applyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -46,33 +35,33 @@
 
     <!-- 달력 -->
     <CalendarView
-        android:id="@+id/calendarDialog_calendarView"
+        android:id="@+id/calendar_calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendar_close" />
+        app:layout_constraintTop_toBottomOf="@+id/calendar_title" />
 
     <View
-        android:id="@+id/calendarDialog_line1"
+        android:id="@+id/calendar_line1"
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="@color/darkGray"
-        app:layout_constraintTop_toBottomOf="@+id/calendarDialog_calendarView"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_calendarView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <!-- 선택한 날짜 -->
     <TextView
-        android:id="@+id/calendarDialog_selectedDate"
+        android:id="@+id/calendar_selectedDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
         android:padding="10dp"
         tools:text="선택한 날짜"
-        app:layout_constraintTop_toBottomOf="@+id/calendarDialog_line1"/>
+        app:layout_constraintTop_toBottomOf="@+id/calendar_line1"/>
 
     <!-- 일정 목록 -->
     <ListView
@@ -83,7 +72,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:padding="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/calendarDialog_selectedDate"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_selectedDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

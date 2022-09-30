@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center"
-            android:text="@string/editProfile"
+            android:text="@string/profile"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -38,12 +38,12 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/proFile_close"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/proFile_close"
-            app:layout_constraintEnd_toStartOf="@+id/profile_complete"
+            app:layout_constraintEnd_toStartOf="@+id/profile_edit"
             app:layout_constraintBottom_toTopOf="@+id/profile_line1" />
 
         <!-- 수정 -->
         <Button
-            android:id="@+id/profile_complete"
+            android:id="@+id/profile_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edit"

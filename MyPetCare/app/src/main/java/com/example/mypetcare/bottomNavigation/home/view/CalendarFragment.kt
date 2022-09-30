@@ -1,17 +1,19 @@
-package com.example.mypetcare.bottomNavigation.home.schedule.view
+package com.example.mypetcare.bottomNavigation.home.view
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.Dialog
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.CalendarView
 import com.example.mypetcare.R
 import com.example.mypetcare.bottomNavigation.home.schedule.adapter.ScheduleListAdapter
+import com.example.mypetcare.bottomNavigation.home.schedule.view.ApplyDialog
+import com.example.mypetcare.bottomNavigation.home.schedule.view.ScheduleCheckDialog
 import com.example.mypetcare.database.constant.ScheduleConstants
 import com.example.mypetcare.database.dto.UserScheduleDTO
-import com.example.mypetcare.databinding.DialogCalendarBinding
+import com.example.mypetcare.databinding.FragmentCalendarBinding
 import com.example.mypetcare.listener.OnApplyTimeListener
 import com.example.mypetcare.listener.OnCheckedBox
 import com.google.firebase.auth.FirebaseAuth
@@ -20,42 +22,35 @@ import com.google.firebase.firestore.ktx.toObjects
 import java.util.*
 import kotlin.collections.ArrayList
 
-@SuppressLint("ResourceType")
-class CalendarDialog constructor(activity: Activity): Dialog(activity, R.drawable.dialog_full_screen)
-    , View.OnClickListener, CalendarView.OnDateChangeListener {
+class CalendarFragment : Fragment(), View.OnClickListener, CalendarView.OnDateChangeListener {
 
-    private val mActivity = activity
-    private var mBinding: DialogCalendarBinding? = null
+    private var mBinding : FragmentCalendarBinding? = null
     private val binding get() = mBinding!!
     private var db = FirebaseFirestore.getInstance()
-    private var uid = FirebaseAuth.getInstance().currentUser?.uid
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid
 
     private var scheduleAdapter: ScheduleListAdapter? = null
     private var selectedYear: Int? = null
     private var selectedMonth: Int? = null
     private var selectedDate: Int? = null
 
-    init {
-        setCanceledOnTouchOutside(true)
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mBinding = DialogCalendarBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-
-        binding.calendarDialogSelectedDate.text = context.getString(R.string.today)
+        mBinding = FragmentCalendarBinding.inflate(inflater, container, false)
+        binding.calendarSelectedDate.text = requireActivity().getString(R.string.today)
 
         // listAdapter 설정
         initAdapter()
 
 
-        binding.calendarDialogCalendarView.setOnDateChangeListener(this)
-        binding.calendarClose.setOnClickListener(this)
-        binding.calendarDialogApplyButton.setOnClickListener(this)
+        binding.calendarCalendarView.setOnDateChangeListener(this)
+        binding.calendarApplyButton.setOnClickListener(this)
         binding.calendarListView.onItemClickListener = itemClickListener
 
+        return binding.root
     }
 
     // listAdapter 설정
@@ -68,13 +63,12 @@ class CalendarDialog constructor(activity: Activity): Dialog(activity, R.drawabl
 
     override fun onClick(view: View?) {
         when(view?.id) {
-            // 닫기
-            R.id.calendar_close -> dismiss()
 
             // 신청하기
-            R.id.calendarDialog_applyButton -> {
-                val applyDate: String = binding.calendarDialogSelectedDate.text.toString()
-                val applyDialog = ApplyDialog(context, applyDate)
+            R.id.calendar_applyButton -> {
+                println("신청하기")
+                val applyDate: String = binding.calendarSelectedDate.text.toString()
+                val applyDialog = ApplyDialog(requireContext(), applyDate)
 
                 // 선택한 유형
                 applyDialog.setOnCheck(object : OnCheckedBox {
@@ -110,12 +104,12 @@ class CalendarDialog constructor(activity: Activity): Dialog(activity, R.drawabl
     override fun onSelectedDayChange(view: CalendarView, year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
         val today: Int = calendar.get(Calendar.DAY_OF_MONTH)
-        val selectedDay = context.getString(R.string.yyyy_mm_dd, year, month+1, dayOfMonth)
+        val selectedDay = requireActivity().getString(R.string.yyyy_mm_dd, year, month+1, dayOfMonth)
 
         if( dayOfMonth == today )
-            binding.calendarDialogSelectedDate.text = context.getString(R.string.today)
+            binding.calendarSelectedDate.text = requireActivity().getString(R.string.today)
         else
-            binding.calendarDialogSelectedDate.text = selectedDay
+            binding.calendarSelectedDate.text = selectedDay
 
         selectedYear = year
         selectedMonth = month + 1
@@ -158,18 +152,20 @@ class CalendarDialog constructor(activity: Activity): Dialog(activity, R.drawabl
                 val managerName = data[position].managerName
 
                 val setData = ArrayList<UserScheduleDTO>()
-                setData.add(UserScheduleDTO(
-                                            uid,
-                                            category,
-                                            startTime,
-                                            endTime,
-                                            request,
-                                            managerUid,
-                                            managerName,
-                                ""
-                                        ))
+                setData.add(
+                    UserScheduleDTO(
+                    uid,
+                    category,
+                    startTime,
+                    endTime,
+                    request,
+                    managerUid,
+                    managerName,
+                    ""
+                )
+                )
 
-                val scheduleCheckDialog = ScheduleCheckDialog(mActivity, setData, year, month, date)
+                val scheduleCheckDialog = ScheduleCheckDialog(requireActivity(), setData, year, month, date)
                 scheduleCheckDialog.show()
             }
     }

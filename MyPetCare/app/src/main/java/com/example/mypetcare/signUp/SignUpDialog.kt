@@ -86,14 +86,22 @@ class SignUpDialog constructor(activity: Activity): Dialog(activity, R.drawable.
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
         wrongAccess = (
-                // 이메일 && 비밀번호
-                binding.signInMyEmail.length() > 5 && binding.signInMyPassword.length() >= PASSWORD_MIN_LENGTH
-                // 이름 && 휴대폰 번호
-                && binding.signInMyName.text.isNotEmpty() && binding.signInMyPhoneNum.length() >= 11
-                //  myPet 이름 && myPet 나이
-                && binding.signInMyPetName.text.isNotEmpty() && binding.signInMyPetAge.text.isNotEmpty()
-                // myPet 품종 && myPet 무게
-                && binding.signInMyPetSpecies.text.isNotEmpty() && binding.signInMyPetWeight.text.isNotEmpty()
+                        // 이메일
+                        binding.signInMyEmail.length() > 5
+                        // 비밀번호
+                        && binding.signInMyPassword.length() >= PASSWORD_MIN_LENGTH
+                        // 이름 &&
+                        && binding.signInMyName.text.isNotEmpty()
+                        // 휴대폰 번호
+                        && binding.signInMyPhoneNum.length() >= 11
+                        //  myPet 이름 &&
+                        && binding.signInMyPetName.text.isNotEmpty()
+                        // myPet 나이
+                        && binding.signInMyPetAge.text.isNotEmpty()
+                        // myPet 품종 &&
+                        && binding.signInMyPetSpecies.text.isNotEmpty()
+                        // myPet 무게
+                        && binding.signInMyPetWeight.text.isNotEmpty()
                 )
 
 

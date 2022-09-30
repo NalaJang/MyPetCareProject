@@ -6,6 +6,8 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +25,7 @@ import com.example.mypetcare.databinding.DialogMyProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class MyProfile : DialogFragment(), View.OnClickListener {
+class MyProfile : DialogFragment(), View.OnClickListener, TextWatcher {
 
     private var mBinding: DialogMyProfileBinding? = null
     private val binding get() = mBinding!!
@@ -81,7 +83,11 @@ class MyProfile : DialogFragment(), View.OnClickListener {
         binding.proFileClose.setOnClickListener(this)
         binding.profileProfileImage.setOnClickListener(this)
         binding.profileDeleteProfileImage.setOnClickListener(this)
-        binding.profileComplete.setOnClickListener(this)
+        binding.profileMyPetName.addTextChangedListener(this)
+        binding.profileMyPetAge.addTextChangedListener(this)
+        binding.profileMyPetSpecies.addTextChangedListener(this)
+        binding.profileMyPetWeight.addTextChangedListener(this)
+        binding.profileEdit.setOnClickListener(this)
         binding.profileLayout.setOnTouchListener { _, _ ->
             // 키보드 바깥 터치 시 키보드 내리기
             HideKeyboard().hideKeyboardInDialogFragment(requireContext(), requireView())
@@ -107,11 +113,12 @@ class MyProfile : DialogFragment(), View.OnClickListener {
             }
 
             // 수정
-            R.id.profile_complete -> {
+            R.id.profile_edit -> {
+
                 // 정보 업데이트
                 updateInfo()
+
                 // firebaseStorage 에 이미지 업로드
-                println("profileImageUri: $profileImageUri")
                 if( profileImageUri == null )
                     profileImage!!.setBasicProfileImage(requireContext())
                 else
@@ -146,9 +153,7 @@ class MyProfile : DialogFragment(), View.OnClickListener {
                         // bitmap 이 null 일 경우
                         binding.profileProfileImage.setImageURI(profileImageUri)
                     }
-                } catch (e: Exception) {
-                    println("getActivityResult : ${e.message}")
-                }
+                } catch (e: Exception) { }
             }
         }
     }
@@ -175,13 +180,37 @@ class MyProfile : DialogFragment(), View.OnClickListener {
             .update(map)
             .addOnCompleteListener { task ->
                 if( task.isSuccessful ) {
-                    Toast.makeText(context, "정보 수정 완료", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.completeToEdit), Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
     fun getInstance(): MyProfile {
         return MyProfile()
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        if( binding.profileMyPetName.text.isEmpty() )
+            binding.profileEdit.isEnabled = false
+
+        if( binding.profileMyPetAge.text.isEmpty() )
+            binding.profileEdit.isEnabled = false
+
+        if( binding.profileMyPetSpecies.text.isEmpty() )
+            binding.profileEdit.isEnabled = false
+
+        if( binding.profileMyPetWeight.text.isEmpty() )
+            binding.profileEdit.isEnabled = false
+    }
+
+    override fun afterTextChanged(s: Editable?) {
+        if( binding.profileMyPetName.text.isNotEmpty() && binding.profileMyPetAge.text.isNotEmpty()
+            && binding.profileMyPetSpecies.text.isNotEmpty() && binding.profileMyPetWeight.text.isNotEmpty() ) {
+            binding.profileEdit.isEnabled = true
+        }
     }
 
 }

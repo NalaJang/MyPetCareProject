@@ -13,11 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyPetCare">
         <activity
-            android:name=".bottomNavigation.setting.view.WebView"
-            android:exported="false"
-            android:label="@string/title_activity_web_view"
-            android:theme="@style/Theme.MyPetCare.NoActionBar" />
-        <activity
             android:name=".bottomNavigation.chat.view.ChatActivity"
             android:exported="false" />
         <activity

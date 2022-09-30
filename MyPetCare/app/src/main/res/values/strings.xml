@@ -13,7 +13,6 @@
     <!-- 정보 -->
     <string name="email">이메일</string>
     <string name="password">비밀번호</string>
-    <string name="profile">프로필</string>
     <string name="myName">이름</string>
     <string name="myPhoneNum">휴대폰 번호</string>
     <string name="myAddress">주소</string>
@@ -24,13 +23,11 @@
     <string name="myPetCharacter">소개</string>
 
     <!-- 로그인 -->
-    <string name="autoLogin">자동 로그인</string>
     <string name="login">로그인</string>
     <string name="NotMember">아직 회원이 아니신가요?</string>
 
     <!-- 회원가입 -->
     <string name="signIn">가입하기</string>
-    <string name="essential">* 표시는 필수 입력 사항입니다.</string>
     <string name="signInMyEmail">이메일</string>
     <string name="signInMyPassword">비밀번호</string>
     <string name="signInMyPhoneNum">휴대폰번호</string>
@@ -43,27 +40,11 @@
     <!-- 경고 메시지 -->
     <string name="warningEmail">이메일을 입력하세요.</string>
     <string name="warningPassword">비밀번호를 입력하세요.</string>
-    <string name="warningPhoneNum">휴대폰번호를 입력하세요.</string>
-    <string name="warningMyPetAge">My Pet의 나이를 입력하세요.</string>
-    <string name="warningMyPetSpecies">My Pet의 품종을 입력하세요.</string>
-    <string name="warningMyPetCharacter">My Pet의 성격을 입격력하세요.</string>
 
     <!-- bottom navigation menu -->
-    <string name="home">홈</string>
+    <string name="calendar">일정</string>
     <string name="chat">채팅</string>
     <string name="setting">더보기</string>
-
-    <!-- 홈 -->
-    <string name="showCalendarDialog">일정</string>
-    <string name="editProfile">프로필 편집</string>
-
-    <!-- 채팅 -->
-    <string name="send">입력</string>
-    <string name="enterYourContent">내용을 입력하세요</string>
-
-    <!-- 더보기 -->
-    <string name="review">내가 남긴 후기</string>
-    <string name="logout">로그아웃</string>
 
     <!-- 일정(달력) -->
     <string name="schedule">일정</string>
@@ -71,6 +52,15 @@
     <string name="scheduleInfo">일정 정보</string>
     <string name="edit">수정</string>
     <string name="today">오늘</string>
+
+    <!-- 채팅 -->
+    <string name="send">입력</string>
+    <string name="enterYourContent">내용을 입력하세요</string>
+
+    <!-- 더보기 -->
+    <string name="profile">프로필</string>
+    <string name="review">내가 남긴 후기</string>
+    <string name="logout">로그아웃</string>
 
     <!-- 일정 정보 -->
     <string name="serviceCategory">서비스 유형</string>
@@ -97,14 +87,7 @@
 
     <!-- 후기 -->
     <string name="writeReview">후기 작성</string>
-    <string name="title_activity_web_view">WebView</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-
+    <!--프로필 -->
+    <string name="completeToEdit">정보가 수정되었습니다.</string>
 </resources>
