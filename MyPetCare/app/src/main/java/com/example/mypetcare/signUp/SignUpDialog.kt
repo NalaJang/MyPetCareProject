@@ -16,10 +16,13 @@ import com.example.mypetcare.database.constant.UserInfoConstants
 import com.example.mypetcare.databinding.DialogSignUpBinding
 import com.example.mypetcare.database.dto.UserInfoDTO
 import com.example.mypetcare.database.firebase.ProfileImage
+import com.google.android.gms.tasks.RuntimeExecutionException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import java.lang.Exception
 
 @SuppressLint("ResourceType")
 class SignUpDialog constructor(activity: Activity): Dialog(activity, R.drawable.dialog_full_screen)
@@ -126,11 +129,18 @@ class SignUpDialog constructor(activity: Activity): Dialog(activity, R.drawable.
                     if( it.isSuccessful ) {
                         // DB 에 저장
                         saveInfoToDB()
-                        toastMessage("가입되었습니다.")
+                        toastMessage(R.string.completeToJoin)
                         dismiss()
 
-                    } else
-                        toastMessage("다시 시도해 주세요.")
+                    } else {
+                        try {
+                            it.result
+                        } catch (e: RuntimeExecutionException) {
+                            toastMessage(R.string.DuplicateEmail)
+                        } catch (e: Exception) {
+                            toastMessage(R.string.fail)
+                        }
+                    }
                 }
         }
     }
@@ -173,7 +183,7 @@ class SignUpDialog constructor(activity: Activity): Dialog(activity, R.drawable.
 
     }
 
-    private fun toastMessage(message: String) {
+    private fun toastMessage(message: Int) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 

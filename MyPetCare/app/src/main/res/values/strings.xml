@@ -6,6 +6,7 @@
     <string name="close">닫기</string>
     <string name="complete">완료</string>
     <string name="search">검색</string>
+    <string name="fail">다시 시도해주세요.</string>
 
     <string name="ageUnit">살</string>
     <string name="weightUnit">kg</string>
@@ -36,6 +37,8 @@
     <string name="signInMyPetWeight">My Pet 무게</string>
     <string name="signInMyPetCharacter">My Pet 소개</string>
     <string name="myPetCharacterHint">상세하게 적어주세요.</string>
+    <string name="completeToJoin">가입이 완료되었습니다.</string>
+    <string name="DuplicateEmail">이미 가입된 이메일입니다.</string>
 
     <!-- 경고 메시지 -->
     <string name="warningEmail">이메일을 입력하세요.</string>
