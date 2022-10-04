@@ -37,6 +37,7 @@
 * 회원 가입
 * 로그인
 * 일정
+* 매니저 정보
 * 채팅
 * 설정
 
@@ -59,6 +60,10 @@
     
   * Firebase의 Authentication을 통해 사용자가 입력한 값과 비교해서 값이 일치할 때 로그인 허용
   * 로그인 성공 시 일정 화면으로 이동
+  * Flow chart
+  <p align=center><img width="290" alt="image" src="https://user-images.githubusercontent.com/73895803/193762038-a5f4c858-3bad-4842-b114-2198c3ecdb3d.png"></p>
+  
+  * Images
   
   <img width="274" alt="image" src="https://user-images.githubusercontent.com/73895803/193718223-e62aea2a-939b-4820-9d9a-318527cfe79c.png">
   <img width="273" alt="image" src="https://user-images.githubusercontent.com/73895803/193750741-c40cb771-f6f1-4a8b-940a-8b88e503d467.png">
