@@ -43,23 +43,26 @@
 ## 주요 기능 상세
 #### 회원 가입
   * 사용자 정보와 반려 동물 정보 입력
+  * 중복 아이디 
   * 가입 완료 시 Firebase에 계정 생성과 기본 프로필 저장
-  <details>
-    <summary>Image</summary>
+<details>
+  <summary>Image</summary>
     
 <img width="272" alt="image" src="https://user-images.githubusercontent.com/73895803/193718550-56aced60-0576-4360-b17c-1838d6112f55.png">
-  </details>
+</details>
   
+***
   
 #### 로그인
   * Firebase의 Authentication을 통해 사용자가 입력한 값과 비교해서 값이 일치할 때 로그인 허용
   * 로그인 성공 시 일정 화면으로 이동
-  <details>
-    <summary>Image</summary>
+<details>
+  <summary>Image</summary>
     
 <img width="274" alt="image" src="https://user-images.githubusercontent.com/73895803/193718223-e62aea2a-939b-4820-9d9a-318527cfe79c.png">
-  </details>
+</details>
   
+***
 
 #### 일정
   <details>
@@ -71,51 +74,59 @@
 
   * 일정 신청
     * 날짜 선택 -> 신청 버튼 클릭 -> 신청하고자 하는 서비스 유형과 돌봄이 필요한 시간, 메모 내용 등을 입력 -> 완료 버튼 클릭
-    <details>
-      <summary>Image</summary>
+<details>
+  <summary>Image</summary>
     
 <img width="272" alt="image" src="https://user-images.githubusercontent.com/73895803/193718792-3fb4675e-28ee-4a1f-8155-c7adda1a10da.png">
 <img width="273" alt="image" src="https://user-images.githubusercontent.com/73895803/193719107-7ef7378a-036c-4503-b997-7768aa867627.png">
-    </details>
+</details>
 
  
   * 일정 확인
     * 일정이 있는 날짜 선택 -> 일정 클릭 -> 신청된 서비스 유형과 시간, 메모 내용, 담당 매니저를 확인할 수 있음
-    <details>
-     <summary>Image</summary>
+<details>
+  <summary>Image</summary>
     
 <img width="270" alt="image" src="https://user-images.githubusercontent.com/73895803/193719196-5232720c-2ba1-443b-b124-97dbb8b2cd40.png">
 <img width="272" alt="image" src="https://user-images.githubusercontent.com/73895803/193719504-865fb10e-b12c-4831-8e3b-3457e8cfa527.png">
-  </details>
+</details>
     
+***
     
 <details>
-    <summary>Image</summary>
+  <summary>Image</summary>
     
 <img width="272" alt="image" src="https://user-images.githubusercontent.com/73895803/193719841-644db40f-988a-4277-b9a2-5c99f87ac2d3.png">
-  </details>
+</details>
 
+***
 
 #### 채팅
   * 매니저와 첫 채팅 시작 하기
     * 일정이 있는 날짜 선택 -> 일정 클릭 -> 신청된 서비스 유형과 시간, 메모 내용, 담당 매니저 확인 화면에서 담당 매니저 선택 -> 
     * 매니저 정보 화면으로 이동 -> 화면 우측 상단의 채팅 버튼 클릭 -> 채팅 화면으로 이동
-    <details>
-      <summary>Image</summary>
+<details>
+  <summary>Image</summary>
     
 <img width="273" alt="image" src="https://user-images.githubusercontent.com/73895803/193720521-2a1b7d83-2c7f-4caa-85cb-29f5fa0c1587.png">
-  </details>
+</details>
 
 
   * 채팅 목록
     * 화면 하단의 채팅 아이콘 클릭 -> 채팅 목록 중 원하는 방을 선택 -> 채팅 화면으로 이동
-    * Image
-    <img width="273" alt="image" src="https://user-images.githubusercontent.com/73895803/193720578-232b37cd-9e62-4a40-961d-41184595e5b6.png">
+<details>
+  <summary>Image</summary>
+    
+<img width="273" alt="image" src="https://user-images.githubusercontent.com/73895803/193720578-232b37cd-9e62-4a40-961d-41184595e5b6.png">
+</details>
 
 
 #### 설정
-* Image
+<details>
+  <summary>Image</summary>
+    
 <img width="271" alt="image" src="https://user-images.githubusercontent.com/73895803/193720884-d1411ec8-dde5-41ad-9627-e709addc612d.png">
+</details>
 
 
   * 나의 프로필
