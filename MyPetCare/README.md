@@ -34,17 +34,17 @@
 
 
 ## Main Functions
-* 회원 가입
-* 로그인
-* 일정
-* 매니저 정보
-* 채팅
-* 설정
+* 회원 가입(Sign Up)
+* 로그인(Login)
+* 일정(Calendar)
+* 매니저 프로필(Manager Profile)
+* 채팅(Chat)
+* 설정(Setting)
 
 ## Main Function Details
 
 <details>
-  <summary>회원 가입</summary>
+  <summary>회원 가입(Sign Up)</summary>
     
   * 사용자 정보와 반려 동물 정보 입력
   * 중복 아이디 
@@ -56,11 +56,11 @@
  </details>
   
 <details>
-  <summary>로그인</summary>
+  <summary>로그인(Login)</summary>
     
   * Firebase의 Authentication을 통해 사용자가 입력한 값과 비교해서 값이 일치할 때 로그인 허용
   * 로그인 성공 시 일정 화면으로 이동
-  * Flow chart
+  * Flowchart
   <p align=center><img width="290" alt="image" src="https://user-images.githubusercontent.com/73895803/193762038-a5f4c858-3bad-4842-b114-2198c3ecdb3d.png"></p>
   
   * Images
@@ -73,12 +73,16 @@
 
   
 <details>
-  <summary>일정</summary>
+  <summary>일정(Calendar)</summary>
     
   <img width="272" alt="image" src="https://user-images.githubusercontent.com/73895803/193718725-67526f27-dbb0-4fb6-8559-dbdbd150a1d4.png">
 
   * 일정 신청
     * 날짜 선택 -> 신청 버튼 클릭 -> 신청하고자 하는 서비스 유형과 돌봄이 필요한 시간, 메모 내용 등을 입력 -> 완료 버튼 클릭
+    * Flowchart
+    <p align=center><img width="294" alt="image" src="https://user-images.githubusercontent.com/73895803/194494076-9142b5ac-b9d4-47cf-b3e0-16f795757d84.png"></p>
+
+    * Images
 
     <img width="273" alt="image" src="https://user-images.githubusercontent.com/73895803/193750993-f50cda02-a951-4933-94a2-439e6b8f6bae.png">
     <img width="272" alt="image" src="https://user-images.githubusercontent.com/73895803/193718792-3fb4675e-28ee-4a1f-8155-c7adda1a10da.png">
@@ -93,8 +97,14 @@
     
     
 <details>
-  <summary>매니저 정보</summary>
+  <summary>매니저 프로필(Manager Profile)</summary>
+  
+  * Flowchart
+  <p align=center><img width="130" alt="image" src="https://user-images.githubusercontent.com/73895803/194739155-05fb8695-ec4d-4644-9a42-9e357383bd1f.png"></p>
+</p>
     
+  * Images
+  
   <img width="273" alt="image" src="https://user-images.githubusercontent.com/73895803/193749848-39c4cc21-7c59-487c-ad23-ecd98a618aa5.png">
   <img width="272" alt="image" src="https://user-images.githubusercontent.com/73895803/193719841-644db40f-988a-4277-b9a2-5c99f87ac2d3.png">
   
@@ -107,7 +117,7 @@
 
   
 <details>
-  <summary>채팅</summary>
+  <summary>채팅(Chat)</summary>
     
  * 매니저와 첫 채팅 시작 하기
     * 일정이 있는 날짜 선택 -> 일정 클릭 -> 일정 정보 화면 -> 매니저 이름 클릭 ->
@@ -127,7 +137,7 @@
 
 
 <details>
-  <summary>설정</summary>
+  <summary>설정(Setting)</summary>
     
   <img width="271" alt="image" src="https://user-images.githubusercontent.com/73895803/193720884-d1411ec8-dde5-41ad-9627-e709addc612d.png">
 
