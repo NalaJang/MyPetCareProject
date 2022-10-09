@@ -101,7 +101,6 @@
   
   * Flowchart
   <p align=center><img width="130" alt="image" src="https://user-images.githubusercontent.com/73895803/194739155-05fb8695-ec4d-4644-9a42-9e357383bd1f.png"></p>
-</p>
     
   * Images
   
@@ -119,6 +118,9 @@
 <details>
   <summary>채팅(Chat)</summary>
     
+  * Flowchart
+  <p align=center><img width="374" alt="image" src="https://user-images.githubusercontent.com/73895803/194739386-7a88d9a5-42dc-4f9a-a6ac-556ca521190b.png"></p>
+  
  * 매니저와 첫 채팅 시작 하기
     * 일정이 있는 날짜 선택 -> 일정 클릭 -> 일정 정보 화면 -> 매니저 이름 클릭 ->
     * 매니저 정보 화면으로 이동 -> 화면 우측 상단의 채팅 버튼 클릭 -> 채팅 화면으로 이동
